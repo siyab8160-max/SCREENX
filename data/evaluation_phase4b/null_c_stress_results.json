@@ -1,0 +1,2744 @@
+{
+  "benchmark_target": "PHASE_4B_BENCHMARK_v1.0.0",
+  "governing_specification": "docs/PHASE_4B_DETECTOR_CALIBRATION_SPEC.md (v1.9.0)",
+  "audit_phase": "Phase 2.4 \u2014 Null-C Common-Mode Stress Test",
+  "execution_timestamp_utc": "2026-09-17T18:10:34.889233+00:00",
+  "elapsed_seconds": 1.918111,
+  "stress_seed": 622638004,
+  "common_mode_specification": {
+    "perturbation_type": "Synchronous chamber thermal excursion",
+    "delta_T_celsius": 5.0,
+    "perturbation_hours": [
+      72,
+      96
+    ],
+    "spatial_scope": "Lot-synchronous (applied identically to all L=20 components in each lot; independent across lots)",
+    "transductive_temperature_coefficients": {
+      "IDSS": {
+        "cm_temp_coeff": 0.04,
+        "shift_in_transformed_u": 0.2,
+        "shift_in_sigma_u_units": 2.5
+      },
+      "VGS(th)": {
+        "cm_temp_coeff": -0.005,
+        "shift_in_transformed_u": -0.025,
+        "shift_in_sigma_u_units": -1.25
+      },
+      "RDS(on)": {
+        "cm_temp_coeff": 0.005,
+        "shift_in_transformed_u": 0.025,
+        "shift_in_sigma_u_units": 2.0
+      },
+      "IGSS": {
+        "cm_temp_coeff": 0.02,
+        "shift_in_transformed_u": 0.1,
+        "shift_in_sigma_u_units": 0.4
+      }
+    }
+  },
+  "consumed_calibration_artifacts": {
+    "calibration_reference_table.json": {
+      "sha256": "153d387597ba6a247ed5302a7512730c678bc3ce39e056848cd9135fc39c7d60",
+      "verified_unmutated": true
+    },
+    "calibration_distributions.npz": {
+      "sha256": "147f1d38ed9b197af6b6301b9b454223d5cce54286fcfeb89a1ea15cec055d98",
+      "verified_unmutated": true
+    }
+  },
+  "sample_accounting": {
+    "n_lots": 5000,
+    "lot_size": 20,
+    "n_components": 100000,
+    "n_parameters": 4,
+    "total_parameter_series": 400000,
+    "checkpoints_per_series": 7
+  },
+  "dataset_hashes": {
+    "raw_measurements_sha256": "69fdd8c055bf41c159b44475d6a6c7a313b5c729741f116f076daa58fce1346e",
+    "excess_coordinates_sha256": "80a3a08f39c31180fe01a31f88766dd163531f19f6b20c106f83e04b22cec164",
+    "common_mode_shift_sha256": "d60b93c1b9f495be4aa77393082029a3f1408231c3173f9e73fb3ff0b4f602df"
+  },
+  "summary": {
+    "total_parameter_cells_evaluated": 68,
+    "total_horizon_fwer_cells_evaluated": 17,
+    "total_module_a_excess_cells_evaluated": 6,
+    "total_module_a_raw_cells_evaluated": 6
+  },
+  "parameter_level_results": {
+    "kendall_tau__IDSS__T24h_K2": {
+      "cell_key": "kendall_tau__IDSS__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "9b39f36b71365a076588daf08686ff37ae1e1f83f2c6d842b11359e3974371c1"
+    },
+    "kendall_tau__VGS(th)__T24h_K2": {
+      "cell_key": "kendall_tau__VGS(th)__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "028d87e7d6141951af8092b6a1c74b78d328b0c4b0f0e40c05232a1439307237"
+    },
+    "kendall_tau__RDS(on)__T24h_K2": {
+      "cell_key": "kendall_tau__RDS(on)__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "a10bfa7da0fade495b9f3fb90c803c28a6f17e308c462667af5f8c301cae9e2c"
+    },
+    "kendall_tau__IGSS__T24h_K2": {
+      "cell_key": "kendall_tau__IGSS__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "b7b4229fe795fbdf6865304f87f1981cc1caba37d10fd81054802ebade738bd2"
+    },
+    "kendall_tau__IDSS__T48h_K3": {
+      "cell_key": "kendall_tau__IDSS__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "3bca575406373dfd55b25c9d323359a35490dc649ffd6137ec69859849b8f315"
+    },
+    "kendall_tau__VGS(th)__T48h_K3": {
+      "cell_key": "kendall_tau__VGS(th)__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "9ccc7127309c742b09602851c8704af2e6149f14fd47b9e91666654364eb8660"
+    },
+    "kendall_tau__RDS(on)__T48h_K3": {
+      "cell_key": "kendall_tau__RDS(on)__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "2554c0a177910077e62e4fd6b9c8ce8ec92ee163dd25e0c0350c321e288f76e6"
+    },
+    "kendall_tau__IGSS__T48h_K3": {
+      "cell_key": "kendall_tau__IGSS__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "19e13c62d8ed2676e917a690152ecfc7d59909ce9b657c8cd8738d8dc24521d0"
+    },
+    "kendall_tau__IDSS__T72h_K4": {
+      "cell_key": "kendall_tau__IDSS__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "ae379536ec9d1ae1e35c99f06341d563501f57e04ced975342d6fce529691a7f"
+    },
+    "kendall_tau__VGS(th)__T72h_K4": {
+      "cell_key": "kendall_tau__VGS(th)__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "7b0917448e7a7b9461595fdeff4b334799ffea4ff8b4c96220f9af3f8294abbe"
+    },
+    "kendall_tau__RDS(on)__T72h_K4": {
+      "cell_key": "kendall_tau__RDS(on)__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "d7332627008cf1689a77f41873ce9d0cf3b464533619be8cab8c08c48e083944"
+    },
+    "kendall_tau__IGSS__T72h_K4": {
+      "cell_key": "kendall_tau__IGSS__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "d9e5712366aa738865bcaaf9e481bbe192a593789d714376d4494ebf72a94c73"
+    },
+    "kendall_tau__IDSS__T96h_K5": {
+      "cell_key": "kendall_tau__IDSS__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "5157d9fafbf8d732f5e7db1ed7d517b5e27a1ad68bfc8e055663a08d247a1665"
+    },
+    "kendall_tau__VGS(th)__T96h_K5": {
+      "cell_key": "kendall_tau__VGS(th)__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "6c4c6dc8d85530978f346b70a9547f57ebae50990342c7c13f8f1c4b268ce3fe"
+    },
+    "kendall_tau__RDS(on)__T96h_K5": {
+      "cell_key": "kendall_tau__RDS(on)__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "ed94d22e59ec388947ae1abb7763784fcc1e38acb20d5f8e5b97ab79e0fa95dd"
+    },
+    "kendall_tau__IGSS__T96h_K5": {
+      "cell_key": "kendall_tau__IGSS__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "f69963486bc894fdb2534d441968e0cfb9fa7ce2658c3f639064c90f734b0570"
+    },
+    "kendall_tau__IDSS__T120h_K6": {
+      "cell_key": "kendall_tau__IDSS__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "a295eeb9dc474f0646714d279f638b7f84da0e4ae6b1e25c21136f06d180f66c"
+    },
+    "kendall_tau__VGS(th)__T120h_K6": {
+      "cell_key": "kendall_tau__VGS(th)__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "c326e2fd74c4ee6444d19d4cbc2e62c4344b69affba02d2ec135e1a27b21986d"
+    },
+    "kendall_tau__RDS(on)__T120h_K6": {
+      "cell_key": "kendall_tau__RDS(on)__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "002c8ccd0037cc8e34a09856f28ca0c7c684a68d4d8b88b44806d6170d7061da"
+    },
+    "kendall_tau__IGSS__T120h_K6": {
+      "cell_key": "kendall_tau__IGSS__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "84a6129205cafb6640c528a38b1330403bffe17ebd5161e2bfa4d5f06e69bf30"
+    },
+    "kendall_tau__IDSS__T168h_K7": {
+      "cell_key": "kendall_tau__IDSS__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 17,
+      "fpr": 0.00017,
+      "wilson_ci_95": [
+        0.00010614727173743861,
+        0.0002722527803873228
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "ec00461dc675774823390cf0bc2b5e0660500a76e69ade0e91ec084fde0a9256"
+    },
+    "kendall_tau__VGS(th)__T168h_K7": {
+      "cell_key": "kendall_tau__VGS(th)__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "92e939ae469b546bf3eea4d0cdf77e111371af5d43755814ce4e0c8bb9250203"
+    },
+    "kendall_tau__RDS(on)__T168h_K7": {
+      "cell_key": "kendall_tau__RDS(on)__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 22,
+      "fpr": 0.00022,
+      "wilson_ci_95": [
+        0.00014529606695801262,
+        0.0003331001438554905
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "0fe85884a0d972ac2c3ee82fecb7640c810cd212408b23737633be83b879f8d0"
+    },
+    "kendall_tau__IGSS__T168h_K7": {
+      "cell_key": "kendall_tau__IGSS__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 0,
+      "fpr": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "ebf88da5ae18cfc8d8b709739c971b8eb62bcd8511bf1d92f35b0d72c1cb8438"
+    },
+    "theil_sen__IDSS__T24h_K2": {
+      "cell_key": "theil_sen__IDSS__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 21,
+      "fpr": 0.00021,
+      "wilson_ci_95": [
+        0.00013736362891997588,
+        0.0003210333501557789
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "7830a96901c91d28c6b2bcf3afe736e012c3847b9cdd0148f8ca4fe0fda64356"
+    },
+    "theil_sen__VGS(th)__T24h_K2": {
+      "cell_key": "theil_sen__VGS(th)__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 26,
+      "fpr": 0.00026,
+      "wilson_ci_95": [
+        0.00017744529959271753,
+        0.0003809478381717789
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "ced6ad81d67d9b59193f3757622637a7eea49db547467961d39cdb84f563c122"
+    },
+    "theil_sen__RDS(on)__T24h_K2": {
+      "cell_key": "theil_sen__RDS(on)__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 12,
+      "fpr": 0.00012,
+      "wilson_ci_95": [
+        6.86488807399473e-05,
+        0.00020975501269607244
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "fb995b44c0cb3b92dd1338aa74fe8306d592350a3f1f5325cca6a0a0e4ffb3b1"
+    },
+    "theil_sen__IGSS__T24h_K2": {
+      "cell_key": "theil_sen__IGSS__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 24,
+      "K": 2,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 20,
+      "fpr": 0.0002,
+      "wilson_ci_95": [
+        0.00012947884947003775,
+        0.0003089188978679687
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "50d8a3070b70ceb32bc9909e6f65a9a99706495c74793f98ea86a8832fa9b087"
+    },
+    "theil_sen__IDSS__T48h_K3": {
+      "cell_key": "theil_sen__IDSS__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 35,
+      "fpr": 0.00035,
+      "wilson_ci_95": [
+        0.00025168456165326894,
+        0.00048670166175096265
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "aeb7b6adc914abee5c201cb16912d81df468acaae3d1b17cb6ed97c505086697"
+    },
+    "theil_sen__VGS(th)__T48h_K3": {
+      "cell_key": "theil_sen__VGS(th)__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 25,
+      "fpr": 0.00025,
+      "wilson_ci_95": [
+        0.00016935006857915068,
+        0.0003690438374475975
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "8a3304c8551d1e8d9261d791921640847f2a12c3c43a0e40d1b2c821366e8929"
+    },
+    "theil_sen__RDS(on)__T48h_K3": {
+      "cell_key": "theil_sen__RDS(on)__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 24,
+      "fpr": 0.00024,
+      "wilson_ci_95": [
+        0.00016129191248332846,
+        0.0003571027618056714
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "88ec0d1e565535314d277e0693b8f57ef8ebb9982389e8915160b91c20676a01"
+    },
+    "theil_sen__IGSS__T48h_K3": {
+      "cell_key": "theil_sen__IGSS__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 33,
+      "fpr": 0.00033,
+      "wilson_ci_95": [
+        0.00023499865680451132,
+        0.0004633891031242235
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "610186cb8fac8ccb358d1f9ede2532243ea61f35c0e806c33a6e11ec7eeca0e8"
+    },
+    "theil_sen__IDSS__T72h_K4": {
+      "cell_key": "theil_sen__IDSS__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 37,
+      "fpr": 0.00037,
+      "wilson_ci_95": [
+        0.0002684614901035038,
+        0.0005099231967762245
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "451f0bfc0637cd194818d9755bdce06df8e8cd11eb882c2271dae2a77f46c5ad"
+    },
+    "theil_sen__VGS(th)__T72h_K4": {
+      "cell_key": "theil_sen__VGS(th)__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 20,
+      "fpr": 0.0002,
+      "wilson_ci_95": [
+        0.00012947884947003775,
+        0.0003089188978679687
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "c29d5fe5b61c26b046065ef62290b2c00049067fcf5bb1481c4efeeeaa76ce2f"
+    },
+    "theil_sen__RDS(on)__T72h_K4": {
+      "cell_key": "theil_sen__RDS(on)__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 19,
+      "fpr": 0.00019,
+      "wilson_ci_95": [
+        0.00012164518206696231,
+        0.0002967533335332958
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "3b96fb3f654f34a8703de3a0492a601eec4be6da930d745e70f7f44edf98b9ec"
+    },
+    "theil_sen__IGSS__T72h_K4": {
+      "cell_key": "theil_sen__IGSS__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 19,
+      "fpr": 0.00019,
+      "wilson_ci_95": [
+        0.00012164518206696231,
+        0.0002967533335332958
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "dfce004dad916c1882e3e0cfaed69d8f01d1829c67179a2ff01dced48835405c"
+    },
+    "theil_sen__IDSS__T96h_K5": {
+      "cell_key": "theil_sen__IDSS__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 40,
+      "fpr": 0.0004,
+      "wilson_ci_95": [
+        0.00029378225695889733,
+        0.000544600125134076
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "473f23cf628d7e34a6da5159f867fe2eaa2f281d68a11daaab602785f5ba5215"
+    },
+    "theil_sen__VGS(th)__T96h_K5": {
+      "cell_key": "theil_sen__VGS(th)__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 28,
+      "fpr": 0.00028,
+      "wilson_ci_95": [
+        0.00019373899099317705,
+        0.00040465261024681605
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "6ac889e47ca1f8b8f29e618a26e5ca744070e929b7d98cf617fa018012313e32"
+    },
+    "theil_sen__RDS(on)__T96h_K5": {
+      "cell_key": "theil_sen__RDS(on)__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 15,
+      "fpr": 0.00015,
+      "wilson_ci_95": [
+        9.090792686456508e-05,
+        0.00024749366178469963
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "09b9fa5962bdba56cd7736ab06021837db33cb3699b79e7e7349b7f4e8eefc91"
+    },
+    "theil_sen__IGSS__T96h_K5": {
+      "cell_key": "theil_sen__IGSS__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 27,
+      "fpr": 0.00027,
+      "wilson_ci_95": [
+        0.0001855755613670073,
+        0.00039281680813523754
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "980e5aa25299e78116f25858ba8fb11fba17fd707a633e6da1f47c006ab05b4a"
+    },
+    "theil_sen__IDSS__T120h_K6": {
+      "cell_key": "theil_sen__IDSS__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 15,
+      "fpr": 0.00015,
+      "wilson_ci_95": [
+        9.090792686456508e-05,
+        0.00024749366178469963
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "87329738a47859415cee6ce7dc1522db2418f0db46cd92455870233adb5617b5"
+    },
+    "theil_sen__VGS(th)__T120h_K6": {
+      "cell_key": "theil_sen__VGS(th)__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 29,
+      "fpr": 0.00029,
+      "wilson_ci_95": [
+        0.00020193388507851623,
+        0.00041645694789922526
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "42a23f6ea2183451c5c34953f63477751f5dfc680ea927f25e720ca3338c84b7"
+    },
+    "theil_sen__RDS(on)__T120h_K6": {
+      "cell_key": "theil_sen__RDS(on)__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 7,
+      "fpr": 7e-05,
+      "wilson_ci_95": [
+        3.390903779016498e-05,
+        0.00014449869695711305
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "1048defb9d0434beb0b77fac774cb0be1fb0d54d87a74a7b025cabcdfb37de25"
+    },
+    "theil_sen__IGSS__T120h_K6": {
+      "cell_key": "theil_sen__IGSS__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 24,
+      "fpr": 0.00024,
+      "wilson_ci_95": [
+        0.00016129191248332846,
+        0.0003571027618056714
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "a31db3e5420835679c90192052ec1a56b6aea578e0e41c903f6dc49aad65acce"
+    },
+    "theil_sen__IDSS__T168h_K7": {
+      "cell_key": "theil_sen__IDSS__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 16,
+      "fpr": 0.00016,
+      "wilson_ci_95": [
+        9.849247756477961e-05,
+        0.0002599083428222335
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "c8731415081dbd4e44da697cd2ee04e9ef439c07df353aafc9b6b4fb92b41757"
+    },
+    "theil_sen__VGS(th)__T168h_K7": {
+      "cell_key": "theil_sen__VGS(th)__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 18,
+      "fpr": 0.00018,
+      "wilson_ci_95": [
+        0.00011386651864148043,
+        0.00028453276522102933
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "54c0e35e93aaaad7293c9a58148b3a4325de41385b4671e8c668731db6a4c193"
+    },
+    "theil_sen__RDS(on)__T168h_K7": {
+      "cell_key": "theil_sen__RDS(on)__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 26,
+      "fpr": 0.00026,
+      "wilson_ci_95": [
+        0.00017744529959271753,
+        0.0003809478381717789
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "8eb55483a1e04141a0736cfd23b0f66378fbb81ede0d06fe9f7b6e669611e900"
+    },
+    "theil_sen__IGSS__T168h_K7": {
+      "cell_key": "theil_sen__IGSS__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 28,
+      "fpr": 0.00028,
+      "wilson_ci_95": [
+        0.00019373899099317705,
+        0.00040465261024681605
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "92f7a8a43311401927e934447ff44cb08e24c116929e9e554966d099797e76ef"
+    },
+    "ols_t__IDSS__T48h_K3": {
+      "cell_key": "ols_t__IDSS__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 28,
+      "fpr": 0.00028,
+      "wilson_ci_95": [
+        0.00019373899099317705,
+        0.00040465261024681605
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "30acf963601a08c8803442763d2b289afcca43c6e82868d9386a05a5fc6dc6b7"
+    },
+    "ols_t__VGS(th)__T48h_K3": {
+      "cell_key": "ols_t__VGS(th)__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 23,
+      "fpr": 0.00023,
+      "wilson_ci_95": [
+        0.00015327308240416538,
+        0.0003451223601470861
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "1bc2387f89b71869f6f2110b8f24d013436c450df46f9de61eea967e756e5298"
+    },
+    "ols_t__RDS(on)__T48h_K3": {
+      "cell_key": "ols_t__RDS(on)__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 25,
+      "fpr": 0.00025,
+      "wilson_ci_95": [
+        0.00016935006857915068,
+        0.0003690438374475975
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "7209f28fe16d365b68391c27eb2933860b42430adb9004b5854950a25dedeaa1"
+    },
+    "ols_t__IGSS__T48h_K3": {
+      "cell_key": "ols_t__IGSS__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "T_as_of": 48,
+      "K": 3,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 28,
+      "fpr": 0.00028,
+      "wilson_ci_95": [
+        0.00019373899099317705,
+        0.00040465261024681605
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "5d78efae1fbb2f7aac0a88d47c61224952f49af209beb44f3a1638ea3eb797a4"
+    },
+    "ols_t__IDSS__T72h_K4": {
+      "cell_key": "ols_t__IDSS__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 25,
+      "fpr": 0.00025,
+      "wilson_ci_95": [
+        0.00016935006857915068,
+        0.0003690438374475975
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "5634348c8fda632a156cba7fc39e087822302802b4a1ec8dc141b5aec58aaf2b"
+    },
+    "ols_t__VGS(th)__T72h_K4": {
+      "cell_key": "ols_t__VGS(th)__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 30,
+      "fpr": 0.0003,
+      "wilson_ci_95": [
+        0.0002101586812541139,
+        0.0004282313834613759
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "934441c25e1491f8cfd34087effd5d1cd621714e086aa52baeb03be4d50a30da"
+    },
+    "ols_t__RDS(on)__T72h_K4": {
+      "cell_key": "ols_t__RDS(on)__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 19,
+      "fpr": 0.00019,
+      "wilson_ci_95": [
+        0.00012164518206696231,
+        0.0002967533335332958
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "073c8f945ae6572b7efbb7d86ded88eeaacc5d4473adc9c4a0ae66e3a6ca2723"
+    },
+    "ols_t__IGSS__T72h_K4": {
+      "cell_key": "ols_t__IGSS__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "T_as_of": 72,
+      "K": 4,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 26,
+      "fpr": 0.00026,
+      "wilson_ci_95": [
+        0.00017744529959271753,
+        0.0003809478381717789
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "e570b541c0f3f25d10e18865a8f47d5be0708955f5a965eb9f71ecf8cf45004a"
+    },
+    "ols_t__IDSS__T96h_K5": {
+      "cell_key": "ols_t__IDSS__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 21,
+      "fpr": 0.00021,
+      "wilson_ci_95": [
+        0.00013736362891997588,
+        0.0003210333501557789
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "68b32f45b1b6376a0f43e4f2311755dba015f9a6192b2325ef590fba26498f8b"
+    },
+    "ols_t__VGS(th)__T96h_K5": {
+      "cell_key": "ols_t__VGS(th)__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 22,
+      "fpr": 0.00022,
+      "wilson_ci_95": [
+        0.00014529606695801262,
+        0.0003331001438554905
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "f0b5cc9e4022434541a8acd8d5279f8c503458b65319daf67755742f7f21061e"
+    },
+    "ols_t__RDS(on)__T96h_K5": {
+      "cell_key": "ols_t__RDS(on)__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 24,
+      "fpr": 0.00024,
+      "wilson_ci_95": [
+        0.00016129191248332846,
+        0.0003571027618056714
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "266c1375b2849b6bed9f5e51121bca371a3050545b97a3c6b9dc5fb1dd9198c0"
+    },
+    "ols_t__IGSS__T96h_K5": {
+      "cell_key": "ols_t__IGSS__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "T_as_of": 96,
+      "K": 5,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 36,
+      "fpr": 0.00036,
+      "wilson_ci_95": [
+        0.00026006211445195267,
+        0.0004983233406900272
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "a6c19549b89723d9b99861729a0b6526f8a1eeca97865428428bbc9aba9add4d"
+    },
+    "ols_t__IDSS__T120h_K6": {
+      "cell_key": "ols_t__IDSS__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 18,
+      "fpr": 0.00018,
+      "wilson_ci_95": [
+        0.00011386651864148043,
+        0.00028453276522102933
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "f025b3cb425af712fc46259d1b97821133cda003b9f2bfe059229d01ff6f46fc"
+    },
+    "ols_t__VGS(th)__T120h_K6": {
+      "cell_key": "ols_t__VGS(th)__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 29,
+      "fpr": 0.00029,
+      "wilson_ci_95": [
+        0.00020193388507851623,
+        0.00041645694789922526
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "8ccb1900afa9602fdf1c53f098699e636975e782f6c6001c3013d590203eb963"
+    },
+    "ols_t__RDS(on)__T120h_K6": {
+      "cell_key": "ols_t__RDS(on)__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 26,
+      "fpr": 0.00026,
+      "wilson_ci_95": [
+        0.00017744529959271753,
+        0.0003809478381717789
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "f046848b1dcc98761f5d45ed8d430bbfb01fc903a9f6352f5e6252fb44cd14d3"
+    },
+    "ols_t__IGSS__T120h_K6": {
+      "cell_key": "ols_t__IGSS__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "T_as_of": 120,
+      "K": 6,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 18,
+      "fpr": 0.00018,
+      "wilson_ci_95": [
+        0.00011386651864148043,
+        0.00028453276522102933
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "5a740e3be596ec60cd70a2a4456bb5034fe0b75113d9f072f56a68924a738a17"
+    },
+    "ols_t__IDSS__T168h_K7": {
+      "cell_key": "ols_t__IDSS__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 13,
+      "fpr": 0.00013,
+      "wilson_ci_95": [
+        7.597755381946865e-05,
+        0.00022242557135429937
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "b59ca6ee558681d43eb29792f1ac761006ec03955e5ec472884c3290abbb497d"
+    },
+    "ols_t__VGS(th)__T168h_K7": {
+      "cell_key": "ols_t__VGS(th)__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 24,
+      "fpr": 0.00024,
+      "wilson_ci_95": [
+        0.00016129191248332846,
+        0.0003571027618056714
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "248f416614dc4519dc5e1cfc9c4ffb4fe6e810667cfb640e407a033ea1b321ff"
+    },
+    "ols_t__RDS(on)__T168h_K7": {
+      "cell_key": "ols_t__RDS(on)__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "upper",
+      "N_evaluated": 100000,
+      "fp_count": 24,
+      "fpr": 0.00024,
+      "wilson_ci_95": [
+        0.00016129191248332846,
+        0.0003571027618056714
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "d6154d121cdbaf3acb2aecc49b1918f006558290ccd4aceb81c50689af7bfb02"
+    },
+    "ols_t__IGSS__T168h_K7": {
+      "cell_key": "ols_t__IGSS__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "T_as_of": 168,
+      "K": 7,
+      "tail_direction": "two_sided",
+      "N_evaluated": 100000,
+      "fp_count": 15,
+      "fpr": 0.00015,
+      "wilson_ci_95": [
+        9.090792686456508e-05,
+        0.00024749366178469963
+      ],
+      "threshold_step_1": 0.00025,
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0
+      },
+      "consumed_reference_hash": "58f21a09800affa5a24241c7173eecb91f3cf0a052a0d1c49c8b2d9d3b7f8e64"
+    }
+  },
+  "component_level_fwer_results": {
+    "kendall_tau__T24h_K2": {
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "T_as_of": 24,
+      "K": 2,
+      "N_components": 100000,
+      "component_rejections": 0,
+      "operating_fwer": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 0,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 0,
+        "VGS(th)": 0,
+        "RDS(on)": 0,
+        "IGSS": 0
+      }
+    },
+    "kendall_tau__T48h_K3": {
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "T_as_of": 48,
+      "K": 3,
+      "N_components": 100000,
+      "component_rejections": 0,
+      "operating_fwer": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 0,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 0,
+        "VGS(th)": 0,
+        "RDS(on)": 0,
+        "IGSS": 0
+      }
+    },
+    "kendall_tau__T72h_K4": {
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "T_as_of": 72,
+      "K": 4,
+      "N_components": 100000,
+      "component_rejections": 0,
+      "operating_fwer": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 0,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 0,
+        "VGS(th)": 0,
+        "RDS(on)": 0,
+        "IGSS": 0
+      }
+    },
+    "kendall_tau__T96h_K5": {
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "T_as_of": 96,
+      "K": 5,
+      "N_components": 100000,
+      "component_rejections": 0,
+      "operating_fwer": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 0,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 0,
+        "VGS(th)": 0,
+        "RDS(on)": 0,
+        "IGSS": 0
+      }
+    },
+    "kendall_tau__T120h_K6": {
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "T_as_of": 120,
+      "K": 6,
+      "N_components": 100000,
+      "component_rejections": 0,
+      "operating_fwer": 0.0,
+      "wilson_ci_95": [
+        0.0,
+        3.841311258303963e-05
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 0,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 0,
+        "VGS(th)": 0,
+        "RDS(on)": 0,
+        "IGSS": 0
+      }
+    },
+    "kendall_tau__T168h_K7": {
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "T_as_of": 168,
+      "K": 7,
+      "N_components": 100000,
+      "component_rejections": 39,
+      "operating_fwer": 0.00039,
+      "wilson_ci_95": [
+        0.00028532233835603705,
+        0.0005330608119991879
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 39,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 17,
+        "VGS(th)": 0,
+        "RDS(on)": 22,
+        "IGSS": 0
+      }
+    },
+    "theil_sen__T24h_K2": {
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "T_as_of": 24,
+      "K": 2,
+      "N_components": 100000,
+      "component_rejections": 79,
+      "operating_fwer": 0.00079,
+      "wilson_ci_95": [
+        0.000633990273441043,
+        0.0009843621464241156
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 79,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 21,
+        "VGS(th)": 26,
+        "RDS(on)": 12,
+        "IGSS": 20
+      }
+    },
+    "theil_sen__T48h_K3": {
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "T_as_of": 48,
+      "K": 3,
+      "N_components": 100000,
+      "component_rejections": 117,
+      "operating_fwer": 0.00117,
+      "wilson_ci_95": [
+        0.000976422511176806,
+        0.0014019007147227894
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 117,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 35,
+        "VGS(th)": 25,
+        "RDS(on)": 24,
+        "IGSS": 33
+      }
+    },
+    "theil_sen__T72h_K4": {
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "T_as_of": 72,
+      "K": 4,
+      "N_components": 100000,
+      "component_rejections": 95,
+      "operating_fwer": 0.00095,
+      "wilson_ci_95": [
+        0.0007772709224420034,
+        0.001161069205227129
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 95,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 37,
+        "VGS(th)": 20,
+        "RDS(on)": 19,
+        "IGSS": 19
+      }
+    },
+    "theil_sen__T96h_K5": {
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "T_as_of": 96,
+      "K": 5,
+      "N_components": 100000,
+      "component_rejections": 109,
+      "operating_fwer": 0.00109,
+      "wilson_ci_95": [
+        0.0009037579205652236,
+        0.001314571451432385
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 109,
+        "step_2_rejections": 1,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 40,
+        "VGS(th)": 28,
+        "RDS(on)": 15,
+        "IGSS": 27
+      }
+    },
+    "theil_sen__T120h_K6": {
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "T_as_of": 120,
+      "K": 6,
+      "N_components": 100000,
+      "component_rejections": 75,
+      "operating_fwer": 0.00075,
+      "wilson_ci_95": [
+        0.000598426427221699,
+        0.0009399290656924664
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 75,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 15,
+        "VGS(th)": 29,
+        "RDS(on)": 7,
+        "IGSS": 24
+      }
+    },
+    "theil_sen__T168h_K7": {
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "T_as_of": 168,
+      "K": 7,
+      "N_components": 100000,
+      "component_rejections": 88,
+      "operating_fwer": 0.00088,
+      "wilson_ci_95": [
+        0.0007143988736277258,
+        0.001083946631877168
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 88,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 16,
+        "VGS(th)": 18,
+        "RDS(on)": 26,
+        "IGSS": 28
+      }
+    },
+    "ols_t__T48h_K3": {
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "T_as_of": 48,
+      "K": 3,
+      "N_components": 100000,
+      "component_rejections": 104,
+      "operating_fwer": 0.00104,
+      "wilson_ci_95": [
+        0.0008584791674001612,
+        0.0012598540459087056
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 104,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 28,
+        "VGS(th)": 23,
+        "RDS(on)": 25,
+        "IGSS": 28
+      }
+    },
+    "ols_t__T72h_K4": {
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "T_as_of": 72,
+      "K": 4,
+      "N_components": 100000,
+      "component_rejections": 100,
+      "operating_fwer": 0.001,
+      "wilson_ci_95": [
+        0.0008223379697212456,
+        0.001215998316636628
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 100,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 25,
+        "VGS(th)": 30,
+        "RDS(on)": 19,
+        "IGSS": 26
+      }
+    },
+    "ols_t__T96h_K5": {
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "T_as_of": 96,
+      "K": 5,
+      "N_components": 100000,
+      "component_rejections": 103,
+      "operating_fwer": 0.00103,
+      "wilson_ci_95": [
+        0.0008494368552897729,
+        0.0012488971262813457
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 103,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 21,
+        "VGS(th)": 22,
+        "RDS(on)": 24,
+        "IGSS": 36
+      }
+    },
+    "ols_t__T120h_K6": {
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "T_as_of": 120,
+      "K": 6,
+      "N_components": 100000,
+      "component_rejections": 91,
+      "operating_fwer": 0.00091,
+      "wilson_ci_95": [
+        0.0007413108199594235,
+        0.0011170323807587151
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 91,
+        "step_2_rejections": 0,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 18,
+        "VGS(th)": 29,
+        "RDS(on)": 26,
+        "IGSS": 18
+      }
+    },
+    "ols_t__T168h_K7": {
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "T_as_of": 168,
+      "K": 7,
+      "N_components": 100000,
+      "component_rejections": 76,
+      "operating_fwer": 0.00076,
+      "wilson_ci_95": [
+        0.000607306627833248,
+        0.0009510480968186656
+      ],
+      "target_fwer_alpha": 0.001,
+      "step_breakdown": {
+        "step_1_rejections": 76,
+        "step_2_rejections": 1,
+        "step_3_rejections": 0,
+        "step_4_rejections": 0
+      },
+      "parameter_rejection_counts": {
+        "IDSS": 14,
+        "VGS(th)": 24,
+        "RDS(on)": 24,
+        "IGSS": 15
+      }
+    }
+  },
+  "comparator_module_a_excess_results": {
+    "module_a_drift__T24h_K2": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "LOO_excess_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR",
+      "T_as_of": 24,
+      "K": 2,
+      "N_components": 100000,
+      "component_breaches": 38497,
+      "operating_fwer": 0.38497,
+      "wilson_ci_95": [
+        0.3819586237118468,
+        0.38799021360883407
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 10533,
+          "fpr": 0.10533,
+          "wilson_ci_95": [
+            0.10344250125590282,
+            0.10724781975038347
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 12449,
+          "fpr": 0.12449,
+          "wilson_ci_95": [
+            0.12245822333295169,
+            0.12655062568286046
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 13447,
+          "fpr": 0.13447,
+          "wilson_ci_95": [
+            0.13236956353765647,
+            0.13659851875242848
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9209,
+          "fpr": 0.09209,
+          "wilson_ci_95": [
+            0.09031347935920254,
+            0.09389785882630498
+          ]
+        }
+      }
+    },
+    "module_a_drift__T48h_K3": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "LOO_excess_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR",
+      "T_as_of": 48,
+      "K": 3,
+      "N_components": 100000,
+      "component_breaches": 38389,
+      "operating_fwer": 0.38389,
+      "wilson_ci_95": [
+        0.38088025537105674,
+        0.3869086649219474
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 10374,
+          "fpr": 0.10374,
+          "wilson_ci_95": [
+            0.10186529921265378,
+            0.10564514394733054
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 12508,
+          "fpr": 0.12508,
+          "wilson_ci_95": [
+            0.123044049156753,
+            0.12714475453158622
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 13422,
+          "fpr": 0.13422,
+          "wilson_ci_95": [
+            0.13212123441731352,
+            0.13634686707932772
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9321,
+          "fpr": 0.09321,
+          "wilson_ci_95": [
+            0.09142368454021593,
+            0.0950275675999194
+          ]
+        }
+      }
+    },
+    "module_a_drift__T72h_K4": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "LOO_excess_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR",
+      "T_as_of": 72,
+      "K": 4,
+      "N_components": 100000,
+      "component_breaches": 38378,
+      "operating_fwer": 0.38378,
+      "wilson_ci_95": [
+        0.3807704224397547,
+        0.38679850630413426
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 10345,
+          "fpr": 0.10345,
+          "wilson_ci_95": [
+            0.10157764824568973,
+            0.1053528171938999
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 12283,
+          "fpr": 0.12283,
+          "wilson_ci_95": [
+            0.1208100483324092,
+            0.1248789282149367
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 13433,
+          "fpr": 0.13433,
+          "wilson_ci_95": [
+            0.13223049892945177,
+            0.1364575941163047
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9360,
+          "fpr": 0.0936,
+          "wilson_ci_95": [
+            0.09181029247412276,
+            0.09542092970378477
+          ]
+        }
+      }
+    },
+    "module_a_drift__T96h_K5": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "LOO_excess_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR",
+      "T_as_of": 96,
+      "K": 5,
+      "N_components": 100000,
+      "component_breaches": 38339,
+      "operating_fwer": 0.38339,
+      "wilson_ci_95": [
+        0.38038101608793723,
+        0.3864079426181795
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 10251,
+          "fpr": 0.10251,
+          "wilson_ci_95": [
+            0.10064529414924811,
+            0.10440524350699318
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 12519,
+          "fpr": 0.12519,
+          "wilson_ci_95": [
+            0.12315327257085114,
+            0.1272555226666033
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 13394,
+          "fpr": 0.13394,
+          "wilson_ci_95": [
+            0.13184310870483038,
+            0.1360650143031539
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9315,
+          "fpr": 0.09315,
+          "wilson_ci_95": [
+            0.09136420724631619,
+            0.09496704950339263
+          ]
+        }
+      }
+    },
+    "module_a_drift__T120h_K6": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "LOO_excess_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR",
+      "T_as_of": 120,
+      "K": 6,
+      "N_components": 100000,
+      "component_breaches": 38719,
+      "operating_fwer": 0.38719,
+      "wilson_ci_95": [
+        0.38417531898085705,
+        0.39021334778560396
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 10452,
+          "fpr": 0.10452,
+          "wilson_ci_95": [
+            0.1026390038798099,
+            0.10643137935571881
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 12577,
+          "fpr": 0.12577,
+          "wilson_ci_95": [
+            0.12372918638515028,
+            0.12783956429309357
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 13509,
+          "fpr": 0.13509,
+          "wilson_ci_95": [
+            0.13298543026727352,
+            0.1372226043905518
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9339,
+          "fpr": 0.09339,
+          "wilson_ci_95": [
+            0.09160211778293188,
+            0.09520912052848292
+          ]
+        }
+      }
+    },
+    "module_a_drift__T168h_K7": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "LOO_excess_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR",
+      "T_as_of": 168,
+      "K": 7,
+      "N_components": 100000,
+      "component_breaches": 38189,
+      "operating_fwer": 0.38189,
+      "wilson_ci_95": [
+        0.378883318468355,
+        0.3849057554770995
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 10344,
+          "fpr": 0.10344,
+          "wilson_ci_95": [
+            0.10156772932900303,
+            0.10534273687884886
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 12399,
+          "fpr": 0.12399,
+          "wilson_ci_95": [
+            0.12196177249968998,
+            0.12604711492923473
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 13457,
+          "fpr": 0.13457,
+          "wilson_ci_95": [
+            0.13246889586894342,
+            0.13669917873851903
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9248,
+          "fpr": 0.09248,
+          "wilson_ci_95": [
+            0.09070005960799951,
+            0.09429124861528021
+          ]
+        }
+      }
+    }
+  },
+  "comparator_module_a_raw_results": {
+    "module_a_drift__T24h_K2": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "raw_uncorrected_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR (RAW NO-LOO)",
+      "T_as_of": 24,
+      "K": 2,
+      "N_components": 100000,
+      "component_breaches": 27302,
+      "operating_fwer": 0.27302,
+      "wilson_ci_95": [
+        0.2702675030326285,
+        0.27578993498395976
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 7747,
+          "fpr": 0.07747,
+          "wilson_ci_95": [
+            0.07582924937206542,
+            0.07914321201285401
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 7570,
+          "fpr": 0.0757,
+          "wilson_ci_95": [
+            0.0740767828063139,
+            0.0773558145610241
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 7681,
+          "fpr": 0.07681,
+          "wilson_ci_95": [
+            0.07517575712873693,
+            0.07847675496149113
+          ]
+        },
+        "IGSS": {
+          "breach_count": 7683,
+          "fpr": 0.07683,
+          "wilson_ci_95": [
+            0.07519555940103936,
+            0.07849695115266417
+          ]
+        }
+      }
+    },
+    "module_a_drift__T48h_K3": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "raw_uncorrected_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR (RAW NO-LOO)",
+      "T_as_of": 48,
+      "K": 3,
+      "N_components": 100000,
+      "component_breaches": 27376,
+      "operating_fwer": 0.27376,
+      "wilson_ci_95": [
+        0.2710051428144772,
+        0.2765322383507045
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 7591,
+          "fpr": 0.07591,
+          "wilson_ci_95": [
+            0.07428468902020186,
+            0.07756789221362886
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 7692,
+          "fpr": 0.07692,
+          "wilson_ci_95": [
+            0.07528467003219387,
+            0.07858783360714942
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 7680,
+          "fpr": 0.0768,
+          "wilson_ci_95": [
+            0.07516585600489126,
+            0.07846665685359902
+          ]
+        },
+        "IGSS": {
+          "breach_count": 7790,
+          "fpr": 0.0779,
+          "wilson_ci_95": [
+            0.07625502849791645,
+            0.07957739985172617
+          ]
+        }
+      }
+    },
+    "module_a_drift__T72h_K4": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "raw_uncorrected_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR (RAW NO-LOO)",
+      "T_as_of": 72,
+      "K": 4,
+      "N_components": 100000,
+      "component_breaches": 76588,
+      "operating_fwer": 0.76588,
+      "wilson_ci_95": [
+        0.7632453103923661,
+        0.7684942630508868
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 50074,
+          "fpr": 0.50074,
+          "wilson_ci_95": [
+            0.4976410593277902,
+            0.503838883820803
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 19294,
+          "fpr": 0.19294,
+          "wilson_ci_95": [
+            0.19050606322646776,
+            0.19539752703423172
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 36201,
+          "fpr": 0.36201,
+          "wilson_ci_95": [
+            0.35903673168332806,
+            0.3649938695674827
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9123,
+          "fpr": 0.09123,
+          "wilson_ci_95": [
+            0.08946105487226018,
+            0.09303034938380099
+          ]
+        }
+      }
+    },
+    "module_a_drift__T96h_K5": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "raw_uncorrected_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR (RAW NO-LOO)",
+      "T_as_of": 96,
+      "K": 5,
+      "N_components": 100000,
+      "component_breaches": 76805,
+      "operating_fwer": 0.76805,
+      "wilson_ci_95": [
+        0.7654237195730139,
+        0.7706556871573303
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 50208,
+          "fpr": 0.50208,
+          "wilson_ci_95": [
+            0.49898103127379867,
+            0.5051788089276529
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 19309,
+          "fpr": 0.19309,
+          "wilson_ci_95": [
+            0.19065533436479443,
+            0.19554824437197132
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 36514,
+          "fpr": 0.36514,
+          "wilson_ci_95": [
+            0.3621611098053698,
+            0.36812925097935617
+          ]
+        },
+        "IGSS": {
+          "breach_count": 9003,
+          "fpr": 0.09003,
+          "wilson_ci_95": [
+            0.0882717057059267,
+            0.09181979074160466
+          ]
+        }
+      }
+    },
+    "module_a_drift__T120h_K6": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "raw_uncorrected_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR (RAW NO-LOO)",
+      "T_as_of": 120,
+      "K": 6,
+      "N_components": 100000,
+      "component_breaches": 27506,
+      "operating_fwer": 0.27506,
+      "wilson_ci_95": [
+        0.2723010196458858,
+        0.27783626164520314
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 7617,
+          "fpr": 0.07617,
+          "wilson_ci_95": [
+            0.07454210180678043,
+            0.07783045945223173
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 7746,
+          "fpr": 0.07746,
+          "wilson_ci_95": [
+            0.07581934770987046,
+            0.07913311444331124
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 7837,
+          "fpr": 0.07837,
+          "wilson_ci_95": [
+            0.07672043199963507,
+            0.08005196024168171
+          ]
+        },
+        "IGSS": {
+          "breach_count": 7753,
+          "fpr": 0.07753,
+          "wilson_ci_95": [
+            0.07588865951545912,
+            0.07920379725988683
+          ]
+        }
+      }
+    },
+    "module_a_drift__T168h_K7": {
+      "detector_family": "module_a_endpoint_drift",
+      "coordinate_space": "raw_uncorrected_coordinates",
+      "detector_role": "FROZEN NON-CALIBRATED COMPARATOR (RAW NO-LOO)",
+      "T_as_of": 168,
+      "K": 7,
+      "N_components": 100000,
+      "component_breaches": 27496,
+      "operating_fwer": 0.27496,
+      "wilson_ci_95": [
+        0.2722013357670145,
+        0.2777359532066969
+      ],
+      "parameter_results": {
+        "IDSS": {
+          "breach_count": 7595,
+          "fpr": 0.07595,
+          "wilson_ci_95": [
+            0.07432429062114522,
+            0.07760828753963649
+          ]
+        },
+        "VGS(th)": {
+          "breach_count": 7833,
+          "fpr": 0.07833,
+          "wilson_ci_95": [
+            0.07668082250258597,
+            0.08001157281177983
+          ]
+        },
+        "RDS(on)": {
+          "breach_count": 7751,
+          "fpr": 0.07751,
+          "wilson_ci_95": [
+            0.07586885610191385,
+            0.07918360220995657
+          ]
+        },
+        "IGSS": {
+          "breach_count": 7735,
+          "fpr": 0.07735,
+          "wilson_ci_95": [
+            0.07571042996128485,
+            0.07902204064278162
+          ]
+        }
+      }
+    }
+  },
+  "epistemic_limitation_statement": "Null C is an out-of-distribution common-mode stress test evaluating robustness against synchronous lot-wide thermal perturbations (+5C at 72h and 96h). The detector was calibrated on Null A (IID stationary noise without common-mode disturbance). Null C results must NEVER be pooled with Null A or Null B and must NEVER be used for threshold tuning or recalibration. Results reflect synthetic-model performance and must NOT be interpreted as claims about real ATE/chamber telemetry without empirical chamber qualification."
+}

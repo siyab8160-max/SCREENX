@@ -1,0 +1,196 @@
+# SIH26170 Synthetic Data Generation Configuration
+# Formally tied to the specifications in docs/PHASE_2_SYNTHETIC_DATA_SPEC.md.
+# All parameters retain explicit epistemic provenance.
+
+generator_version: "2.0-prototype"
+provenance_category: "SPECIFICATION"
+
+# Master random seed for deterministic generation hierarchy
+master_seed: 20260916
+master_seed_provenance: "DESIGN_DECISION"
+
+# Environmental conditions
+burn_in_temperature_C: 125.0
+burn_in_temperature_provenance: "ASSUMPTION"
+burn_in_temperature_assumption_id: "A2"
+
+test_condition: "STATIC_BURN_IN"
+test_condition_provenance: "SPECIFICATION"
+
+# Intermediate burn-in readout checkpoints in hours
+checkpoints:
+  - 0
+  - 24
+  - 96
+  - 168
+checkpoints_provenance: "ASSUMPTION"
+checkpoints_assumption_id: "A3"
+
+# Parameter-specific modeling specifications
+parameters:
+  leakage_current:
+    name: "leakage_current"
+    unit: "uA"
+    transform: "log"
+    nominal_lot_baseline: 10.0
+    lot_dispersion: 0.15        # log-normal lot-to-lot spread
+    comp_dispersion: 0.20       # log-normal component-to-component spread
+    noise_floor: 0.01           # synthetic numerical noise floor in uA
+    theta_abnormal: 0.50        # relative latent drift threshold (50% increase)
+    user_limit_high: 50.0       # canonical demonstration limit
+    user_limit_low: null
+    provenance_category: "SPECIFICATION"
+
+  iddq:
+    name: "iddq"
+    unit: "mA"
+    transform: "log"
+    nominal_lot_baseline: 0.50
+    lot_dispersion: 0.10
+    comp_dispersion: 0.15
+    noise_floor: 0.002          # synthetic numerical noise floor in mA
+    theta_abnormal: 0.30        # relative latent drift threshold (30% increase)
+    user_limit_high: 2.0
+    user_limit_low: null
+    provenance_category: "USER_CONFIGURABLE"
+
+  propagation_delay:
+    name: "propagation_delay"
+    unit: "ns"
+    transform: "linear"
+    nominal_lot_baseline: 5.0
+    lot_dispersion: 0.20        # normal lot-to-lot spread in ns
+    comp_dispersion: 0.30       # normal component-to-component spread in ns
+    noise_floor: 0.01           # synthetic numerical noise floor in ns
+    theta_abnormal: 0.10        # relative latent drift threshold (10% increase)
+    user_limit_high: 8.0
+    user_limit_low: null
+    provenance_category: "USER_CONFIGURABLE"
+
+# Aleatory instrument measurement noise scale (~2% relative standard error)
+noise_scale: 0.02
+noise_scale_provenance: "ASSUMPTION"
+noise_scale_assumption_id: "A7"
+
+# Default trajectory class probabilities for nominal lots
+trajectory_probabilities:
+  stable: 0.85
+  high_but_stable: 0.05
+  lot_outlier: 0.02
+  linear_drift: 0.03
+  accelerating_drift: 0.03
+  abrupt_failure: 0.02
+trajectory_probabilities_provenance: "SYNTHETIC_SCENARIO"
+
+# Lot partition budget (SYNTHETIC PROTOTYPE EVALUATION)
+lots:
+  # Train Lots (L01 - L08)
+  - lot_id: "L01"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R0"
+  - lot_id: "L02"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R0"
+  - lot_id: "L03"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R1"
+  - lot_id: "L04"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R1"
+  - lot_id: "L05"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R0"
+  - lot_id: "L06"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R2"
+  - lot_id: "L07"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R0"
+  - lot_id: "L08"
+    size: 30
+    partition: "train"
+    scenario: "nominal"
+    rework_regime: "R0"
+
+  # Validation Lots (L09 - L10)
+  - lot_id: "L09"
+    size: 30
+    partition: "validation"
+    scenario: "nominal"
+    rework_regime: "R0"
+  - lot_id: "L10"
+    size: 30
+    partition: "validation"
+    scenario: "nominal"
+    rework_regime: "R2"
+
+  # Test / Adversarial Challenge Lots (L11 - L14) - FROZEN FOR EVALUATION
+  - lot_id: "L11"
+    size: 30
+    partition: "test"
+    scenario: "canonical_high_stable"
+    rework_regime: "R0"
+  - lot_id: "L12"
+    size: 5
+    partition: "test"
+    scenario: "small_lot"
+    rework_regime: "R0"
+  - lot_id: "L13"
+    size: 30
+    partition: "test"
+    scenario: "instrument_common_mode_shift"
+    rework_regime: "R0"
+  - lot_id: "L14"
+    size: 30
+    partition: "test"
+    scenario: "multi_defect_masking"
+    rework_regime: "R2"
+
+lots_provenance: "SYNTHETIC_SCENARIO"
+
+# Equipment layout configuration
+equipment:
+  instruments:
+    - "INST_01"
+    - "INST_02"
+  channels_per_instrument: 8
+  common_mode_gain_shift: 0.15    # +15% multiplicative shift on INST_01
+  channel_offset_shifts:
+    CH_4:
+      leakage_current: 0.10       # +0.10 uA offset on socket CH_4
+      iddq: 0.01                  # +0.01 mA offset on socket CH_4
+      propagation_delay: 0.05     # +0.05 ns offset on socket CH_4
+    CH_7:
+      leakage_current: -0.02      # -0.02 uA zero-calibration offset on socket CH_7
+equipment_provenance: "DESIGN_DECISION"
+
+# Missingness configuration
+missingness:
+  random_dropout_rate: 0.03       # 3% MCAR rate
+  checkpoint_outage_rate: 0.0     # Default 0 (can be activated for batch outage testing)
+  component_pull_rate: 0.01       # 1% early destructive failure / pull
+missingness_provenance: "DESIGN_DECISION"
+
+# Canonical acceptance test fixture (Problem Statement demonstration)
+canonical_fixture:
+  component_id: "CANONICAL_C45"
+  lot_id: "L11"
+  parameter: "leakage_current"
+  initial_value: 45.0
+  lot_baseline: 10.0
+  screening_limit: 50.0
+  provenance: "SPECIFICATION"

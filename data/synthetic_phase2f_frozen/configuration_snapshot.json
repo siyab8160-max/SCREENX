@@ -1,0 +1,283 @@
+{
+  "generator_version": "2.0.0-phase2f-dev",
+  "master_seed": 26170,
+  "component_anchor": "IRHNJ57130 / JANSR2N7481U3",
+  "governing_specification": "MIL-PRF-19500/703",
+  "package_type": "SMD-0.5 (TO-276AA)",
+  "checkpoints": [
+    0,
+    24,
+    96,
+    168
+  ],
+  "small_lot_threshold_policy": 8,
+  "parameters": {
+    "IDSS": {
+      "name": "IDSS",
+      "units": "uA",
+      "transform": "log",
+      "scale": 1.0,
+      "absolute_min": null,
+      "absolute_max": 10.0,
+      "nominal_baseline": 0.5,
+      "lot_dispersion": 0.15,
+      "device_dispersion": 0.2,
+      "noise_std": 0.04,
+      "stress_regime": "HTRB (150\u00b0C, 80V)",
+      "epistemic_layer": "Layer B (MIL-PRF-19500/703 Table I)"
+    },
+    "VGS(th)": {
+      "name": "VGS(th)",
+      "units": "V",
+      "transform": "linear",
+      "scale": 1.0,
+      "absolute_min": 2.0,
+      "absolute_max": 4.0,
+      "nominal_baseline": 3.0,
+      "lot_dispersion": 0.08,
+      "device_dispersion": 0.1,
+      "noise_std": 0.02,
+      "stress_regime": "HTGB (150\u00b0C, 20V)",
+      "epistemic_layer": "Layer B (MIL-PRF-19500/703 Table I)"
+    },
+    "RDS(on)": {
+      "name": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log",
+      "scale": 1.0,
+      "absolute_min": null,
+      "absolute_max": 60.0,
+      "nominal_baseline": 48.0,
+      "lot_dispersion": 0.06,
+      "device_dispersion": 0.08,
+      "noise_std": 0.6,
+      "stress_regime": "Operating Life / Power Conduction (TJ=125-150\u00b0C)",
+      "epistemic_layer": "Layer A (Infineon Datasheet PD-97217)"
+    },
+    "IGSS": {
+      "name": "IGSS",
+      "units": "nA",
+      "transform": "asinh",
+      "scale": 1.0,
+      "absolute_min": -100.0,
+      "absolute_max": 100.0,
+      "nominal_baseline": 2.0,
+      "lot_dispersion": 0.2,
+      "device_dispersion": 0.25,
+      "noise_std": 0.25,
+      "stress_regime": "HTGB (150\u00b0C, \u00b120V)",
+      "epistemic_layer": "Layer B (MIL-PRF-19500/703 Table I)"
+    }
+  },
+  "lots": [
+    {
+      "lot_id": "LOT_S01",
+      "size": 3,
+      "scenario_profile": "small_lot_insufficient_data",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Sensitivity test size N=3"
+    },
+    {
+      "lot_id": "LOT_S02",
+      "size": 5,
+      "scenario_profile": "small_lot_insufficient_data",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Sensitivity test size N=5"
+    },
+    {
+      "lot_id": "LOT_S03",
+      "size": 8,
+      "scenario_profile": "small_lot_boundary",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Sensitivity boundary size N=8"
+    },
+    {
+      "lot_id": "LOT_S04",
+      "size": 12,
+      "scenario_profile": "small_lot_intermediate",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Sensitivity test size N=12"
+    },
+    {
+      "lot_id": "LOT_S05",
+      "size": 20,
+      "scenario_profile": "nominal_small",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Sensitivity test size N=20"
+    },
+    {
+      "lot_id": "LOT_N01",
+      "size": 30,
+      "scenario_profile": "nominal_healthy",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Standard production flight lot"
+    },
+    {
+      "lot_id": "LOT_N02",
+      "size": 30,
+      "scenario_profile": "nominal_healthy",
+      "chamber_id": "CHAMBER_B",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Standard production flight lot Chamber B"
+    },
+    {
+      "lot_id": "LOT_D01",
+      "size": 30,
+      "scenario_profile": "htrb_leakage_drift",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "HTRB mobile ion drift predominantly on IDSS"
+    },
+    {
+      "lot_id": "LOT_D02",
+      "size": 30,
+      "scenario_profile": "htgb_threshold_drift",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "HTGB interface trap shift predominantly on VGS(th)"
+    },
+    {
+      "lot_id": "LOT_D03",
+      "size": 30,
+      "scenario_profile": "thermal_power_drift",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Thermal packaging fatigue on RDS(on)"
+    },
+    {
+      "lot_id": "LOT_D04",
+      "size": 30,
+      "scenario_profile": "subtle_failure_drift",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": 2.0,
+      "notes": "Subtle progressive failure near noise floor"
+    },
+    {
+      "lot_id": "LOT_L01",
+      "size": 30,
+      "scenario_profile": "static_limit_breach_lot",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Static tail outliers exceeding limits at t=0 without drift"
+    },
+    {
+      "lot_id": "LOT_E01",
+      "size": 30,
+      "scenario_profile": "chamber_common_mode",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": true,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Chamber A temp drift at 96h"
+    },
+    {
+      "lot_id": "LOT_E02",
+      "size": 30,
+      "scenario_profile": "channel_calibration_bias",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": true,
+      "bias_channel_id": "CH_02",
+      "target_snr": null,
+      "notes": "ATE Card #2 channel bias"
+    },
+    {
+      "lot_id": "LOT_M01",
+      "size": 30,
+      "scenario_profile": "mixed_compound_anomaly",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Complex multi-stress compound anomalies"
+    },
+    {
+      "lot_id": "LOT_W01",
+      "size": 50,
+      "scenario_profile": "wafer_sensitivity_large",
+      "chamber_id": "CHAMBER_A",
+      "rework_count": 0,
+      "has_chamber_drift": false,
+      "has_channel_bias": false,
+      "bias_channel_id": null,
+      "target_snr": null,
+      "notes": "Sensitivity test size N=50"
+    }
+  ],
+  "equipment": {
+    "chambers": [
+      "CHAMBER_A",
+      "CHAMBER_B"
+    ],
+    "instruments": [
+      "ATE_BENCH_01",
+      "ATE_BENCH_02"
+    ],
+    "channels_per_instrument": 16,
+    "temp_drift_celsius": 5.0,
+    "channel_bias_rel": 0.2
+  },
+  "missingness": {
+    "random_dropout_rate": 0.025,
+    "allow_missing_initial": false
+  }
+}

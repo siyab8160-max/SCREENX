@@ -1,0 +1,23 @@
+{
+  "generator_version": "2.0-prototype",
+  "master_seed": 20260916,
+  "configuration_hash": "ef25f3d9f3fc4af1",
+  "generated_at_utc": "2026-09-16T17:22:41.976139+00:00",
+  "lot_count": 14,
+  "component_count": 395,
+  "parameter_count": 3,
+  "checkpoint_count": 4,
+  "total_observation_records": 4609,
+  "total_ground_truth_records": 4740,
+  "parameters": [
+    "leakage_current",
+    "iddq",
+    "propagation_delay"
+  ],
+  "checkpoints": [
+    0,
+    24,
+    96,
+    168
+  ]
+}

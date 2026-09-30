@@ -1,0 +1,378 @@
+{
+  "evaluation_timestamp": "2026-09-17T03:58:21Z",
+  "ground_truth_sha256": "4bf2155fcc7698813f766e1dea9730213e0a6097e484bfa786eb1b94925f3d2b",
+  "scenarios": {
+    "stable": {
+      "component_count": 166,
+      "state_distribution_168h": {
+        "PASS": 23,
+        "ALERT": 0,
+        "FAIL": 2,
+        "INSUFFICIENT_DATA": 3,
+        "EQUIPMENT_SUSPECTED": 138
+      },
+      "primary_reason_codes": {
+        "IDSS:ATE_CHANNEL_FIXTURE_BIAS": 52,
+        "IGSS:ATE_CHANNEL_FIXTURE_BIAS": 17,
+        "NOMINAL_SPEC_AND_STABLE_KINETICS": 23,
+        "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH": 2,
+        "VGS(th):MISSING_CHECKPOINTS_96": 1,
+        "RDS(on):MISSING_CHECKPOINTS_96": 2,
+        "RDS(on):ATE_CHANNEL_FIXTURE_BIAS": 15,
+        "VGS(th):ATE_CHANNEL_FIXTURE_BIAS": 54
+      }
+    },
+    "high_but_stable": {
+      "component_count": 169,
+      "state_distribution_168h": {
+        "PASS": 3,
+        "ALERT": 22,
+        "FAIL": 0,
+        "INSUFFICIENT_DATA": 3,
+        "EQUIPMENT_SUSPECTED": 141
+      },
+      "primary_reason_codes": {
+        "IDSS:ATE_CHANNEL_FIXTURE_BIAS": 105,
+        "IGSS:HIGH_BUT_STABLE_PEER_OUTLIER": 1,
+        "IGSS:ATE_CHANNEL_FIXTURE_BIAS": 3,
+        "NOMINAL_SPEC_AND_STABLE_KINETICS": 3,
+        "VGS(th):MISSING_CHECKPOINTS_96": 1,
+        "VGS(th):HIGH_BUT_STABLE_PEER_OUTLIER": 13,
+        "IDSS:HIGH_BUT_STABLE_PEER_OUTLIER": 6,
+        "RDS(on):ATE_CHANNEL_FIXTURE_BIAS": 3,
+        "RDS(on):HIGH_BUT_STABLE_PEER_OUTLIER": 2,
+        "IGSS:MISSING_CHECKPOINTS_96": 2,
+        "VGS(th):ATE_CHANNEL_FIXTURE_BIAS": 30
+      }
+    },
+    "equipment_common_mode": {
+      "component_count": 32,
+      "state_distribution_168h": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 2,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 30
+      },
+      "primary_reason_codes": {
+        "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH": 2,
+        "IDSS:CHAMBER_SYNCHRONOUS_EXCURSION": 30
+      }
+    },
+    "linear_drift": {
+      "component_count": 10,
+      "state_distribution_168h": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 0,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 10
+      },
+      "primary_reason_codes": {
+        "IDSS:ATE_CHANNEL_FIXTURE_BIAS": 6,
+        "IGSS:ATE_CHANNEL_FIXTURE_BIAS": 1,
+        "VGS(th):ATE_CHANNEL_FIXTURE_BIAS": 3
+      }
+    },
+    "insufficient_data": {
+      "component_count": 8,
+      "state_distribution_168h": {
+        "PASS": 2,
+        "ALERT": 0,
+        "FAIL": 6,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 0
+      },
+      "primary_reason_codes": {
+        "COMPOUND_MULTI_PARAMETER_DRIFT_IGSS_VGS(th)": 1,
+        "IGSS:ABRUPT_STEP_CHANGE": 1,
+        "NOMINAL_SPEC_AND_STABLE_KINETICS": 2,
+        "IGSS:ACCELERATING_TEMPORAL_DRIFT": 1,
+        "VGS(th):ACCELERATING_TEMPORAL_DRIFT": 1,
+        "VGS(th):ABRUPT_STEP_CHANGE": 1,
+        "COMPOUND_MULTI_PARAMETER_DRIFT_IDSS_IGSS_RDS(on)": 1
+      }
+    },
+    "static_limit_breach": {
+      "component_count": 6,
+      "state_distribution_168h": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 5,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 1
+      },
+      "primary_reason_codes": {
+        "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH": 1,
+        "IGSS:ABSOLUTE_LIMIT_BREACH_IGSS_LOW": 1,
+        "VGS(th):ABSOLUTE_LIMIT_BREACH_VGSTH_LOW": 1,
+        "IDSS:ABSOLUTE_LIMIT_BREACH_IDSS_HIGH": 2,
+        "VGS(th):ATE_CHANNEL_FIXTURE_BIAS": 1
+      }
+    },
+    "accelerating_drift": {
+      "component_count": 3,
+      "state_distribution_168h": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 3,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 0
+      },
+      "primary_reason_codes": {
+        "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH": 3
+      }
+    },
+    "mixed_compound": {
+      "component_count": 2,
+      "state_distribution_168h": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 2,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 0
+      },
+      "primary_reason_codes": {
+        "VGS(th):ABSOLUTE_LIMIT_BREACH_VGSTH_HIGH": 1,
+        "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH": 1
+      }
+    },
+    "subtle_abrupt_change": {
+      "component_count": 1,
+      "state_distribution_168h": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 0,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 1
+      },
+      "primary_reason_codes": {
+        "IGSS:ATE_CHANNEL_FIXTURE_BIAS": 1
+      }
+    },
+    "lot_outlier": {
+      "component_count": 1,
+      "state_distribution_168h": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 0,
+        "INSUFFICIENT_DATA": 1,
+        "EQUIPMENT_SUSPECTED": 0
+      },
+      "primary_reason_codes": {
+        "IDSS:MISSING_CHECKPOINTS_96": 1
+      }
+    }
+  },
+  "state_distributions": {
+    "component_by_checkpoint": {
+      "0": {
+        "PASS": 34,
+        "ALERT": 25,
+        "FAIL": 10,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 329
+      },
+      "24": {
+        "PASS": 33,
+        "ALERT": 20,
+        "FAIL": 12,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 333
+      },
+      "96": {
+        "PASS": 26,
+        "ALERT": 25,
+        "FAIL": 17,
+        "INSUFFICIENT_DATA": 7,
+        "EQUIPMENT_SUSPECTED": 323
+      },
+      "168": {
+        "PASS": 28,
+        "ALERT": 22,
+        "FAIL": 20,
+        "INSUFFICIENT_DATA": 7,
+        "EQUIPMENT_SUSPECTED": 321
+      }
+    },
+    "parameter_level_168h": {
+      "IDSS": {
+        "PASS": 178,
+        "ALERT": 12,
+        "FAIL": 2,
+        "INSUFFICIENT_DATA": 1,
+        "EQUIPMENT_SUSPECTED": 205
+      },
+      "VGS(th)": {
+        "PASS": 140,
+        "ALERT": 18,
+        "FAIL": 5,
+        "INSUFFICIENT_DATA": 2,
+        "EQUIPMENT_SUSPECTED": 233
+      },
+      "RDS(on)": {
+        "PASS": 184,
+        "ALERT": 3,
+        "FAIL": 9,
+        "INSUFFICIENT_DATA": 2,
+        "EQUIPMENT_SUSPECTED": 200
+      },
+      "IGSS": {
+        "PASS": 51,
+        "ALERT": 6,
+        "FAIL": 4,
+        "INSUFFICIENT_DATA": 2,
+        "EQUIPMENT_SUSPECTED": 335
+      }
+    }
+  },
+  "confusion_matrices": {
+    "Target_A_Spec_Breach": {
+      "TP": 12,
+      "FP": 2,
+      "TN": 382,
+      "FN": 2,
+      "sensitivity": 0.8571428571428571,
+      "specificity": 0.9947916666666666
+    },
+    "Target_B_Temporal_Degradation": {
+      "TP": 1,
+      "FP": 6,
+      "TN": 376,
+      "FN": 15,
+      "sensitivity": 0.0625,
+      "specificity": 0.9842931937172775
+    },
+    "Target_C_Equipment_Common_Mode_96h": {
+      "TP": 32,
+      "FP": 308,
+      "TN": 58,
+      "FN": 0,
+      "sensitivity": 1.0,
+      "specificity": 0.15846994535519127
+    },
+    "Target_D_Nominal_Stable_Pass": {
+      "TP": 23,
+      "FP": 5,
+      "TN": 227,
+      "FN": 143,
+      "sensitivity": 0.13855421686746988,
+      "specificity": 0.978448275862069
+    }
+  },
+  "detector_evaluations": {},
+  "special_studies": {
+    "high_but_stable": {
+      "total_evaluated": 169,
+      "pass_count": 3,
+      "alert_count": 22,
+      "fail_count": 0,
+      "fail_components": [],
+      "fail_reasons": []
+    },
+    "common_mode": {
+      "LOT_E01_96h_total": 30,
+      "LOT_E01_96h_states": {
+        "PASS": 0,
+        "ALERT": 0,
+        "FAIL": 0,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 30
+      },
+      "LOT_E02_24h_total": 30,
+      "LOT_E02_24h_states": {
+        "PASS": 1,
+        "ALERT": 1,
+        "FAIL": 2,
+        "INSUFFICIENT_DATA": 0,
+        "EQUIPMENT_SUSPECTED": 26
+      }
+    },
+    "small_lot_policy": {
+      "LOT_S01": {
+        "configured_N": 3,
+        "peer_suppressed_count": 12,
+        "peer_active_count": 0,
+        "screening_states": {
+          "PASS": 1,
+          "ALERT": 0,
+          "FAIL": 2,
+          "INSUFFICIENT_DATA": 0,
+          "EQUIPMENT_SUSPECTED": 0
+        }
+      },
+      "LOT_S02": {
+        "configured_N": 5,
+        "peer_suppressed_count": 20,
+        "peer_active_count": 0,
+        "screening_states": {
+          "PASS": 1,
+          "ALERT": 0,
+          "FAIL": 4,
+          "INSUFFICIENT_DATA": 0,
+          "EQUIPMENT_SUSPECTED": 0
+        }
+      },
+      "LOT_S03": {
+        "configured_N": 8,
+        "peer_suppressed_count": 0,
+        "peer_active_count": 32,
+        "screening_states": {
+          "PASS": 4,
+          "ALERT": 4,
+          "FAIL": 0,
+          "INSUFFICIENT_DATA": 0,
+          "EQUIPMENT_SUSPECTED": 0
+        }
+      },
+      "LOT_S04": {
+        "configured_N": 12,
+        "peer_suppressed_count": 0,
+        "peer_active_count": 48,
+        "screening_states": {
+          "PASS": 7,
+          "ALERT": 5,
+          "FAIL": 0,
+          "INSUFFICIENT_DATA": 0,
+          "EQUIPMENT_SUSPECTED": 0
+        }
+      },
+      "LOT_S05": {
+        "configured_N": 20,
+        "peer_suppressed_count": 0,
+        "peer_active_count": 80,
+        "screening_states": {
+          "PASS": 6,
+          "ALERT": 5,
+          "FAIL": 0,
+          "INSUFFICIENT_DATA": 1,
+          "EQUIPMENT_SUSPECTED": 8
+        }
+      }
+    },
+    "mixed_compound": {
+      "LOT_M01_C001": {
+        "final_state": "FAIL",
+        "compound_evidence": false,
+        "primary_reason_code": "VGS(th):ABSOLUTE_LIMIT_BREACH_VGSTH_HIGH",
+        "param_states": {
+          "IDSS": "EQUIPMENT_SUSPECTED",
+          "VGS(th)": "FAIL",
+          "RDS(on)": "PASS",
+          "IGSS": "EQUIPMENT_SUSPECTED"
+        }
+      },
+      "LOT_M01_C002": {
+        "final_state": "FAIL",
+        "compound_evidence": false,
+        "primary_reason_code": "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "param_states": {
+          "IDSS": "EQUIPMENT_SUSPECTED",
+          "VGS(th)": "EQUIPMENT_SUSPECTED",
+          "RDS(on)": "FAIL",
+          "IGSS": "EQUIPMENT_SUSPECTED"
+        }
+      }
+    }
+  }
+}

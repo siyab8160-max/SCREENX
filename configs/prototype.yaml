@@ -1,0 +1,51 @@
+# SIH26170 Prototype Global Configuration
+# Every parameter is tied to explicit provenance: ASSUMPTION, SPECIFICATION, DESIGN_DECISION, or USER_CONFIGURABLE.
+# See docs/PROTOTYPE_STANDING_LOG.md and docs/SIH26170_Proposed_Solution_Draft.md (Assumptions Register).
+
+configuration_version: "prototype-v1"
+provenance_category: "SPECIFICATION"
+
+# Typical lot size for high-reliability burn-in testing (Assumption A5)
+lot_size: 30
+lot_size_provenance: "ASSUMPTION"
+lot_size_assumption_id: "A5"
+
+# Burn-in intermediate readout schedule in hours (Assumption A3)
+checkpoint_hours:
+  - 0
+  - 24
+  - 96
+  - 168
+checkpoint_hours_provenance: "ASSUMPTION"
+checkpoint_hours_assumption_id: "A3"
+
+# Burn-in chamber thermal stress temperature in Celsius (Assumption A2 - SOURCED)
+burn_in_temperature_C: 125.0
+burn_in_temperature_provenance: "ASSUMPTION"
+burn_in_temperature_assumption_id: "A2"
+
+# Typical instrument measurement noise magnitude (~1-3% nominal) (Assumption A7)
+noise_scale: 0.02
+noise_scale_provenance: "ASSUMPTION"
+noise_scale_assumption_id: "A7"
+
+# Expected latent defect proportion in screening lots (~2-5%) (Assumption A6)
+defect_rate: 0.04
+defect_rate_provenance: "ASSUMPTION"
+defect_rate_assumption_id: "A6"
+
+# Synthetic simulation missingness and equipment transient rates (Design Decisions)
+missing_rate: 0.03
+missing_rate_provenance: "DESIGN_DECISION"
+
+equipment_shift_rate: 0.05
+equipment_shift_provenance: "DESIGN_DECISION"
+
+# Conformal calibration error rate target (PRD Section 4 / Architecture Section 3.5)
+alpha: 0.10
+alpha_provenance: "SPECIFICATION"
+
+# Production rework risk covariate tracking enabled (Assumption A11 - SOURCED IEEE #9153583)
+rework_risk_enabled: true
+rework_risk_provenance: "ASSUMPTION"
+rework_risk_assumption_id: "A11"

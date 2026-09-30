@@ -1,0 +1,77 @@
+# SIH26170 Module B — Safety-Slope / Early-Rejection Configuration
+# Phase B5: Configurable Engineering Decision Rule
+#
+# IMPORTANT NOTICE:
+# The public SIH26170 problem statement requires comparison against a "calculated
+# safety slope" but does NOT publish the calculation formula. No FR2.4 or governing
+# specification defining this formula was found in the repository or public PS.
+#
+# Therefore, these are CONFIGURABLE ENGINEERING SAFETY THRESHOLDS.
+# They must NOT be represented as an official ISRO formula until the project team
+# obtains the applicable FR2.4/official specification.
+#
+# Decision Rule:
+#   predicted_drift_rate = (predicted_value_168h - value_24h) / 144  [units/hour]
+#   safety_slope         = (safety_threshold   - value_24h) / 144  [units/hour]
+#   EARLY_REJECT when predicted_drift_rate exceeds safety_slope in the relevant direction.
+#
+# ALGEBRAIC EQUIVALENCE NOTE:
+# Because both predicted drift rate and safety slope share the identical 144-hour denominator:
+#   predicted_drift_rate = (predicted_value_168h - value_24h) / 144
+#   safety_slope         = (safety_threshold     - value_24h) / 144
+# Comparing predicted_drift_rate > safety_slope is algebraically equivalent to:
+#   (predicted_value_168h - value_24h) / 144 > (safety_threshold - value_24h) / 144
+#   <=> predicted_value_168h > safety_threshold
+# The comparison is algebraically equivalent to checking whether predicted Value_168h
+# crosses the configured safety threshold. This is a deterministic engineering decision
+# rule, NOT an independently learned slope model.
+#
+# Boundary comparison: strict inequality (> for upper, < for lower).
+# Exact equality (predicted_value_168h == safety_threshold) → CONTINUE.
+
+formula_source: "configurable_engineering_decision_rule"
+formula_notice: >
+  The public SIH26170 problem statement requires comparison against a calculated
+  safety slope but does not publish the calculation. This implementation uses a
+  configurable engineering decision rule. It must not be represented as an official
+  ISRO formula until the project team obtains the applicable FR2.4/official specification.
+  Because both drift rate and safety slope share the 144h denominator, the comparison is
+  algebraically equivalent to checking whether predicted Value_168h crosses the safety threshold.
+
+as_of_hours: 24
+target_horizon_hours: 168
+forecast_horizon_delta_hours: 144  # 168 - 24
+
+# Boundary comparison convention:
+#   strict inequality for rejection (> for upper, < for lower)
+#   exact equality → CONTINUE (conservative, avoids false rejection from numerical noise)
+boundary_comparison: "strict_inequality"
+
+safety_thresholds:
+  IDSS:
+    safety_threshold_high: 10.0   # uA — MIL-PRF-19500/703 Table I spec_limit_high
+    safety_threshold_low: null    # one-sided upper parameter
+    direction: "upper"
+    unit: "uA"
+    source: "MIL-PRF-19500/703 Table I spec_limit_high"
+
+  "VGS(th)":
+    safety_threshold_high: 4.0    # V — MIL-PRF-19500/703 Table I spec_limit_high
+    safety_threshold_low: 2.0     # V — MIL-PRF-19500/703 Table I spec_limit_low
+    direction: "two_sided"
+    unit: "V"
+    source: "MIL-PRF-19500/703 Table I spec_limit_high and spec_limit_low"
+
+  "RDS(on)":
+    safety_threshold_high: 60.0   # mOhm — configured engineering screening/early-rejection threshold (spec ceiling is 65.0 mOhm)
+    safety_threshold_low: null    # one-sided upper parameter
+    direction: "upper"
+    unit: "mOhm"
+    source: "Configured engineering screening/early-rejection threshold (spec ceiling is 65.0 mOhm per MIL-PRF-19500/703; 60.0 mOhm is an engineering margin, not the specification limit)"
+
+  IGSS:
+    safety_threshold_high: 100.0  # nA — MIL-PRF-19500/703 Table I spec_limit_high
+    safety_threshold_low: -100.0  # nA — MIL-PRF-19500/703 Table I spec_limit_low
+    direction: "two_sided"
+    unit: "nA"
+    source: "MIL-PRF-19500/703 Table I spec_limit_high and spec_limit_low"

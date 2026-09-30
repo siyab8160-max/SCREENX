@@ -1,0 +1,320 @@
+{
+  "target_b_fn": {
+    "count": 10,
+    "by_failure_mode": {
+      "drift_below_threshold": 6,
+      "other": 4
+    },
+    "by_lot": {
+      "LOT_D03": 3,
+      "LOT_D04": 3,
+      "LOT_M01": 2,
+      "LOT_D01": 1,
+      "LOT_D02": 1
+    },
+    "by_disposition_qualifier": {
+      "NOMINAL_STABLE": 4,
+      "SPECIFICATION_FAILURE": 4,
+      "PEER_OUTLIER_STATIONARY": 2
+    },
+    "component_details": [
+      {
+        "component_id": "LOT_D01_C001",
+        "lot_id": "LOT_D01",
+        "component_scenario": "linear_drift",
+        "final_state": "ALERT",
+        "disposition_qualifier": "PEER_OUTLIER_STATIONARY",
+        "primary_reason_code": "IDSS:HIGH_BUT_STABLE_PEER_OUTLIER",
+        "degraded_parameters": "IDSS",
+        "max_g_param": "IDSS",
+        "max_normalized_drift_g": 2.2629698949960093,
+        "max_drift_status": "STATIONARY",
+        "failure_mode": "drift_below_threshold"
+      },
+      {
+        "component_id": "LOT_D02_C001",
+        "lot_id": "LOT_D02",
+        "component_scenario": "linear_drift",
+        "final_state": "PASS",
+        "disposition_qualifier": "NOMINAL_STABLE",
+        "primary_reason_code": "NOMINAL_SPEC_AND_STABLE_KINETICS",
+        "degraded_parameters": "VGS(th)",
+        "max_g_param": "VGS(th)",
+        "max_normalized_drift_g": 2.4524241677674548,
+        "max_drift_status": "STATIONARY",
+        "failure_mode": "drift_below_threshold"
+      },
+      {
+        "component_id": "LOT_D03_C001",
+        "lot_id": "LOT_D03",
+        "component_scenario": "accelerating_drift",
+        "final_state": "FAIL",
+        "disposition_qualifier": "SPECIFICATION_FAILURE",
+        "primary_reason_code": "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "degraded_parameters": "RDS(on)",
+        "max_g_param": "RDS(on)",
+        "max_normalized_drift_g": 5.186117263953857,
+        "max_drift_status": "ACCELERATING_DRIFT",
+        "failure_mode": "other"
+      },
+      {
+        "component_id": "LOT_D03_C002",
+        "lot_id": "LOT_D03",
+        "component_scenario": "accelerating_drift",
+        "final_state": "FAIL",
+        "disposition_qualifier": "SPECIFICATION_FAILURE",
+        "primary_reason_code": "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "degraded_parameters": "RDS(on)",
+        "max_g_param": "RDS(on)",
+        "max_normalized_drift_g": 6.788068021590418,
+        "max_drift_status": "ACCELERATING_DRIFT",
+        "failure_mode": "other"
+      },
+      {
+        "component_id": "LOT_D03_C003",
+        "lot_id": "LOT_D03",
+        "component_scenario": "accelerating_drift",
+        "final_state": "FAIL",
+        "disposition_qualifier": "SPECIFICATION_FAILURE",
+        "primary_reason_code": "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "degraded_parameters": "RDS(on)",
+        "max_g_param": "RDS(on)",
+        "max_normalized_drift_g": 3.95480272356502,
+        "max_drift_status": "ACCELERATING_DRIFT",
+        "failure_mode": "other"
+      },
+      {
+        "component_id": "LOT_D04_C001",
+        "lot_id": "LOT_D04",
+        "component_scenario": "linear_drift",
+        "final_state": "PASS",
+        "disposition_qualifier": "NOMINAL_STABLE",
+        "primary_reason_code": "NOMINAL_SPEC_AND_STABLE_KINETICS",
+        "degraded_parameters": "IDSS",
+        "max_g_param": "IDSS",
+        "max_normalized_drift_g": 0.3465201063618917,
+        "max_drift_status": "STATIONARY",
+        "failure_mode": "drift_below_threshold"
+      },
+      {
+        "component_id": "LOT_D04_C002",
+        "lot_id": "LOT_D04",
+        "component_scenario": "linear_drift",
+        "final_state": "ALERT",
+        "disposition_qualifier": "PEER_OUTLIER_STATIONARY",
+        "primary_reason_code": "IDSS:HIGH_BUT_STABLE_PEER_OUTLIER",
+        "degraded_parameters": "IDSS",
+        "max_g_param": "IDSS",
+        "max_normalized_drift_g": 0.2168414803898615,
+        "max_drift_status": "STATIONARY",
+        "failure_mode": "drift_below_threshold"
+      },
+      {
+        "component_id": "LOT_D04_C003",
+        "lot_id": "LOT_D04",
+        "component_scenario": "linear_drift",
+        "final_state": "PASS",
+        "disposition_qualifier": "NOMINAL_STABLE",
+        "primary_reason_code": "NOMINAL_SPEC_AND_STABLE_KINETICS",
+        "degraded_parameters": "IDSS",
+        "max_g_param": "IDSS",
+        "max_normalized_drift_g": 0.3732808068676298,
+        "max_drift_status": "STATIONARY",
+        "failure_mode": "drift_below_threshold"
+      },
+      {
+        "component_id": "LOT_M01_C002",
+        "lot_id": "LOT_M01",
+        "component_scenario": "mixed_compound",
+        "final_state": "FAIL",
+        "disposition_qualifier": "SPECIFICATION_FAILURE",
+        "primary_reason_code": "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "degraded_parameters": "RDS(on)",
+        "max_g_param": "RDS(on)",
+        "max_normalized_drift_g": 4.792332341795875,
+        "max_drift_status": "ACCELERATING_DRIFT",
+        "failure_mode": "other"
+      },
+      {
+        "component_id": "LOT_M01_C003",
+        "lot_id": "LOT_M01",
+        "component_scenario": "subtle_abrupt_change",
+        "final_state": "PASS",
+        "disposition_qualifier": "NOMINAL_STABLE",
+        "primary_reason_code": "NOMINAL_SPEC_AND_STABLE_KINETICS",
+        "degraded_parameters": "IGSS",
+        "max_g_param": "IGSS",
+        "max_normalized_drift_g": 1.1206794273339877,
+        "max_drift_status": "STATIONARY",
+        "failure_mode": "drift_below_threshold"
+      }
+    ]
+  },
+  "target_d_fp": {
+    "count": 8,
+    "by_disposition_qualifier": {
+      "INSUFFICIENT_EVIDENCE": 3,
+      "PEER_OUTLIER_STATIONARY": 3,
+      "SPECIFICATION_FAILURE": 2
+    },
+    "by_lot": {
+      "LOT_N02": 2,
+      "LOT_S05": 2,
+      "LOT_D02": 1,
+      "LOT_L01": 1,
+      "LOT_N01": 1,
+      "LOT_W01": 1
+    },
+    "by_primary_trigger_param": {
+      "RDS(on)": 5,
+      "VGS(th)": 2,
+      "IDSS": 1
+    },
+    "by_primary_reason_code": {
+      "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH": 2,
+      "RDS(on):MISSING_CHECKPOINTS_96": 2,
+      "IDSS:HIGH_BUT_STABLE_PEER_OUTLIER": 1,
+      "RDS(on):HIGH_BUT_STABLE_PEER_OUTLIER": 1,
+      "VGS(th):HIGH_BUT_STABLE_PEER_OUTLIER": 1,
+      "VGS(th):MISSING_CHECKPOINTS_96": 1
+    },
+    "concentration_cumulative": {
+      "LOT_N02": 0.25,
+      "LOT_S05": 0.5,
+      "LOT_D02": 0.625,
+      "LOT_L01": 0.75,
+      "LOT_N01": 0.875,
+      "LOT_W01": 1.0
+    },
+    "component_details": [
+      {
+        "component_id": "LOT_D02_C011",
+        "lot_id": "LOT_D02",
+        "final_state": "ALERT",
+        "disposition_qualifier": "PEER_OUTLIER_STATIONARY",
+        "primary_reason_code": "RDS(on):HIGH_BUT_STABLE_PEER_OUTLIER",
+        "n_triggering_params": 1,
+        "triggering_params": "RDS(on)",
+        "primary_trigger_param": "RDS(on)",
+        "primary_trigger_state": "ALERT",
+        "primary_trigger_reason": "HIGH_BUT_STABLE_PEER_OUTLIER",
+        "primary_trigger_qual": "PEER_OUTLIER_STATIONARY",
+        "primary_peer_z": -3.043315464647265,
+        "primary_g": -0.18577230245569776,
+        "primary_drift_status": "STATIONARY"
+      },
+      {
+        "component_id": "LOT_L01_C008",
+        "lot_id": "LOT_L01",
+        "final_state": "ALERT",
+        "disposition_qualifier": "PEER_OUTLIER_STATIONARY",
+        "primary_reason_code": "IDSS:HIGH_BUT_STABLE_PEER_OUTLIER",
+        "n_triggering_params": 1,
+        "triggering_params": "IDSS",
+        "primary_trigger_param": "IDSS",
+        "primary_trigger_state": "ALERT",
+        "primary_trigger_reason": "HIGH_BUT_STABLE_PEER_OUTLIER",
+        "primary_trigger_qual": "PEER_OUTLIER_STATIONARY",
+        "primary_peer_z": 4.870321592959771,
+        "primary_g": 0.35302393727918224,
+        "primary_drift_status": "STATIONARY"
+      },
+      {
+        "component_id": "LOT_N01_C025",
+        "lot_id": "LOT_N01",
+        "final_state": "INSUFFICIENT_DATA",
+        "disposition_qualifier": "INSUFFICIENT_EVIDENCE",
+        "primary_reason_code": "RDS(on):MISSING_CHECKPOINTS_96",
+        "n_triggering_params": 1,
+        "triggering_params": "RDS(on)",
+        "primary_trigger_param": "RDS(on)",
+        "primary_trigger_state": "INSUFFICIENT_DATA",
+        "primary_trigger_reason": "MISSING_CHECKPOINTS_96",
+        "primary_trigger_qual": "INSUFFICIENT_EVIDENCE",
+        "primary_peer_z": -1.795094571624998,
+        "primary_g": 0.02165554992967999,
+        "primary_drift_status": "STATIONARY"
+      },
+      {
+        "component_id": "LOT_N02_C003",
+        "lot_id": "LOT_N02",
+        "final_state": "FAIL",
+        "disposition_qualifier": "SPECIFICATION_FAILURE",
+        "primary_reason_code": "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "n_triggering_params": 1,
+        "triggering_params": "RDS(on)",
+        "primary_trigger_param": "RDS(on)",
+        "primary_trigger_state": "FAIL",
+        "primary_trigger_reason": "ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "primary_trigger_qual": "SPECIFICATION_FAILURE",
+        "primary_peer_z": 2.056967541674646,
+        "primary_g": 0.1415308317384926,
+        "primary_drift_status": "STATIONARY"
+      },
+      {
+        "component_id": "LOT_N02_C015",
+        "lot_id": "LOT_N02",
+        "final_state": "FAIL",
+        "disposition_qualifier": "SPECIFICATION_FAILURE",
+        "primary_reason_code": "RDS(on):ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "n_triggering_params": 1,
+        "triggering_params": "RDS(on)",
+        "primary_trigger_param": "RDS(on)",
+        "primary_trigger_state": "FAIL",
+        "primary_trigger_reason": "ABSOLUTE_LIMIT_BREACH_RDSON_HIGH",
+        "primary_trigger_qual": "SPECIFICATION_FAILURE",
+        "primary_peer_z": 3.0168904307645765,
+        "primary_g": 0.23110285088650973,
+        "primary_drift_status": "STATIONARY"
+      },
+      {
+        "component_id": "LOT_S05_C003",
+        "lot_id": "LOT_S05",
+        "final_state": "ALERT",
+        "disposition_qualifier": "PEER_OUTLIER_STATIONARY",
+        "primary_reason_code": "VGS(th):HIGH_BUT_STABLE_PEER_OUTLIER",
+        "n_triggering_params": 1,
+        "triggering_params": "VGS(th)",
+        "primary_trigger_param": "VGS(th)",
+        "primary_trigger_state": "ALERT",
+        "primary_trigger_reason": "HIGH_BUT_STABLE_PEER_OUTLIER",
+        "primary_trigger_qual": "PEER_OUTLIER_STATIONARY",
+        "primary_peer_z": 4.788733314831166,
+        "primary_g": 0.2622502048447878,
+        "primary_drift_status": "STATIONARY"
+      },
+      {
+        "component_id": "LOT_S05_C013",
+        "lot_id": "LOT_S05",
+        "final_state": "INSUFFICIENT_DATA",
+        "disposition_qualifier": "INSUFFICIENT_EVIDENCE",
+        "primary_reason_code": "VGS(th):MISSING_CHECKPOINTS_96",
+        "n_triggering_params": 1,
+        "triggering_params": "VGS(th)",
+        "primary_trigger_param": "VGS(th)",
+        "primary_trigger_state": "INSUFFICIENT_DATA",
+        "primary_trigger_reason": "MISSING_CHECKPOINTS_96",
+        "primary_trigger_qual": "INSUFFICIENT_EVIDENCE",
+        "primary_peer_z": -0.8790537585777793,
+        "primary_g": 0.05201341844635334,
+        "primary_drift_status": "STATIONARY"
+      },
+      {
+        "component_id": "LOT_W01_C035",
+        "lot_id": "LOT_W01",
+        "final_state": "INSUFFICIENT_DATA",
+        "disposition_qualifier": "INSUFFICIENT_EVIDENCE",
+        "primary_reason_code": "RDS(on):MISSING_CHECKPOINTS_96",
+        "n_triggering_params": 1,
+        "triggering_params": "RDS(on)",
+        "primary_trigger_param": "RDS(on)",
+        "primary_trigger_state": "INSUFFICIENT_DATA",
+        "primary_trigger_reason": "MISSING_CHECKPOINTS_96",
+        "primary_trigger_qual": "INSUFFICIENT_EVIDENCE",
+        "primary_peer_z": -0.9315543221357746,
+        "primary_g": 0.1567461745764596,
+        "primary_drift_status": "STATIONARY"
+      }
+    ]
+  }
+}

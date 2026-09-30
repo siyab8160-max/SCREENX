@@ -1,0 +1,75 @@
+# SIH26170 Parameter Configuration Specification
+# Parameter definitions, units, transforms, user screening limits, and verified reference specifications.
+# In accordance with CHANGE 1 and CHANGE 2:
+# - reference_value is distinct from user_limit_low / user_limit_high.
+# - unverified reference values remain null with reference_verification_status: NOT_YET_VERIFIED.
+# - no limits are invented for parameters lacking explicit specification support.
+
+parameters:
+  leakage_current:
+    name: "leakage_current"
+    unit: "uA"
+    transform: "log"
+    risk_direction: "high"
+    scale_floor: 0.05
+    condition_keys:
+      - "temperature_C"
+      - "test_condition"
+    assumption_id: "A4"
+    provenance_category: "SPECIFICATION"
+
+    # User-configured screening limits
+    # 50.0 uA is the canonical prototype upper screening limit from PS worked example
+    user_limit_low: null
+    user_limit_high: 50.0
+
+    # Reference / standard specifications
+    # Left null until authoritative manufacturer / ISRO qualification standard is verified
+    reference_value: null
+    reference_value_type: null
+    reference_source: null
+    reference_verification_status: "NOT_YET_VERIFIED"
+
+  iddq:
+    name: "iddq"
+    unit: "mA"
+    transform: "log"
+    risk_direction: "high"
+    scale_floor: 0.01
+    condition_keys:
+      - "temperature_C"
+      - "test_condition"
+    assumption_id: "A4"
+    provenance_category: "USER_CONFIGURABLE"
+
+    # User-configured screening limits (user configurable per screening campaign; not hardcoded or invented)
+    user_limit_low: null
+    user_limit_high: null
+
+    # Reference / standard specifications
+    reference_value: null
+    reference_value_type: null
+    reference_source: null
+    reference_verification_status: "NOT_YET_VERIFIED"
+
+  propagation_delay:
+    name: "propagation_delay"
+    unit: "ns"
+    transform: "linear"
+    risk_direction: "high"
+    scale_floor: 0.05
+    condition_keys:
+      - "temperature_C"
+      - "test_condition"
+    assumption_id: "A4"
+    provenance_category: "USER_CONFIGURABLE"
+
+    # User-configured screening limits (user configurable per screening campaign; not hardcoded or invented)
+    user_limit_low: null
+    user_limit_high: null
+
+    # Reference / standard specifications
+    reference_value: null
+    reference_value_type: null
+    reference_source: null
+    reference_verification_status: "NOT_YET_VERIFIED"

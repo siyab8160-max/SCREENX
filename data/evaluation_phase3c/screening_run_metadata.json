@@ -1,0 +1,14 @@
+{
+  "release": "PHASE_3C_EVALUATION_v1.0.0",
+  "timestamp_utc": "2026-09-17T10:46:00Z",
+  "benchmark": "PHASE_2F_FROZEN_BENCHMARK_v1.0.0",
+  "total_components": 398,
+  "checkpoints": [
+    0,
+    24,
+    96,
+    168
+  ],
+  "total_screening_runtime_seconds": 30.8252170085907,
+  "status": "STAGE_1_PREDICTIONS_FROZEN"
+}

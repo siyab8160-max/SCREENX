@@ -1,0 +1,101 @@
+{
+  "records": [
+    {
+      "coefficients": [
+        0.002339561050919542,
+        0.4657038355352779,
+        0.49182429074872763
+      ],
+      "hyperparameters": {
+        "l2_reg": 1.0
+      },
+      "model_family": "RIDGE",
+      "model_id": "REG_RIDGE_IDSS",
+      "parameter_name": "IDSS",
+      "preprocessor_params": {
+        "u0_mean": -0.6531782275064498,
+        "u0_std": 0.2631649486340792,
+        "u24_mean": -0.6498853231928525,
+        "u24_std": 0.2688817418176729
+      },
+      "sigma_eff": 0.10770869821030792,
+      "unit": "uA",
+      "validation_coverage_90": 0.858,
+      "validation_mae": 0.05484500440310724,
+      "validation_sample_count": 500
+    },
+    {
+      "coefficients": [
+        0.10161611496225995,
+        0.46955701792095267,
+        0.49620187685502853
+      ],
+      "hyperparameters": {
+        "l2_reg": 1.0
+      },
+      "model_family": "RIDGE",
+      "model_id": "REG_RIDGE_VGS(th)",
+      "parameter_name": "VGS(th)",
+      "preprocessor_params": {
+        "u0_mean": 2.992440786609757,
+        "u0_std": 0.13352128861002024,
+        "u24_mean": 2.992255262378395,
+        "u24_std": 0.13308437713543012
+      },
+      "sigma_eff": 0.03048219222793542,
+      "unit": "V",
+      "validation_coverage_90": 0.912,
+      "validation_mae": 0.023487279608654422,
+      "validation_sample_count": 500
+    },
+    {
+      "coefficients": [
+        0.2216503092658105,
+        0.47211305007616733,
+        0.47157972530839826
+      ],
+      "hyperparameters": {
+        "l2_reg": 1.0
+      },
+      "model_family": "RIDGE",
+      "model_id": "REG_RIDGE_RDS(on)",
+      "parameter_name": "RDS(on)",
+      "preprocessor_params": {
+        "u0_mean": 3.855434026687836,
+        "u0_std": 0.10020359792439941,
+        "u24_mean": 3.85561068432916,
+        "u24_std": 0.10080474321742997
+      },
+      "sigma_eff": 0.01849040791683378,
+      "unit": "mOhm",
+      "validation_coverage_90": 0.902,
+      "validation_mae": 0.7398222331394734,
+      "validation_sample_count": 500
+    },
+    {
+      "coefficients": [
+        0.32574744762123486,
+        0.39407454363980804,
+        0.3816214087816265
+      ],
+      "hyperparameters": {
+        "l2_reg": 1.0
+      },
+      "model_family": "RIDGE",
+      "model_id": "REG_RIDGE_IGSS",
+      "parameter_name": "IGSS",
+      "preprocessor_params": {
+        "u0_mean": 1.4378550174766347,
+        "u0_std": 0.43544635769150863,
+        "u24_mean": 1.4353528550777614,
+        "u24_std": 0.4372779019070325
+      },
+      "sigma_eff": 0.313914638540121,
+      "unit": "nA",
+      "validation_coverage_90": 0.848,
+      "validation_mae": 0.7651568053080493,
+      "validation_sample_count": 500
+    }
+  ],
+  "stage": "PHASE_5_VALIDATION"
+}

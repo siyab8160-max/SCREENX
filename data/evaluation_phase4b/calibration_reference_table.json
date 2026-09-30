@@ -1,0 +1,3678 @@
+{
+  "benchmark_target": "PHASE_4B_BENCHMARK_v1.0.0",
+  "governing_specification": "PHASE_4B_DETECTOR_CALIBRATION_SPEC_v1.9.0",
+  "calibration_status": "FROZEN_CALIBRATION_BASELINE_FREEZE_0",
+  "creation_timestamp_utc": "2026-09-17T17:34:14.683028+00:00",
+  "master_seed": 261704,
+  "calibration_seed": 194572359,
+  "calibration_context": "calibration:null_a:v1",
+  "sample_accounting": {
+    "n_lots": 5000,
+    "lot_size": 20,
+    "n_components": 100000,
+    "n_parameters": 4,
+    "total_parameter_series": 400000,
+    "checkpoints_per_series": 7
+  },
+  "total_calibration_entries": 68,
+  "entries_breakdown": {
+    "kendall_tau": 24,
+    "theil_sen": 24,
+    "ols_t": 20
+  },
+  "distribution_archive": {
+    "filename": "calibration_distributions.npz",
+    "sha256": "147f1d38ed9b197af6b6301b9b454223d5cce54286fcfeb89a1ea15cec055d98",
+    "bytes": 13718198
+  },
+  "entries": {
+    "kendall_tau__IDSS__T24h_K2": {
+      "entry_key": "kendall_tau__IDSS__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -1.0,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0027,
+        "std": 0.9999963549933569,
+        "median": -1.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "9b39f36b71365a076588daf08686ff37ae1e1f83f2c6d842b11359e3974371c1"
+    },
+    "kendall_tau__IDSS__T48h_K3": {
+      "entry_key": "kendall_tau__IDSS__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -0.3333333333333333,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0018266666666666668,
+        "std": 0.6377852276607089,
+        "median": -0.3333333333333333
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "3bca575406373dfd55b25c9d323359a35490dc649ffd6137ec69859849b8f315"
+    },
+    "kendall_tau__IDSS__T72h_K4": {
+      "entry_key": "kendall_tau__IDSS__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6666666666666666,
+        "p_95_0": 0.6666666666666666,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.0005633333333333331,
+        "std": 0.4894926107602533,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "ae379536ec9d1ae1e35c99f06341d563501f57e04ced975342d6fce529691a7f"
+    },
+    "kendall_tau__IDSS__T96h_K5": {
+      "entry_key": "kendall_tau__IDSS__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6,
+        "p_95_0": 0.6,
+        "p_99_0": 0.8,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.0011460000000000003,
+        "std": 0.40855047017963403,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "5157d9fafbf8d732f5e7db1ed7d517b5e27a1ad68bfc8e055663a08d247a1665"
+    },
+    "kendall_tau__IDSS__T120h_K6": {
+      "entry_key": "kendall_tau__IDSS__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.06666666666666667,
+        "p_90_0": 0.4666666666666667,
+        "p_95_0": 0.6,
+        "p_99_0": 0.7333333333333333,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.001157333333333333,
+        "std": 0.354866726973506,
+        "median": 0.06666666666666667
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "a295eeb9dc474f0646714d279f638b7f84da0e4ae6b1e25c21136f06d180f66c"
+    },
+    "kendall_tau__IDSS__T168h_K7": {
+      "entry_key": "kendall_tau__IDSS__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.9047619047619048,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.9047619047619048,
+        "step_2_alpha_0_000333": 0.9047619047619048,
+        "step_3_alpha_0_00050": 0.9047619047619048,
+        "step_4_alpha_0_00100": 0.9047619047619048
+      },
+      "percentiles": {
+        "p_50_0": 0.047619047619047616,
+        "p_90_0": 0.42857142857142855,
+        "p_95_0": 0.5238095238095238,
+        "p_99_0": 0.7142857142857143,
+        "p_99_9": 0.9047619047619048,
+        "p_99_975": 0.9047619047619048,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.0005752380952380955,
+        "std": 0.3179036137729274,
+        "median": 0.047619047619047616
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "ec00461dc675774823390cf0bc2b5e0660500a76e69ade0e91ec084fde0a9256"
+    },
+    "kendall_tau__VGS(th)__T24h_K2": {
+      "entry_key": "kendall_tau__VGS(th)__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -1.0,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.00174,
+        "std": 0.9999984861988542,
+        "median": -1.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "028d87e7d6141951af8092b6a1c74b78d328b0c4b0f0e40c05232a1439307237"
+    },
+    "kendall_tau__VGS(th)__T48h_K3": {
+      "entry_key": "kendall_tau__VGS(th)__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -0.3333333333333333,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0018666666666666662,
+        "std": 0.6377293609187034,
+        "median": -0.3333333333333333
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "9ccc7127309c742b09602851c8704af2e6149f14fd47b9e91666654364eb8660"
+    },
+    "kendall_tau__VGS(th)__T72h_K4": {
+      "entry_key": "kendall_tau__VGS(th)__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6666666666666666,
+        "p_95_0": 0.6666666666666666,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.001953333333333334,
+        "std": 0.48985776398188613,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "7b0917448e7a7b9461595fdeff4b334799ffea4ff8b4c96220f9af3f8294abbe"
+    },
+    "kendall_tau__VGS(th)__T96h_K5": {
+      "entry_key": "kendall_tau__VGS(th)__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6,
+        "p_95_0": 0.6,
+        "p_99_0": 0.8,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0009119999999999996,
+        "std": 0.40849084231595695,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "6c4c6dc8d85530978f346b70a9547f57ebae50990342c7c13f8f1c4b268ce3fe"
+    },
+    "kendall_tau__VGS(th)__T120h_K6": {
+      "entry_key": "kendall_tau__VGS(th)__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -0.06666666666666667,
+        "p_90_0": 0.4666666666666667,
+        "p_95_0": 0.6,
+        "p_99_0": 0.7333333333333333,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.001413333333333333,
+        "std": 0.35565495488370935,
+        "median": -0.06666666666666667
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "c326e2fd74c4ee6444d19d4cbc2e62c4344b69affba02d2ec135e1a27b21986d"
+    },
+    "kendall_tau__VGS(th)__T168h_K7": {
+      "entry_key": "kendall_tau__VGS(th)__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 0.9047619047619048,
+        "step_4_alpha_0_00100": 0.9047619047619048
+      },
+      "percentiles": {
+        "p_50_0": -0.047619047619047616,
+        "p_90_0": 0.42857142857142855,
+        "p_95_0": 0.5238095238095238,
+        "p_99_0": 0.7142857142857143,
+        "p_99_9": 0.9047619047619048,
+        "p_99_975": 0.9047619047619048,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.0003323809523809528,
+        "std": 0.31725849200201445,
+        "median": -0.047619047619047616
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "92e939ae469b546bf3eea4d0cdf77e111371af5d43755814ce4e0c8bb9250203"
+    },
+    "kendall_tau__RDS(on)__T24h_K2": {
+      "entry_key": "kendall_tau__RDS(on)__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -1.0,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.00562,
+        "std": 0.9999842076753012,
+        "median": -1.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "a10bfa7da0fade495b9f3fb90c803c28a6f17e308c462667af5f8c301cae9e2c"
+    },
+    "kendall_tau__RDS(on)__T48h_K3": {
+      "entry_key": "kendall_tau__RDS(on)__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -0.3333333333333333,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0021200000000000004,
+        "std": 0.6387800482517002,
+        "median": -0.3333333333333333
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "2554c0a177910077e62e4fd6b9c8ce8ec92ee163dd25e0c0350c321e288f76e6"
+    },
+    "kendall_tau__RDS(on)__T72h_K4": {
+      "entry_key": "kendall_tau__RDS(on)__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6666666666666666,
+        "p_95_0": 0.6666666666666666,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.0028666666666666662,
+        "std": 0.4915718597858642,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "d7332627008cf1689a77f41873ce9d0cf3b464533619be8cab8c08c48e083944"
+    },
+    "kendall_tau__RDS(on)__T96h_K5": {
+      "entry_key": "kendall_tau__RDS(on)__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6,
+        "p_95_0": 0.6,
+        "p_99_0": 0.8,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.002408000000000001,
+        "std": 0.4101392465200081,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "ed94d22e59ec388947ae1abb7763784fcc1e38acb20d5f8e5b97ab79e0fa95dd"
+    },
+    "kendall_tau__RDS(on)__T120h_K6": {
+      "entry_key": "kendall_tau__RDS(on)__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.06666666666666667,
+        "p_90_0": 0.4666666666666667,
+        "p_95_0": 0.6,
+        "p_99_0": 0.7333333333333333,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.002845333333333333,
+        "std": 0.35568336991456,
+        "median": 0.06666666666666667
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "002c8ccd0037cc8e34a09856f28ca0c7c684a68d4d8b88b44806d6170d7061da"
+    },
+    "kendall_tau__RDS(on)__T168h_K7": {
+      "entry_key": "kendall_tau__RDS(on)__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.9047619047619048,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.9047619047619048,
+        "step_2_alpha_0_000333": 0.9047619047619048,
+        "step_3_alpha_0_00050": 0.9047619047619048,
+        "step_4_alpha_0_00100": 0.9047619047619048
+      },
+      "percentiles": {
+        "p_50_0": 0.047619047619047616,
+        "p_90_0": 0.42857142857142855,
+        "p_95_0": 0.5238095238095238,
+        "p_99_0": 0.7142857142857143,
+        "p_99_9": 0.9047619047619048,
+        "p_99_975": 0.9047619047619048,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.0033533333333333336,
+        "std": 0.3167860176931673,
+        "median": 0.047619047619047616
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "0fe85884a0d972ac2c3ee82fecb7640c810cd212408b23737633be83b879f8d0"
+    },
+    "kendall_tau__IGSS__T24h_K2": {
+      "entry_key": "kendall_tau__IGSS__T24h_K2",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -1.0,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.00308,
+        "std": 0.9999952567887509,
+        "median": -1.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 2,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "b7b4229fe795fbdf6865304f87f1981cc1caba37d10fd81054802ebade738bd2"
+    },
+    "kendall_tau__IGSS__T48h_K3": {
+      "entry_key": "kendall_tau__IGSS__T48h_K3",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.3333333333333333,
+        "p_90_0": 1.0,
+        "p_95_0": 1.0,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.00044666666666666645,
+        "std": 0.6399651209592946,
+        "median": 0.3333333333333333
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 4,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "19e13c62d8ed2676e917a690152ecfc7d59909ce9b657c8cd8738d8dc24521d0"
+    },
+    "kendall_tau__IGSS__T72h_K4": {
+      "entry_key": "kendall_tau__IGSS__T72h_K4",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6666666666666666,
+        "p_95_0": 0.6666666666666666,
+        "p_99_0": 1.0,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0004233333333333337,
+        "std": 0.49109722810819806,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 7,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "d9e5712366aa738865bcaaf9e481bbe192a593789d714376d4494ebf72a94c73"
+    },
+    "kendall_tau__IGSS__T96h_K5": {
+      "entry_key": "kendall_tau__IGSS__T96h_K5",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": 0.0,
+        "p_90_0": 0.6,
+        "p_95_0": 0.6,
+        "p_99_0": 0.8,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": 0.0005700000000000003,
+        "std": 0.4077961195254315,
+        "median": 0.0
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 11,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "f69963486bc894fdb2534d441968e0cfb9fa7ce2658c3f639064c90f734b0570"
+    },
+    "kendall_tau__IGSS__T120h_K6": {
+      "entry_key": "kendall_tau__IGSS__T120h_K6",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 1.0,
+        "step_4_alpha_0_00100": 1.0
+      },
+      "percentiles": {
+        "p_50_0": -0.06666666666666667,
+        "p_90_0": 0.4666666666666667,
+        "p_95_0": 0.6,
+        "p_99_0": 0.7333333333333333,
+        "p_99_9": 1.0,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0008266666666666663,
+        "std": 0.3549503016229486,
+        "median": -0.06666666666666667
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 16,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "84a6129205cafb6640c528a38b1330403bffe17ebd5161e2bfa4d5f06e69bf30"
+    },
+    "kendall_tau__IGSS__T168h_K7": {
+      "entry_key": "kendall_tau__IGSS__T168h_K7",
+      "detector_family": "kendall_tau",
+      "detector_name": "Kendall tau rank correlation",
+      "detector_role": "PRIMARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_tau = [2/(K*(K-1))] * sum_{j<k} sgn(y_k - y_j)",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1.0,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1.0,
+        "step_2_alpha_0_000333": 1.0,
+        "step_3_alpha_0_00050": 0.9047619047619048,
+        "step_4_alpha_0_00100": 0.9047619047619048
+      },
+      "percentiles": {
+        "p_50_0": -0.047619047619047616,
+        "p_90_0": 0.42857142857142855,
+        "p_95_0": 0.5238095238095238,
+        "p_99_0": 0.7142857142857143,
+        "p_99_9": 0.9047619047619048,
+        "p_99_975": 1.0,
+        "p_99_99": 1.0
+      },
+      "summary_statistics": {
+        "min": -1.0,
+        "max": 1.0,
+        "mean": -0.0008333333333333334,
+        "std": 0.31775464282768356,
+        "median": -0.047619047619047616
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 22,
+        "n_ties": 100000,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "ebf88da5ae18cfc8d8b709739c971b8eb62bcd8511bf1d92f35b0d72c1cb8438"
+    },
+    "theil_sen__IDSS__T24h_K2": {
+      "entry_key": "theil_sen__IDSS__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.01807531629121469,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.01807531629121469,
+        "step_2_alpha_0_000333": 0.017445202115999186,
+        "step_3_alpha_0_00050": 0.016854969125657985,
+        "step_4_alpha_0_00100": 0.015468156515312415
+      },
+      "percentiles": {
+        "p_50_0": -1.7140204388908557e-05,
+        "p_90_0": 0.006570673774250625,
+        "p_95_0": 0.008414996614269867,
+        "p_99_0": 0.011873167565010936,
+        "p_99_9": 0.01546395878252329,
+        "p_99_975": 0.017958439352254732,
+        "p_99_99": 0.019042504735090435
+      },
+      "summary_statistics": {
+        "min": -0.021888693163518855,
+        "max": 0.021864182209924587,
+        "mean": -1.6469217529320722e-05,
+        "std": 0.005118059401511304,
+        "median": -1.7140204388908557e-05
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "7830a96901c91d28c6b2bcf3afe736e012c3847b9cdd0148f8ca4fe0fda64356"
+    },
+    "theil_sen__IDSS__T48h_K3": {
+      "entry_key": "theil_sen__IDSS__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.008868308869275837,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.008868308869275837,
+        "step_2_alpha_0_000333": 0.008684269331045926,
+        "step_3_alpha_0_00050": 0.008356086034105663,
+        "step_4_alpha_0_00100": 0.007889444073022263
+      },
+      "percentiles": {
+        "p_50_0": -4.951643626587357e-06,
+        "p_90_0": 0.0032747058794070296,
+        "p_95_0": 0.004223724393759201,
+        "p_99_0": 0.005954608183698911,
+        "p_99_9": 0.007889432517442462,
+        "p_99_975": 0.008861199749253331,
+        "p_99_99": 0.00958317247067099
+      },
+      "summary_statistics": {
+        "min": -0.011091788585488366,
+        "max": 0.010613412059032849,
+        "mean": -8.962107502779578e-06,
+        "std": 0.0025652771830743672,
+        "median": -4.951643626587357e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "aeb7b6adc914abee5c201cb16912d81df468acaae3d1b17cb6ed97c505086697"
+    },
+    "theil_sen__IDSS__T72h_K4": {
+      "entry_key": "theil_sen__IDSS__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.005947250652428275,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.005947250652428275,
+        "step_2_alpha_0_000333": 0.005835602180301599,
+        "step_3_alpha_0_00050": 0.005672412948600195,
+        "step_4_alpha_0_00100": 0.005333763536137489
+      },
+      "percentiles": {
+        "p_50_0": 7.055938211073277e-06,
+        "p_90_0": 0.002195256546358186,
+        "p_95_0": 0.002820455824828539,
+        "p_99_0": 0.003979963390727792,
+        "p_99_9": 0.005332149343887726,
+        "p_99_975": 0.005941512614890767,
+        "p_99_99": 0.0063123907744582625
+      },
+      "summary_statistics": {
+        "min": -0.006827326609030088,
+        "max": 0.007376543812551333,
+        "mean": -1.1110001800870789e-06,
+        "std": 0.0017181602559408016,
+        "median": 7.055938211073277e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "451f0bfc0637cd194818d9755bdce06df8e8cd11eb882c2271dae2a77f46c5ad"
+    },
+    "theil_sen__IDSS__T96h_K5": {
+      "entry_key": "theil_sen__IDSS__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.004275457071463867,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.004275457071463867,
+        "step_2_alpha_0_000333": 0.0041658420920752046,
+        "step_3_alpha_0_00050": 0.004032468362846722,
+        "step_4_alpha_0_00100": 0.003793150349294442
+      },
+      "percentiles": {
+        "p_50_0": 4.450832423732944e-06,
+        "p_90_0": 0.001568407750061048,
+        "p_95_0": 0.002010047509470761,
+        "p_99_0": 0.0028598311949403366,
+        "p_99_9": 0.003791392792636205,
+        "p_99_975": 0.0042683205671266095,
+        "p_99_99": 0.004669414422718541
+      },
+      "summary_statistics": {
+        "min": -0.00567976256486759,
+        "max": 0.0054813548683518894,
+        "mean": 1.8337605117346524e-06,
+        "std": 0.0012241542081975905,
+        "median": 4.450832423732944e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "473f23cf628d7e34a6da5159f867fe2eaa2f281d68a11daaab602785f5ba5215"
+    },
+    "theil_sen__IDSS__T120h_K6": {
+      "entry_key": "theil_sen__IDSS__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0033910575078768424,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0033910575078768424,
+        "step_2_alpha_0_000333": 0.0032816588476963595,
+        "step_3_alpha_0_00050": 0.003157977046143637,
+        "step_4_alpha_0_00100": 0.002990970084349403
+      },
+      "percentiles": {
+        "p_50_0": 1.5978993394805476e-06,
+        "p_90_0": 0.0012094676870666233,
+        "p_95_0": 0.0015569052811142275,
+        "p_99_0": 0.0021995537157026364,
+        "p_99_9": 0.002990239452348766,
+        "p_99_975": 0.0033879441524371267,
+        "p_99_99": 0.0035579287972832374
+      },
+      "summary_statistics": {
+        "min": -0.004552592730064801,
+        "max": 0.00439921355928042,
+        "mean": 3.6649090174737454e-06,
+        "std": 0.0009427938575631208,
+        "median": 1.5978993394805476e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "87329738a47859415cee6ce7dc1522db2418f0db46cd92455870233adb5617b5"
+    },
+    "theil_sen__IDSS__T168h_K7": {
+      "entry_key": "theil_sen__IDSS__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0024867385632133102,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0024867385632133102,
+        "step_2_alpha_0_000333": 0.002406116881803146,
+        "step_3_alpha_0_00050": 0.00233017985686493,
+        "step_4_alpha_0_00100": 0.002160915254310043
+      },
+      "percentiles": {
+        "p_50_0": 3.593776732842569e-06,
+        "p_90_0": 0.0008582808601143163,
+        "p_95_0": 0.0011014638027344278,
+        "p_99_0": 0.0015813093415003572,
+        "p_99_9": 0.002153678501924995,
+        "p_99_975": 0.0024855444788921626,
+        "p_99_99": 0.0026254155857844885
+      },
+      "summary_statistics": {
+        "min": -0.003681538365218075,
+        "max": 0.002914563919736451,
+        "mean": 2.030106342518361e-06,
+        "std": 0.0006716424436315841,
+        "median": 3.593776732842569e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "c8731415081dbd4e44da697cd2ee04e9ef439c07df353aafc9b6b4fb92b41757"
+    },
+    "theil_sen__VGS(th)__T24h_K2": {
+      "entry_key": "theil_sen__VGS(th)__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.004970748490753536,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.004970748490753536,
+        "step_2_alpha_0_000333": 0.004850820032709258,
+        "step_3_alpha_0_00050": 0.004690262655505484,
+        "step_4_alpha_0_00100": 0.004448831388771686
+      },
+      "percentiles": {
+        "p_50_0": -2.69317901450498e-06,
+        "p_90_0": 0.0017384363780460768,
+        "p_95_0": 0.0022344548090269247,
+        "p_99_0": 0.0031898997684469466,
+        "p_99_9": 0.004235366630309523,
+        "p_99_975": 0.004757731408878329,
+        "p_99_99": 0.005073030800119941
+      },
+      "summary_statistics": {
+        "min": -0.006018807976206723,
+        "max": 0.00564558009919434,
+        "mean": -2.916129704331819e-06,
+        "std": 0.0013602186879644396,
+        "median": -2.69317901450498e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "ced6ad81d67d9b59193f3757622637a7eea49db547467961d39cdb84f563c122"
+    },
+    "theil_sen__VGS(th)__T48h_K3": {
+      "entry_key": "theil_sen__VGS(th)__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0025021075817802663,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0025021075817802663,
+        "step_2_alpha_0_000333": 0.0024715625727249244,
+        "step_3_alpha_0_00050": 0.002397786049935661,
+        "step_4_alpha_0_00100": 0.002290731087183658
+      },
+      "percentiles": {
+        "p_50_0": -1.3178745077446763e-06,
+        "p_90_0": 0.0008670265443643061,
+        "p_95_0": 0.00111276254876538,
+        "p_99_0": 0.0015845529653584144,
+        "p_99_9": 0.0021322315613258396,
+        "p_99_975": 0.0023825596590700796,
+        "p_99_99": 0.0025313945386157047
+      },
+      "summary_statistics": {
+        "min": -0.0030751289346457322,
+        "max": 0.0028193140108705994,
+        "mean": -2.5101580228065677e-06,
+        "std": 0.0006802022881882838,
+        "median": -1.3178745077446763e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "8a3304c8551d1e8d9261d791921640847f2a12c3c43a0e40d1b2c821366e8929"
+    },
+    "theil_sen__VGS(th)__T72h_K4": {
+      "entry_key": "theil_sen__VGS(th)__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.001718827010954515,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.001718827010954515,
+        "step_2_alpha_0_000333": 0.001682820058514747,
+        "step_3_alpha_0_00050": 0.0016183079059443205,
+        "step_4_alpha_0_00100": 0.0015152004005085573
+      },
+      "percentiles": {
+        "p_50_0": -2.461685810493941e-06,
+        "p_90_0": 0.0005765424727571855,
+        "p_95_0": 0.0007442101713624683,
+        "p_99_0": 0.001060207307242787,
+        "p_99_9": 0.0014014890610124558,
+        "p_99_975": 0.0016021606383087757,
+        "p_99_99": 0.0017188285432182524
+      },
+      "summary_statistics": {
+        "min": -0.0021340678581614173,
+        "max": 0.002063980181577314,
+        "mean": -2.0850663911793058e-06,
+        "std": 0.00045321269721408945,
+        "median": -2.461685810493941e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "c29d5fe5b61c26b046065ef62290b2c00049067fcf5bb1481c4efeeeaa76ce2f"
+    },
+    "theil_sen__VGS(th)__T96h_K5": {
+      "entry_key": "theil_sen__VGS(th)__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0012403885555700386,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0012403885555700386,
+        "step_2_alpha_0_000333": 0.0012144412805532485,
+        "step_3_alpha_0_00050": 0.001169996634970638,
+        "step_4_alpha_0_00100": 0.001090089464898067
+      },
+      "percentiles": {
+        "p_50_0": -1.4471668820827134e-06,
+        "p_90_0": 0.00041177703975268026,
+        "p_95_0": 0.0005306610464610984,
+        "p_99_0": 0.0007535554785023112,
+        "p_99_9": 0.0010183884141593247,
+        "p_99_975": 0.001146302206352118,
+        "p_99_99": 0.0011957915544429092
+      },
+      "summary_statistics": {
+        "min": -0.0014529020074019908,
+        "max": 0.0013024341743039978,
+        "mean": -1.4004392741762262e-06,
+        "std": 0.0003230704533723557,
+        "median": -1.4471668820827134e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "6ac889e47ca1f8b8f29e618a26e5ca744070e929b7d98cf617fa018012313e32"
+    },
+    "theil_sen__VGS(th)__T120h_K6": {
+      "entry_key": "theil_sen__VGS(th)__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0009446782266790657,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0009446782266790657,
+        "step_2_alpha_0_000333": 0.0009220910551438385,
+        "step_3_alpha_0_00050": 0.00087961509601997,
+        "step_4_alpha_0_00100": 0.0008368439160608439
+      },
+      "percentiles": {
+        "p_50_0": -7.422011276921511e-07,
+        "p_90_0": 0.00031412324229636724,
+        "p_95_0": 0.00040598497942082463,
+        "p_99_0": 0.0005749307703541025,
+        "p_99_9": 0.0007808922879778244,
+        "p_99_975": 0.0008764817866288377,
+        "p_99_99": 0.0009606799810486567
+      },
+      "summary_statistics": {
+        "min": -0.0012153819347767159,
+        "max": 0.0010766544454988763,
+        "mean": -1.5062118192453383e-06,
+        "std": 0.00024796306742948075,
+        "median": -7.422011276921511e-07
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "42a23f6ea2183451c5c34953f63477751f5dfc680ea927f25e720ca3338c84b7"
+    },
+    "theil_sen__VGS(th)__T168h_K7": {
+      "entry_key": "theil_sen__VGS(th)__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0006857799703664513,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0006857799703664513,
+        "step_2_alpha_0_000333": 0.0006660898617798012,
+        "step_3_alpha_0_00050": 0.0006428170028881705,
+        "step_4_alpha_0_00100": 0.0006061283708788298
+      },
+      "percentiles": {
+        "p_50_0": -8.086912691810758e-08,
+        "p_90_0": 0.00022535312501627955,
+        "p_95_0": 0.0002894465741331455,
+        "p_99_0": 0.0004156758226822369,
+        "p_99_9": 0.0005662796450604802,
+        "p_99_975": 0.0006447501865674413,
+        "p_99_99": 0.0006771724663790044
+      },
+      "summary_statistics": {
+        "min": -0.0008018688904445903,
+        "max": 0.0007806880018322859,
+        "mean": -2.073648703805353e-07,
+        "std": 0.00017683435405826644,
+        "median": -8.086912691810758e-08
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "54c0e35e93aaaad7293c9a58148b3a4325de41385b4671e8c668731db6a4c193"
+    },
+    "theil_sen__RDS(on)__T24h_K2": {
+      "entry_key": "theil_sen__RDS(on)__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.003104922759132637,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.003104922759132637,
+        "step_2_alpha_0_000333": 0.0030449489033344914,
+        "step_3_alpha_0_00050": 0.002912370315233522,
+        "step_4_alpha_0_00100": 0.002698016460618735
+      },
+      "percentiles": {
+        "p_50_0": -5.8576817370166925e-06,
+        "p_90_0": 0.0010994983994363327,
+        "p_95_0": 0.001409614858333863,
+        "p_99_0": 0.0020125539564764014,
+        "p_99_9": 0.0026964626722585784,
+        "p_99_975": 0.003088849483793925,
+        "p_99_99": 0.003282740011411702
+      },
+      "summary_statistics": {
+        "min": -0.0037706258935467454,
+        "max": 0.003784052764787179,
+        "mean": -5.676435920116878e-06,
+        "std": 0.0008646981450846806,
+        "median": -5.8576817370166925e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "fb995b44c0cb3b92dd1338aa74fe8306d592350a3f1f5325cca6a0a0e4ffb3b1"
+    },
+    "theil_sen__RDS(on)__T48h_K3": {
+      "entry_key": "theil_sen__RDS(on)__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.001491470244380048,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.001491470244380048,
+        "step_2_alpha_0_000333": 0.0014675641579241134,
+        "step_3_alpha_0_00050": 0.001416617418670894,
+        "step_4_alpha_0_00100": 0.0013369764342284485
+      },
+      "percentiles": {
+        "p_50_0": -1.1024787673341585e-06,
+        "p_90_0": 0.0005562191136977627,
+        "p_95_0": 0.0007140155465336985,
+        "p_99_0": 0.0010103446135716347,
+        "p_99_9": 0.0013355219895545504,
+        "p_99_975": 0.0014892951152821231,
+        "p_99_99": 0.0015550980328693613
+      },
+      "summary_statistics": {
+        "min": -0.002017605468493731,
+        "max": 0.002057631222215898,
+        "mean": 1.7773945880683927e-07,
+        "std": 0.0004330139121524495,
+        "median": -1.1024787673341585e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "88ec0d1e565535314d277e0693b8f57ef8ebb9982389e8915160b91c20676a01"
+    },
+    "theil_sen__RDS(on)__T72h_K4": {
+      "entry_key": "theil_sen__RDS(on)__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.001039791186748015,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.001039791186748015,
+        "step_2_alpha_0_000333": 0.0010076818474785466,
+        "step_3_alpha_0_00050": 0.0009786296976064843,
+        "step_4_alpha_0_00100": 0.0009023174781933689
+      },
+      "percentiles": {
+        "p_50_0": 1.7177599484890021e-06,
+        "p_90_0": 0.0003721900178091688,
+        "p_95_0": 0.00047938605512552567,
+        "p_99_0": 0.0006791771665457657,
+        "p_99_9": 0.0009019621568640293,
+        "p_99_975": 0.001036078614734479,
+        "p_99_99": 0.0011555149626349653
+      },
+      "summary_statistics": {
+        "min": -0.0012437797882528306,
+        "max": 0.0013564903753032394,
+        "mean": 2.3194121845936387e-06,
+        "std": 0.00028977587112618934,
+        "median": 1.7177599484890021e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "3b96fb3f654f34a8703de3a0492a601eec4be6da930d745e70f7f44edf98b9ec"
+    },
+    "theil_sen__RDS(on)__T96h_K5": {
+      "entry_key": "theil_sen__RDS(on)__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0007738127899835634,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0007738127899835634,
+        "step_2_alpha_0_000333": 0.0007536932943055126,
+        "step_3_alpha_0_00050": 0.0007251005422876933,
+        "step_4_alpha_0_00100": 0.0006758138670132363
+      },
+      "percentiles": {
+        "p_50_0": 2.0926577194331493e-06,
+        "p_90_0": 0.0002656682405190957,
+        "p_95_0": 0.000343139781761156,
+        "p_99_0": 0.0004919389216530447,
+        "p_99_9": 0.000674153958951585,
+        "p_99_975": 0.0007695466228759849,
+        "p_99_99": 0.00080889806570956
+      },
+      "summary_statistics": {
+        "min": -0.0009005193382771403,
+        "max": 0.0009857540625774486,
+        "mean": 1.6848020026436123e-06,
+        "std": 0.00020820539343702405,
+        "median": 2.0926577194331493e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "09b9fa5962bdba56cd7736ab06021837db33cb3699b79e7e7349b7f4e8eefc91"
+    },
+    "theil_sen__RDS(on)__T120h_K6": {
+      "entry_key": "theil_sen__RDS(on)__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0005935821844717803,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0005935821844717803,
+        "step_2_alpha_0_000333": 0.0005771069879948218,
+        "step_3_alpha_0_00050": 0.0005409799484710395,
+        "step_4_alpha_0_00100": 0.0005085097296861721
+      },
+      "percentiles": {
+        "p_50_0": 1.653510190211908e-06,
+        "p_90_0": 0.0002040844246808786,
+        "p_95_0": 0.0002626621490219147,
+        "p_99_0": 0.00037367340802056014,
+        "p_99_9": 0.000507808340499424,
+        "p_99_975": 0.0005920864970946048,
+        "p_99_99": 0.0006247474258649127
+      },
+      "summary_statistics": {
+        "min": -0.0006860637570728017,
+        "max": 0.0007497373719111133,
+        "mean": 1.4780102550377727e-06,
+        "std": 0.0001588094423348546,
+        "median": 1.653510190211908e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "1048defb9d0434beb0b77fac774cb0be1fb0d54d87a74a7b025cabcdfb37de25"
+    },
+    "theil_sen__RDS(on)__T168h_K7": {
+      "entry_key": "theil_sen__RDS(on)__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.0004165801071954621,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.0004165801071954621,
+        "step_2_alpha_0_000333": 0.00040293232159021523,
+        "step_3_alpha_0_00050": 0.0003889039114192015,
+        "step_4_alpha_0_00100": 0.000360680782930562
+      },
+      "percentiles": {
+        "p_50_0": 1.2770193391594317e-06,
+        "p_90_0": 0.0001446441684580913,
+        "p_95_0": 0.00018613670148348645,
+        "p_99_0": 0.00026602067310996697,
+        "p_99_9": 0.00036001372981119884,
+        "p_99_975": 0.0004155709425777476,
+        "p_99_99": 0.0004461226921314814
+      },
+      "summary_statistics": {
+        "min": -0.0006021417574801495,
+        "max": 0.0005750020427947958,
+        "mean": 1.0524366743066278e-06,
+        "std": 0.00011293789504063561,
+        "median": 1.2770193391594317e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "8eb55483a1e04141a0736cfd23b0f66378fbb81ede0d06fe9f7b6e669611e900"
+    },
+    "theil_sen__IGSS__T24h_K2": {
+      "entry_key": "theil_sen__IGSS__T24h_K2",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 24,
+      "K": 2,
+      "checkpoints": [
+        0.0,
+        24.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.056193868073363705,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.056193868073363705,
+        "step_2_alpha_0_000333": 0.05546418052109259,
+        "step_3_alpha_0_00050": 0.05411696306233602,
+        "step_4_alpha_0_00100": 0.05111647632991376
+      },
+      "percentiles": {
+        "p_50_0": -6.193121315149763e-05,
+        "p_90_0": 0.019658176223635568,
+        "p_95_0": 0.025381983085764382,
+        "p_99_0": 0.03593633061754597,
+        "p_99_9": 0.04746055542710559,
+        "p_99_975": 0.0533852819501154,
+        "p_99_99": 0.056466236515835454
+      },
+      "summary_statistics": {
+        "min": -0.0632533665399756,
+        "max": 0.06602495264524648,
+        "mean": -6.43626963532268e-05,
+        "std": 0.015442658714357373,
+        "median": -6.193121315149763e-05
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "50d8a3070b70ceb32bc9909e6f65a9a99706495c74793f98ea86a8832fa9b087"
+    },
+    "theil_sen__IGSS__T48h_K3": {
+      "entry_key": "theil_sen__IGSS__T48h_K3",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.027658423180652727,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.027658423180652727,
+        "step_2_alpha_0_000333": 0.027405258221397857,
+        "step_3_alpha_0_00050": 0.026614902417157357,
+        "step_4_alpha_0_00100": 0.0253579595133811
+      },
+      "percentiles": {
+        "p_50_0": 2.7728569992546227e-05,
+        "p_90_0": 0.009870267783990225,
+        "p_95_0": 0.012691559251466662,
+        "p_99_0": 0.018039481879475544,
+        "p_99_9": 0.023599800930211585,
+        "p_99_975": 0.026574013231864313,
+        "p_99_99": 0.028138462628343203
+      },
+      "summary_statistics": {
+        "min": -0.032302540244547984,
+        "max": 0.030918090645713197,
+        "mean": -2.8096702356484018e-05,
+        "std": 0.007762348378093435,
+        "median": 2.7728569992546227e-05
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "610186cb8fac8ccb358d1f9ede2532243ea61f35c0e806c33a6e11ec7eeca0e8"
+    },
+    "theil_sen__IGSS__T72h_K4": {
+      "entry_key": "theil_sen__IGSS__T72h_K4",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.01936413458874824,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.01936413458874824,
+        "step_2_alpha_0_000333": 0.01897166889462258,
+        "step_3_alpha_0_00050": 0.01846033480132195,
+        "step_4_alpha_0_00100": 0.01718334743254589
+      },
+      "percentiles": {
+        "p_50_0": -1.976405040021258e-05,
+        "p_90_0": 0.006602517579180846,
+        "p_95_0": 0.00845485411350877,
+        "p_99_0": 0.011936775080512605,
+        "p_99_9": 0.01593070014368443,
+        "p_99_975": 0.018179089097777292,
+        "p_99_99": 0.019311212773029815
+      },
+      "summary_statistics": {
+        "min": -0.024961266464572945,
+        "max": 0.023528422643059873,
+        "mean": -2.8674471127669368e-05,
+        "std": 0.005178810067415347,
+        "median": -1.976405040021258e-05
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "dfce004dad916c1882e3e0cfaed69d8f01d1829c67179a2ff01dced48835405c"
+    },
+    "theil_sen__IGSS__T96h_K5": {
+      "entry_key": "theil_sen__IGSS__T96h_K5",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.01422644496957556,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.01422644496957556,
+        "step_2_alpha_0_000333": 0.01393880842217323,
+        "step_3_alpha_0_00050": 0.01360240528697913,
+        "step_4_alpha_0_00100": 0.012549897106837904
+      },
+      "percentiles": {
+        "p_50_0": 7.47671900317153e-06,
+        "p_90_0": 0.004679951958602082,
+        "p_95_0": 0.006045240102711501,
+        "p_99_0": 0.008628247872993502,
+        "p_99_9": 0.011743841282409252,
+        "p_99_975": 0.013640472143617246,
+        "p_99_99": 0.014864770474013494
+      },
+      "summary_statistics": {
+        "min": -0.016906255151216215,
+        "max": 0.017411697593887554,
+        "mean": -8.434683293816454e-06,
+        "std": 0.003700883652371385,
+        "median": 7.47671900317153e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "980e5aa25299e78116f25858ba8fb11fba17fd707a633e6da1f47c006ab05b4a"
+    },
+    "theil_sen__IGSS__T120h_K6": {
+      "entry_key": "theil_sen__IGSS__T120h_K6",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.011018855602938395,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.011018855602938395,
+        "step_2_alpha_0_000333": 0.01060140356966485,
+        "step_3_alpha_0_00050": 0.01020921787608046,
+        "step_4_alpha_0_00100": 0.009544944326212406
+      },
+      "percentiles": {
+        "p_50_0": -1.9465123258135866e-05,
+        "p_90_0": 0.003618143790276196,
+        "p_95_0": 0.004626947281538471,
+        "p_99_0": 0.0066453687716480905,
+        "p_99_9": 0.008875310700033919,
+        "p_99_975": 0.009952003418545989,
+        "p_99_99": 0.010928768650087003
+      },
+      "summary_statistics": {
+        "min": -0.013586856646819625,
+        "max": 0.011688637918532798,
+        "mean": -1.761575008877328e-05,
+        "std": 0.0028422812936517838,
+        "median": -1.9465123258135866e-05
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "a31db3e5420835679c90192052ec1a56b6aea578e0e41c903f6dc49aad65acce"
+    },
+    "theil_sen__IGSS__T168h_K7": {
+      "entry_key": "theil_sen__IGSS__T168h_K7",
+      "detector_family": "theil_sen",
+      "detector_name": "Theil-Sen robust slope",
+      "detector_role": "AUXILIARY CANDIDATE",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_TS = median_{j<k} { (y_k - y_j) / (t_k - t_j) }",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 0.00781489357350391,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 0.00781489357350391,
+        "step_2_alpha_0_000333": 0.007695748636874835,
+        "step_3_alpha_0_00050": 0.0073510551833684155,
+        "step_4_alpha_0_00100": 0.00694282622308923
+      },
+      "percentiles": {
+        "p_50_0": -1.3639994102897367e-06,
+        "p_90_0": 0.002564687534590152,
+        "p_95_0": 0.0033225073599387938,
+        "p_99_0": 0.004738364255883508,
+        "p_99_9": 0.006410460723402281,
+        "p_99_975": 0.007258098856330369,
+        "p_99_99": 0.007702989852032099
+      },
+      "summary_statistics": {
+        "min": -0.009732560867558514,
+        "max": 0.009516683915961138,
+        "mean": -1.1286716907544885e-05,
+        "std": 0.0020286960794806707,
+        "median": -1.3639994102897367e-06
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "92f7a8a43311401927e934447ff44cb08e24c116929e9e554966d099797e76ef"
+    },
+    "ols_t__IDSS__T48h_K3": {
+      "entry_key": "ols_t__IDSS__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 961.7240737653715,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 961.7240737653715,
+        "step_2_alpha_0_000333": 791.4598086091688,
+        "step_3_alpha_0_00050": 564.761977657103,
+        "step_4_alpha_0_00100": 298.3553403320817
+      },
+      "percentiles": {
+        "p_50_0": -0.0022711625308287917,
+        "p_90_0": 3.075733931203077,
+        "p_95_0": 6.306585228692131,
+        "p_99_0": 31.799583845209416,
+        "p_99_9": 297.55471460080446,
+        "p_99_975": 946.3991937063007,
+        "p_99_99": 1490.3837972121473
+      },
+      "summary_statistics": {
+        "min": -14702.619233873744,
+        "max": 17683.019161053544,
+        "mean": -0.017636307269265343,
+        "std": 106.1227066877648,
+        "median": -0.0022711625308287917
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "30acf963601a08c8803442763d2b289afcca43c6e82868d9386a05a5fc6dc6b7"
+    },
+    "ols_t__IDSS__T72h_K4": {
+      "entry_key": "ols_t__IDSS__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 45.40789721164639,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 45.40789721164639,
+        "step_2_alpha_0_000333": 39.80890049474917,
+        "step_3_alpha_0_00050": 31.428097818690006,
+        "step_4_alpha_0_00100": 22.605214197086667
+      },
+      "percentiles": {
+        "p_50_0": 0.0037567960797567036,
+        "p_90_0": 1.8768281383191217,
+        "p_95_0": 2.9066318344872437,
+        "p_99_0": 6.997375674558033,
+        "p_99_9": 22.53287256628249,
+        "p_99_975": 43.74591473237788,
+        "p_99_99": 68.24572423119209
+      },
+      "summary_statistics": {
+        "min": -210.13301967384785,
+        "max": 2084.9093045196328,
+        "mean": 0.012834785682990612,
+        "std": 7.351356089935131,
+        "median": 0.0037567960797567036
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "5634348c8fda632a156cba7fc39e087822302802b4a1ec8dc141b5aec58aaf2b"
+    },
+    "ols_t__IDSS__T96h_K5": {
+      "entry_key": "ols_t__IDSS__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 16.82751473840153,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 16.82751473840153,
+        "step_2_alpha_0_000333": 15.618395233333766,
+        "step_3_alpha_0_00050": 13.469088656540348,
+        "step_4_alpha_0_00100": 10.266669541235935
+      },
+      "percentiles": {
+        "p_50_0": 0.001173613493902487,
+        "p_90_0": 1.6430034709692372,
+        "p_95_0": 2.3657646787501148,
+        "p_99_0": 4.583991616250291,
+        "p_99_9": 10.228839102600295,
+        "p_99_975": 16.60819015121635,
+        "p_99_99": 20.677604370190355
+      },
+      "summary_statistics": {
+        "min": -87.1704445171263,
+        "max": 51.224298422105115,
+        "mean": 0.005834777392272422,
+        "std": 1.7258954937220434,
+        "median": 0.001173613493902487
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "68b32f45b1b6376a0f43e4f2311755dba015f9a6192b2325ef590fba26498f8b"
+    },
+    "ols_t__IDSS__T120h_K6": {
+      "entry_key": "ols_t__IDSS__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 10.359335105657541,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 10.359335105657541,
+        "step_2_alpha_0_000333": 9.244057810094642,
+        "step_3_alpha_0_00050": 8.66748070950761,
+        "step_4_alpha_0_00100": 7.150503047812661
+      },
+      "percentiles": {
+        "p_50_0": 0.0022830232196459415,
+        "p_90_0": 1.5399958836313397,
+        "p_95_0": 2.1307514641294887,
+        "p_99_0": 3.7788050616421014,
+        "p_99_9": 7.067503307704393,
+        "p_99_975": 10.032308858014177,
+        "p_99_99": 12.68540683121943
+      },
+      "summary_statistics": {
+        "min": -31.764514109941167,
+        "max": 45.53500616587006,
+        "mean": 0.004240035664192381,
+        "std": 1.4221682344555566,
+        "median": 0.0022830232196459415
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "f025b3cb425af712fc46259d1b97821133cda003b9f2bfe059229d01ff6f46fc"
+    },
+    "ols_t__IDSS__T168h_K7": {
+      "entry_key": "ols_t__IDSS__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IDSS",
+      "units": "uA",
+      "transform": "log: u = ln(x / 1.0 uA)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 8.335501532879128,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 8.335501532879128,
+        "step_2_alpha_0_000333": 7.989268497474623,
+        "step_3_alpha_0_00050": 7.210114749368817,
+        "step_4_alpha_0_00100": 5.978113544838217
+      },
+      "percentiles": {
+        "p_50_0": 0.0008044901651646044,
+        "p_90_0": 1.473973891988076,
+        "p_95_0": 2.0223615377846507,
+        "p_99_0": 3.3923693223118203,
+        "p_99_9": 5.951050424280934,
+        "p_99_975": 8.321554319598874,
+        "p_99_99": 9.927836683101294
+      },
+      "summary_statistics": {
+        "min": -13.927295532786378,
+        "max": 15.342552025146913,
+        "mean": 0.0016393194233482147,
+        "std": 1.2909564144817895,
+        "median": 0.0008044901651646044
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "b59ca6ee558681d43eb29792f1ac761006ec03955e5ec472884c3290abbb497d"
+    },
+    "ols_t__VGS(th)__T48h_K3": {
+      "entry_key": "ols_t__VGS(th)__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 2630.256689180776,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 2630.256689180776,
+        "step_2_alpha_0_000333": 2062.152876860926,
+        "step_3_alpha_0_00050": 1365.6865653624186,
+        "step_4_alpha_0_00100": 656.3068748079236
+      },
+      "percentiles": {
+        "p_50_0": -0.0022455892813726887,
+        "p_90_0": 3.0662346058623586,
+        "p_95_0": 6.285087801025525,
+        "p_99_0": 31.46627169317642,
+        "p_99_9": 304.37289675267004,
+        "p_99_975": 1097.8587417394272,
+        "p_99_99": 2922.255432162152
+      },
+      "summary_statistics": {
+        "min": -160457.14438046058,
+        "max": 74215.52012992368,
+        "mean": -1.356956752124963,
+        "std": 625.7429307352285,
+        "median": -0.0022455892813726887
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "1bc2387f89b71869f6f2110b8f24d013436c450df46f9de61eea967e756e5298"
+    },
+    "ols_t__VGS(th)__T72h_K4": {
+      "entry_key": "ols_t__VGS(th)__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 67.1630540869031,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 67.1630540869031,
+        "step_2_alpha_0_000333": 57.356469475697516,
+        "step_3_alpha_0_00050": 46.94353712190453,
+        "step_4_alpha_0_00100": 32.166898190510985
+      },
+      "percentiles": {
+        "p_50_0": -0.006830313042430032,
+        "p_90_0": 1.8838795803180455,
+        "p_95_0": 2.936185108391424,
+        "p_99_0": 6.847857582713821,
+        "p_99_9": 21.56965515943792,
+        "p_99_975": 45.2364681317229,
+        "p_99_99": 67.16307636184077
+      },
+      "summary_statistics": {
+        "min": -265.04680041468856,
+        "max": 460.93288271347257,
+        "mean": -0.0036258871503988387,
+        "std": 3.8543887637395864,
+        "median": -0.006830313042430032
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "934441c25e1491f8cfd34087effd5d1cd621714e086aa52baeb03be4d50a30da"
+    },
+    "ols_t__VGS(th)__T96h_K5": {
+      "entry_key": "ols_t__VGS(th)__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 21.582502954952986,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 21.582502954952986,
+        "step_2_alpha_0_000333": 19.881174757117822,
+        "step_3_alpha_0_00050": 16.893436701030083,
+        "step_4_alpha_0_00100": 12.669597180209763
+      },
+      "percentiles": {
+        "p_50_0": -0.0032306302562818984,
+        "p_90_0": 1.6329937640575634,
+        "p_95_0": 2.363750804795162,
+        "p_99_0": 4.502524480259701,
+        "p_99_9": 9.950736149285664,
+        "p_99_975": 16.67004586796644,
+        "p_99_99": 24.172865720720417
+      },
+      "summary_statistics": {
+        "min": -42.82218573606297,
+        "max": 53.13261262499517,
+        "mean": -0.004517268191482142,
+        "std": 1.698860996212492,
+        "median": -0.0032306302562818984
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "f0b5cc9e4022434541a8acd8d5279f8c503458b65319daf67755742f7f21061e"
+    },
+    "ols_t__VGS(th)__T120h_K6": {
+      "entry_key": "ols_t__VGS(th)__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 12.294754201194449,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 12.294754201194449,
+        "step_2_alpha_0_000333": 11.335248268946359,
+        "step_3_alpha_0_00050": 10.22153722977626,
+        "step_4_alpha_0_00100": 8.701665031047238
+      },
+      "percentiles": {
+        "p_50_0": -0.004048626228837214,
+        "p_90_0": 1.5340709339789242,
+        "p_95_0": 2.13825923415164,
+        "p_99_0": 3.8056122385085236,
+        "p_99_9": 7.436557969471789,
+        "p_99_975": 10.20625253867047,
+        "p_99_99": 13.538422421982464
+      },
+      "summary_statistics": {
+        "min": -21.071067797148572,
+        "max": 25.521828717629816,
+        "mean": -0.0027930188069076015,
+        "std": 1.4143609497109337,
+        "median": -0.004048626228837214
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "8ccb1900afa9602fdf1c53f098699e636975e782f6c6001c3013d590203eb963"
+    },
+    "ols_t__VGS(th)__T168h_K7": {
+      "entry_key": "ols_t__VGS(th)__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "VGS(th)",
+      "units": "V",
+      "transform": "linear: u = x / 1.0 V",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 9.417028752159268,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 9.417028752159268,
+        "step_2_alpha_0_000333": 8.261780537426251,
+        "step_3_alpha_0_00050": 7.7484379355534125,
+        "step_4_alpha_0_00100": 6.797655042916974
+      },
+      "percentiles": {
+        "p_50_0": 0.00192090046964962,
+        "p_90_0": 1.4744323379638355,
+        "p_95_0": 2.0180902140027093,
+        "p_99_0": 3.3818322442123288,
+        "p_99_9": 5.749694308015431,
+        "p_99_975": 7.6620351725947,
+        "p_99_99": 9.32053399736448
+      },
+      "summary_statistics": {
+        "min": -16.321509218841793,
+        "max": 19.852671468896848,
+        "mean": 0.001118563679975546,
+        "std": 1.2890932654674692,
+        "median": 0.00192090046964962
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "248f416614dc4519dc5e1cfc9c4ffb4fe6e810667cfb640e407a033ea1b321ff"
+    },
+    "ols_t__RDS(on)__T48h_K3": {
+      "entry_key": "ols_t__RDS(on)__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 1217.2612814800939,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 1217.2612814800939,
+        "step_2_alpha_0_000333": 1027.5669353962332,
+        "step_3_alpha_0_00050": 690.3097937012047,
+        "step_4_alpha_0_00100": 357.64081946989575
+      },
+      "percentiles": {
+        "p_50_0": -0.003479361128718594,
+        "p_90_0": 3.06152603591556,
+        "p_95_0": 6.311224021246703,
+        "p_99_0": 31.26677023586362,
+        "p_99_9": 354.0335138024434,
+        "p_99_975": 1188.838098308901,
+        "p_99_99": 2548.3233037116006
+      },
+      "summary_statistics": {
+        "min": -38496.7381934767,
+        "max": 68968.38611612013,
+        "mean": 1.2820858456945994,
+        "std": 332.085691427442,
+        "median": -0.003479361128718594
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "7209f28fe16d365b68391c27eb2933860b42430adb9004b5854950a25dedeaa1"
+    },
+    "ols_t__RDS(on)__T72h_K4": {
+      "entry_key": "ols_t__RDS(on)__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 44.60547069487546,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 44.60547069487546,
+        "step_2_alpha_0_000333": 40.81129546621637,
+        "step_3_alpha_0_00050": 31.59228570573364,
+        "step_4_alpha_0_00100": 22.170140625976398
+      },
+      "percentiles": {
+        "p_50_0": 0.008366834224278169,
+        "p_90_0": 1.9068756260306643,
+        "p_95_0": 2.9391173535361568,
+        "p_99_0": 6.89814062322867,
+        "p_99_9": 22.08274277594879,
+        "p_99_975": 44.54137968343719,
+        "p_99_99": 68.26687073063265
+      },
+      "summary_statistics": {
+        "min": -207.3585497929987,
+        "max": 700.8455724820169,
+        "mean": 0.010461461712852812,
+        "std": 4.1033385046081,
+        "median": 0.008366834224278169
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "073c8f945ae6572b7efbb7d86ded88eeaacc5d4473adc9c4a0ae66e3a6ca2723"
+    },
+    "ols_t__RDS(on)__T96h_K5": {
+      "entry_key": "ols_t__RDS(on)__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 16.129761602577872,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 16.129761602577872,
+        "step_2_alpha_0_000333": 15.052235787670265,
+        "step_3_alpha_0_00050": 12.948045182911084,
+        "step_4_alpha_0_00100": 10.501572124224733
+      },
+      "percentiles": {
+        "p_50_0": 0.009875150477884818,
+        "p_90_0": 1.667746835445693,
+        "p_95_0": 2.3907632768715583,
+        "p_99_0": 4.603967136062547,
+        "p_99_9": 10.451140002125385,
+        "p_99_975": 15.975417421431361,
+        "p_99_99": 21.551080844540625
+      },
+      "summary_statistics": {
+        "min": -54.30864230236019,
+        "max": 85.45084716559566,
+        "mean": 0.012164063726557164,
+        "std": 1.7304461962701896,
+        "median": 0.009875150477884818
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "266c1375b2849b6bed9f5e51121bca371a3050545b97a3c6b9dc5fb1dd9198c0"
+    },
+    "ols_t__RDS(on)__T120h_K6": {
+      "entry_key": "ols_t__RDS(on)__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 10.65865830896211,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 10.65865830896211,
+        "step_2_alpha_0_000333": 10.036178215124483,
+        "step_3_alpha_0_00050": 8.901065419303908,
+        "step_4_alpha_0_00100": 7.2477750380272425
+      },
+      "percentiles": {
+        "p_50_0": 0.012140379325223103,
+        "p_90_0": 1.548015583282225,
+        "p_95_0": 2.147214355138776,
+        "p_99_0": 3.791477740166695,
+        "p_99_9": 7.223302225327147,
+        "p_99_975": 10.647999610591981,
+        "p_99_99": 14.7069078155694
+      },
+      "summary_statistics": {
+        "min": -22.848653567658904,
+        "max": 18.839830280553546,
+        "mean": 0.013457506955162669,
+        "std": 1.4097817541133424,
+        "median": 0.012140379325223103
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "f046848b1dcc98761f5d45ed8d430bbfb01fc903a9f6352f5e6252fb44cd14d3"
+    },
+    "ols_t__RDS(on)__T168h_K7": {
+      "entry_key": "ols_t__RDS(on)__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "RDS(on)",
+      "units": "mOhm",
+      "transform": "log: u = ln(x / 1.0 mOhm)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "upper",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 7.6551431897190145,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 7.6551431897190145,
+        "step_2_alpha_0_000333": 7.3040519368689125,
+        "step_3_alpha_0_00050": 6.896807227706477,
+        "step_4_alpha_0_00100": 5.7716817118447885
+      },
+      "percentiles": {
+        "p_50_0": 0.010255349901176538,
+        "p_90_0": 1.484969812438422,
+        "p_95_0": 2.024169814255392,
+        "p_99_0": 3.3799260307335284,
+        "p_99_9": 5.770236753323902,
+        "p_99_975": 7.6317021935797,
+        "p_99_99": 8.83235361105505
+      },
+      "summary_statistics": {
+        "min": -15.140686647760058,
+        "max": 15.799119657971776,
+        "mean": 0.014179782159461633,
+        "std": 1.2876022635496758,
+        "median": 0.010255349901176538
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 9.99990000099999e-06
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "d6154d121cdbaf3acb2aecc49b1918f006558290ccd4aceb81c50689af7bfb02"
+    },
+    "ols_t__IGSS__T48h_K3": {
+      "entry_key": "ols_t__IGSS__T48h_K3",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 48,
+      "K": 3,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 2201.8514865986645,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 2201.8514865986645,
+        "step_2_alpha_0_000333": 1686.8039855188526,
+        "step_3_alpha_0_00050": 1203.4454647741609,
+        "step_4_alpha_0_00100": 670.322121907315
+      },
+      "percentiles": {
+        "p_50_0": 0.004434862555583182,
+        "p_90_0": 3.117267465793309,
+        "p_95_0": 6.309228912699477,
+        "p_99_0": 32.55047497480476,
+        "p_99_9": 346.9096558526091,
+        "p_99_975": 970.0778672578539,
+        "p_99_99": 1901.1845806957406
+      },
+      "summary_statistics": {
+        "min": -219663.34860441193,
+        "max": 135031.22254220452,
+        "mean": -2.0764947601232984,
+        "std": 881.4947899010972,
+        "median": 0.004434862555583182
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "5d78efae1fbb2f7aac0a88d47c61224952f49af209beb44f3a1638ea3eb797a4"
+    },
+    "ols_t__IGSS__T72h_K4": {
+      "entry_key": "ols_t__IGSS__T72h_K4",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 72,
+      "K": 4,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 69.44090161582476,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 69.44090161582476,
+        "step_2_alpha_0_000333": 51.129046268804295,
+        "step_3_alpha_0_00050": 39.70486472540828,
+        "step_4_alpha_0_00100": 29.586701903024515
+      },
+      "percentiles": {
+        "p_50_0": -0.005918067827499665,
+        "p_90_0": 1.8781366796778554,
+        "p_95_0": 2.9027986625432685,
+        "p_99_0": 7.063820935157544,
+        "p_99_9": 22.201036085110992,
+        "p_99_975": 41.89714091305129,
+        "p_99_99": 72.66336406432633
+      },
+      "summary_statistics": {
+        "min": -298.37615792569744,
+        "max": 367.0551896533231,
+        "mean": -0.006121035730628183,
+        "std": 3.805850676261718,
+        "median": -0.005918067827499665
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "e570b541c0f3f25d10e18865a8f47d5be0708955f5a965eb9f71ecf8cf45004a"
+    },
+    "ols_t__IGSS__T96h_K5": {
+      "entry_key": "ols_t__IGSS__T96h_K5",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 96,
+      "K": 5,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 18.19466409199545,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 18.19466409199545,
+        "step_2_alpha_0_000333": 17.142816775491816,
+        "step_3_alpha_0_00050": 15.43948391237851,
+        "step_4_alpha_0_00100": 12.85079558854937
+      },
+      "percentiles": {
+        "p_50_0": -0.00037450652559193774,
+        "p_90_0": 1.6394564881703888,
+        "p_95_0": 2.3658995782170007,
+        "p_99_0": 4.5359131396344194,
+        "p_99_9": 10.028333070388811,
+        "p_99_975": 15.392860614781442,
+        "p_99_99": 18.79511398192355
+      },
+      "summary_statistics": {
+        "min": -52.00849457947782,
+        "max": 191.97882052097785,
+        "mean": -0.0007544430953678594,
+        "std": 1.7908624027200741,
+        "median": -0.00037450652559193774
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "a6c19549b89723d9b99861729a0b6526f8a1eeca97865428428bbc9aba9add4d"
+    },
+    "ols_t__IGSS__T120h_K6": {
+      "entry_key": "ols_t__IGSS__T120h_K6",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 120,
+      "K": 6,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 12.567819025628086,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 12.567819025628086,
+        "step_2_alpha_0_000333": 11.413450325153338,
+        "step_3_alpha_0_00050": 10.040820366938199,
+        "step_4_alpha_0_00100": 8.402149283221993
+      },
+      "percentiles": {
+        "p_50_0": -0.0046655380406510644,
+        "p_90_0": 1.529656409328127,
+        "p_95_0": 2.138410919829897,
+        "p_99_0": 3.806067217558126,
+        "p_99_9": 7.164493267052471,
+        "p_99_975": 10.142366793051037,
+        "p_99_99": 12.073293839959437
+      },
+      "summary_statistics": {
+        "min": -23.165587518402447,
+        "max": 21.250931807781257,
+        "mean": -0.004250240458604854,
+        "std": 1.4106379144805408,
+        "median": -0.0046655380406510644
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "5a740e3be596ec60cd70a2a4456bb5034fe0b75113d9f072f56a68924a738a17"
+    },
+    "ols_t__IGSS__T168h_K7": {
+      "entry_key": "ols_t__IGSS__T168h_K7",
+      "detector_family": "ols_t",
+      "detector_name": "Parametric OLS t-statistic",
+      "detector_role": "BENCHMARK COMPARATOR",
+      "parameter": "IGSS",
+      "units": "nA",
+      "transform": "asinh: u = asinh(x / 1.0 nA)",
+      "T_as_of": 168,
+      "K": 7,
+      "checkpoints": [
+        0.0,
+        24.0,
+        48.0,
+        72.0,
+        96.0,
+        120.0,
+        168.0
+      ],
+      "tail_direction": "two_sided",
+      "N_calibration": 100000,
+      "statistic_definition": "S_t = beta_1 / SE(beta_1), df = K - 2",
+      "p_value_method": "empirical_rank_davison_hinkley",
+      "finite_sample_correction": "+1_rank_over_N_plus_1",
+      "critical_value_threshold": 9.52256638921477,
+      "step_thresholds": {
+        "step_1_alpha_0_00025": 9.52256638921477,
+        "step_2_alpha_0_000333": 8.861102292087324,
+        "step_3_alpha_0_00050": 8.01123087966253,
+        "step_4_alpha_0_00100": 6.912303860113688
+      },
+      "percentiles": {
+        "p_50_0": -0.0034266045545340187,
+        "p_90_0": 1.4729843836579695,
+        "p_95_0": 2.0260474775761455,
+        "p_99_0": 3.3989691070736328,
+        "p_99_9": 5.8965797245178795,
+        "p_99_975": 8.02137434539508,
+        "p_99_99": 9.53425707067163
+      },
+      "summary_statistics": {
+        "min": -13.491733740158654,
+        "max": 19.875644740362866,
+        "mean": -0.00339135875943918,
+        "std": 1.2954139910047417,
+        "median": -0.0034266045545340187
+      },
+      "discreteness_audit": {
+        "n_distinct_values": 100000,
+        "n_ties": 0,
+        "n_non_finite": 0,
+        "min_empirical_p_attainable": 1.999980000199998e-05
+      },
+      "calibration_seed": 194572359,
+      "artifact_hash": "58f21a09800affa5a24241c7173eecb91f3cf0a052a0d1c49c8b2d9d3b7f8e64"
+    }
+  }
+}

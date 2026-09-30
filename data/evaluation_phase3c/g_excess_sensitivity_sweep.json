@@ -1,0 +1,50 @@
+{
+  "thresh_0.0": {
+    "threshold": 0.0,
+    "confounded_count": 100,
+    "equipment_only_count": 0,
+    "fraction_confounded": 1.0
+  },
+  "thresh_1.0": {
+    "threshold": 1.0,
+    "confounded_count": 52,
+    "equipment_only_count": 48,
+    "fraction_confounded": 0.52
+  },
+  "thresh_1.5": {
+    "threshold": 1.5,
+    "confounded_count": 50,
+    "equipment_only_count": 50,
+    "fraction_confounded": 0.5
+  },
+  "thresh_2.0": {
+    "threshold": 2.0,
+    "confounded_count": 41,
+    "equipment_only_count": 59,
+    "fraction_confounded": 0.41
+  },
+  "thresh_2.5": {
+    "threshold": 2.5,
+    "confounded_count": 25,
+    "equipment_only_count": 75,
+    "fraction_confounded": 0.25
+  },
+  "thresh_3.0": {
+    "threshold": 3.0,
+    "confounded_count": 25,
+    "equipment_only_count": 75,
+    "fraction_confounded": 0.25
+  },
+  "thresh_3.5": {
+    "threshold": 3.5,
+    "confounded_count": 16,
+    "equipment_only_count": 84,
+    "fraction_confounded": 0.16
+  },
+  "thresh_4.0": {
+    "threshold": 4.0,
+    "confounded_count": 11,
+    "equipment_only_count": 89,
+    "fraction_confounded": 0.11
+  }
+}

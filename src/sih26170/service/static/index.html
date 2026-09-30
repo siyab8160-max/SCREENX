@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SIH26170 // Component Screening Workstation</title>
+  <meta name="description" content="ISRO Mission-Assurance Semiconductor Burn-In Screening & Prognostic Workstation under MIL-PRF-19500/703.">
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+
+  <!-- TOP PERSISTENT SYSTEM HEADER & PROTOTYPE BANNER -->
+  <header class="sys-header">
+    <div class="sys-title-strip">
+      <div class="sys-brand">
+        <span class="sys-id">SIH26170</span>
+        <span class="sys-sep">//</span>
+        <span class="sys-name">Component Screening Workstation</span>
+        <span class="sys-standard">MIL-PRF-19500/703 &bull; MIL-STD-750 Method 1038/1042 (HTRB/HTGB)</span>
+      </div>
+      <div class="sys-notice-strip" id="mandatory-global-banner">
+        <span class="notice-pill">PROTOTYPE DATA</span>
+        <span class="notice-text">
+          SYNTHETIC BENCHMARK — ENGINEERING PROTOTYPE &bull; SYNTHETIC PHASE 4B &bull; NOT FOR HARDWARE DISPOSITION &bull;
+          <strong>Physical validation:</strong> NOT ESTABLISHED &bull;
+          <strong>Safety slope:</strong> OPEN EVIDENCE GAP &bull;
+          <strong>Predictive rejection:</strong> NOT AUTHORIZED &bull;
+          Not an official ISRO UI
+        </span>
+      </div>
+    </div>
+
+    <!-- ISRO MISSION CONTEXT BAR -->
+    <div class="isro-mission-bar" id="isro-mission-bar">
+      <span class="mission-label">ISRO // URSC CQSD</span>
+      <span class="mission-sep">&vert;</span>
+      <span>Part: <strong>IRHNJ57130</strong> (Rad-Hard Power MOSFET)</span>
+      <span class="mission-sep">&vert;</span>
+      <span>Chamber: <strong>HTRB-BAY-04</strong> &mdash; 150.0&deg;C / V<sub>DS</sub>=80V Bias</span>
+      <span class="mission-sep">&vert;</span>
+      <span>Qual: <strong>MIL-PRF-19500 Space Level</strong></span>
+      <span class="mission-sep">&vert;</span>
+      <span>Burn-In Duration: <strong>168 h</strong></span>
+    </div>
+
+    <!-- GLOBAL PERSISTENT CONTEXT BAR (Always Visible) -->
+    <div class="global-context-bar" id="global-context-bar">
+      <div class="ctx-cell">
+        <span class="ctx-lbl">DATASET:</span>
+        <span class="ctx-val text-mono" id="ctx-dataset">Phase 4B Demo</span>
+      </div>
+      <span class="ctx-sep">&vert;</span>
+      <div class="ctx-cell">
+        <span class="ctx-lbl">SOURCE:</span>
+        <span class="ctx-val text-mono" id="val-source">SYNTHETIC PHASE 4B</span>
+      </div>
+      <span class="ctx-sep">&vert;</span>
+      <div class="ctx-cell">
+        <span class="ctx-lbl">LOT:</span>
+        <span class="ctx-val text-mono" id="ctx-lot">LOT_CAL_001</span>
+      </div>
+      <span class="ctx-sep">&vert;</span>
+      <div class="ctx-cell">
+        <span class="ctx-lbl">COMPONENT:</span>
+        <span class="ctx-val text-mono" id="ctx-component">LOT_CAL_001_C001</span>
+      </div>
+      <span class="ctx-sep">&vert;</span>
+      <div class="ctx-cell">
+        <span class="ctx-lbl">AS-OF:</span>
+        <span class="ctx-val text-mono" id="ctx-asof">24 h</span>
+      </div>
+      <span class="ctx-sep">&vert;</span>
+      <div class="ctx-cell">
+        <span class="ctx-lbl">STATUS:</span>
+        <span class="ctx-val" id="ctx-status"><span class="badge badge-pass">PASS</span></span>
+      </div>
+      <div class="ctx-right">
+        <span class="ctx-lbl">API:</span>
+        <span class="api-status text-mono" id="status-connection">CONNECTED</span>
+        <span class="status-dot online" id="status-dot"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- APPLICATION WORKSTATION LAYOUT -->
+  <div class="workstation-layout">
+
+    <!-- PERSISTENT LEFT NAVIGATION RAIL -->
+    <nav class="nav-rail" aria-label="Workstation Navigation">
+      <div class="rail-header">MISSION WORKFLOW</div>
+      <div class="rail-tabs">
+        <button type="button" class="nav-tab-btn active" data-workspace="data" id="nav-data">
+          <span class="nav-tab-dot"></span>
+          <span class="nav-tab-text">1. Choose Dataset</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-workspace="screening" id="nav-screening">
+          <span class="nav-tab-dot"></span>
+          <span class="nav-tab-text">2. Screening</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-workspace="prognostics" id="nav-prognostics">
+          <span class="nav-tab-dot"></span>
+          <span class="nav-tab-text">3. Prediction</span>
+        </button>
+        <button type="button" class="nav-tab-btn" data-workspace="traceability" id="nav-traceability">
+          <span class="nav-tab-dot"></span>
+          <span class="nav-tab-text">4. Traceability &amp; CoC</span>
+        </button>
+      </div>
+
+      <!-- HIERARCHY SELECTOR IN LEFT RAIL -->
+      <div class="rail-hierarchy">
+        <div class="rail-header">DEVICE SELECTION</div>
+
+        <!-- Active Dataset Context Pill -->
+        <div class="ctrl-cell">
+          <span class="ctrl-label">DATASET CONTEXT:</span>
+          <div class="active-dataset-pill">
+            <span class="text-mono" id="rail-dataset-name">Phase 4B Demo</span>
+            <span class="badge badge-qualifier" id="rail-dataset-badge">DEMO &bull; SYNTHETIC</span>
+          </div>
+        </div>
+
+        <div class="ctrl-cell">
+          <label for="select-lot" class="ctrl-label">LOT:</label>
+          <select id="select-lot" class="ctrl-select text-mono">
+            <option value="">Loading lots...</option>
+          </select>
+        </div>
+
+        <div class="ctrl-cell">
+          <label for="select-component" class="ctrl-label">COMPONENT:</label>
+          <select id="select-component" class="ctrl-select text-mono">
+            <option value="">Select a lot first</option>
+          </select>
+        </div>
+
+        <div class="ctrl-cell">
+          <label for="input-search-comp" class="ctrl-label">SEARCH COMPONENT:</label>
+          <input type="text" id="input-search-comp" class="ctrl-input text-mono" placeholder="Filter ID (e.g. C001)..." />
+        </div>
+
+        <div class="ctrl-cell as-of-ctrl-cell" id="as-of-control-box">
+          <span class="ctrl-label">AS-OF CHECKPOINT:</span>
+          <div class="checkpoint-selector" role="radiogroup" aria-label="As-Of Checkpoint">
+            <button type="button" class="btn-checkpoint active text-mono" data-asof="24" id="as-of-24">24 h</button>
+            <button type="button" class="btn-checkpoint text-mono" data-asof="48" id="as-of-48">48 h</button>
+            <button type="button" class="btn-checkpoint text-mono" data-asof="72" id="as-of-72">72 h</button>
+            <button type="button" class="btn-checkpoint text-mono" data-asof="96" id="as-of-96">96 h</button>
+            <button type="button" class="btn-checkpoint text-mono" data-asof="120" id="as-of-120">120 h</button>
+            <button type="button" class="btn-checkpoint text-mono" data-asof="168" id="as-of-168">168 h</button>
+          </div>
+          <span class="ctrl-hint">No implicit "latest"; strictly causally bounded</span>
+        </div>
+
+        <div class="rail-footer-meta text-mono">
+          <div>PART: IRHNJ57130</div>
+          <div>QUAL: MIL-PRF-19500 Space Level</div>
+          <div>PROV: Locked Phase 5 Lineage</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- MAIN ENGINEERING WORKSPACE CONTAINER -->
+    <main class="main-workspace" id="main-content">
+
+      <!-- ====================================================================
+           WORKSPACE 1: SCREENING (DEFAULT HOME)
+           ==================================================================== -->
+      <div class="workspace-panel" id="ws-screening">
+
+        <!-- Section A — Screening Summary -->
+        <section class="eng-card" id="section-screening-assessment" aria-labelledby="heading-screening-summary">
+          <div class="card-header">
+            <h2 id="heading-screening-summary" class="card-title">SECTION A &bull; SCREENING SUMMARY</h2>
+            <div class="card-actions">
+              <span class="badge badge-qualifier" id="card-asof-tag">AS-OF: 24 h</span>
+            </div>
+          </div>
+
+          <div class="disposition-callout disp-pass" id="screening-state-banner">
+            <div class="disp-title-row">
+              <span class="disp-label">COMPONENT SCREENING DISPOSITION:</span>
+              <span id="disp-title"><span class="badge badge-pass">PASS</span> <span class="badge badge-qualifier">NOMINAL_STABLE</span></span>
+            </div>
+            <div class="disp-reason-text" id="disp-reason">Evaluating screening rules...</div>
+          </div>
+
+          <!-- Summary Fields Grid -->
+          <div class="summary-fields-grid">
+            <div class="summary-field">
+              <span class="sum-lbl">SPECIFICATION FAILURES:</span>
+              <span class="sum-val text-mono" id="sum-spec-failures">0 of 4</span>
+              <span class="sum-sub" id="sum-spec-sub">Within Table I limits</span>
+            </div>
+            <div class="summary-field">
+              <span class="sum-lbl">DYNAMIC SCREENING EVIDENCE:</span>
+              <span class="sum-val text-mono" id="sum-dynamic-evidence">NOMINAL</span>
+              <span class="sum-sub" id="sum-dynamic-sub">Peer, drift, step nominal</span>
+            </div>
+            <div class="summary-field">
+              <span class="sum-lbl">DATA SUFFICIENCY:</span>
+              <span class="sum-val text-mono" id="sum-sufficiency">SUFFICIENT</span>
+              <span class="sum-sub" id="sum-sufficiency-sub">Complete checkpoint history</span>
+            </div>
+            <div class="summary-field">
+              <span class="sum-lbl">EQUIPMENT SUSPICION:</span>
+              <span class="sum-val text-mono" id="sum-equipment">CLEAN</span>
+              <span class="sum-sub" id="sum-equipment-sub">No chamber/ATE artifact</span>
+            </div>
+            <div class="summary-field full-width">
+              <span class="sum-lbl">INFORMATIONAL FORECAST WARNING:</span>
+              <span class="sum-val text-mono" id="sum-forecast-warning">NONE (INFORMATIONAL PROGNOSTIC EVIDENCE)</span>
+              <span class="sum-sub">Predictive rejection is NOT AUTHORIZED; forecasts do not alter screening disposition</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section A.5 — Burn-In Tray Matrix (Interactive Lot Cohort Heatmap) -->
+        <section class="eng-card" id="section-tray-matrix" aria-labelledby="heading-tray-matrix">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-tray-matrix" class="card-title">LOT COHORT &bull; BURN-IN TRAY MATRIX</h2>
+              <span class="card-subtitle">Interactive socket grid &mdash; Click any socket to investigate that component. Color indicates screening state at current As-Of checkpoint.</span>
+            </div>
+            <div class="card-actions">
+              <span class="badge badge-qualifier" id="tray-lot-badge">LOT_CAL_001</span>
+              <span class="badge badge-qualifier" id="tray-count-badge">20 sockets</span>
+            </div>
+          </div>
+          <div class="tray-matrix-section">
+            <div class="tray-matrix-grid" id="tray-matrix-grid">
+              <!-- Dynamically populated by renderTrayMatrix() -->
+            </div>
+            <div class="tray-legend">
+              <div class="tray-legend-item"><span class="tray-legend-dot dot-pass"></span> PASS</div>
+              <div class="tray-legend-item"><span class="tray-legend-dot dot-alert"></span> ALERT / DRIFT</div>
+              <div class="tray-legend-item"><span class="tray-legend-dot dot-fail"></span> FAIL / REJECT</div>
+              <div class="tray-legend-item"><span class="tray-legend-dot dot-selected"></span> SELECTED</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section B — Measured Parameters Table -->
+        <section class="eng-card" id="section-measurement-summary" aria-labelledby="heading-measurement-table">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-measurement-table" class="card-title">SECTION B &bull; MEASURED PARAMETERS TABLE</h2>
+              <span class="card-subtitle">Dense four-row engineering telemetry table with applicable Table I limits</span>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="btn-action text-mono" id="btn-export-measurements-csv">Export Table CSV</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="eng-table" id="table-measurement-summary">
+              <thead>
+                <tr>
+                  <th style="width: 140px;">Parameter</th>
+                  <th style="width: 110px;">0 h</th>
+                  <th style="width: 110px;">24 h</th>
+                  <th style="width: 130px;">Current As-Of</th>
+                  <th style="width: 180px;">Spec Limit</th>
+                  <th style="width: 180px;">Trend / Rate</th>
+                  <th style="width: 110px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="tbody-measurement-summary">
+                <tr><td colspan="7" class="loading-cell">Loading parameter measurements...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section C — Parameter Trend Visualization -->
+        <section class="eng-card" id="section-parameter-history" aria-labelledby="heading-trend-viz">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-trend-viz" class="card-title">SECTION C &bull; PARAMETER TREND VISUALIZATION</h2>
+              <span class="card-subtitle">Four compact SVG telemetry plots with causal boundary, Table I limits, and 168h forecast</span>
+            </div>
+            <div class="card-actions">
+              <div class="chart-param-picker" id="chart-param-picker">
+                <button type="button" class="btn-param active text-mono" data-param="ALL">4-STACK</button>
+                <button type="button" class="btn-param text-mono" data-param="IDSS">IDSS</button>
+                <button type="button" class="btn-param text-mono" data-param="VGS(th)">VGS(th)</button>
+                <button type="button" class="btn-param text-mono" data-param="RDS(on)">RDS(on)</button>
+                <button type="button" class="btn-param text-mono" data-param="IGSS">IGSS</button>
+              </div>
+              <button type="button" class="btn-action text-mono" id="btn-export-charts-svg">Export SVG</button>
+            </div>
+          </div>
+
+          <!-- Chart Container (Four Stacked SVG Plots) -->
+          <div class="charts-stack-container" id="svg-chart-container">
+            <!-- Rendered dynamically by renderSvgTrajectoryChart() -->
+          </div>
+
+          <div class="chart-legend-strip" id="chart-legend-box">
+            <span class="leg-item"><span class="leg-swatch obs-swatch"></span> Observed Checkpoints (t &le; As-Of)</span>
+            <span class="leg-item"><span class="leg-swatch asof-swatch"></span> Current As-Of Highlight</span>
+            <span class="leg-item"><span class="leg-swatch fc-swatch"></span> 168h Prediction Marker</span>
+            <span class="leg-item"><span class="leg-swatch pi-swatch"></span> 90% Prediction Interval Whisker</span>
+            <span class="leg-item"><span class="leg-swatch spec-swatch"></span> Table I Specification Boundary</span>
+            <span class="leg-item"><span class="leg-swatch bnd-swatch"></span> Causal As-Of Boundary (Future Shaded)</span>
+          </div>
+        </section>
+
+        <!-- Section D — Module A Engineering Evidence -->
+        <section class="eng-card" aria-labelledby="heading-module-a-evidence">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-module-a-evidence" class="card-title">SECTION D &bull; MODULE A DETECTOR EVIDENCE</h2>
+              <span class="card-subtitle">Dense detector evidence table &bull; Expand any row to inspect underlying engineering calculations</span>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="btn-action text-mono" id="btn-export-evidence-csv">Export Evidence CSV</button>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="eng-table" id="screening-matrix-table">
+              <thead>
+                <tr>
+                  <th style="width: 100px;">Detector</th>
+                  <th style="width: 190px;">Evaluated Mechanism</th>
+                  <th style="width: 180px;">Measured Statistic</th>
+                  <th style="width: 170px;">Threshold / Baseline</th>
+                  <th style="width: 140px;">Observed Value</th>
+                  <th style="width: 120px;">Status</th>
+                  <th>Interpretation</th>
+                </tr>
+              </thead>
+              <tbody id="screening-matrix-tbody">
+                <!-- Dynamically populated with expandable detector rows -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section E — Screening Interpretation -->
+        <section class="eng-card" aria-labelledby="heading-screening-explain">
+          <div class="card-header">
+            <h2 id="heading-screening-explain" class="card-title">SECTION E &bull; SCREENING INTERPRETATION</h2>
+            <span class="card-subtitle">Structured engineering explanation &bull; Deterministic reason codes</span>
+          </div>
+
+          <div class="explainability-grid">
+            <div class="explain-box">
+              <span class="exp-title">WHAT HAPPENED:</span>
+              <p class="exp-text text-mono" id="exp-what">&mdash;</p>
+            </div>
+            <div class="explain-box">
+              <span class="exp-title">WHY FLAGGED:</span>
+              <p class="exp-text text-mono" id="exp-why">&mdash;</p>
+            </div>
+            <div class="explain-box">
+              <span class="exp-title">WHICH PARAMETERS:</span>
+              <p class="exp-text text-mono" id="exp-which">&mdash;</p>
+            </div>
+            <div class="explain-box full-width">
+              <span class="exp-title">AS-OF LIMITATION &amp; CAUSAL BOUNDARY:</span>
+              <p class="exp-text text-mono" id="exp-limitation">&mdash;</p>
+            </div>
+            <div class="explain-box full-width" id="box-quantitative-evidence">
+              <div class="exp-header-action-row">
+                <span class="exp-title">QUANTITATIVE EVIDENCE (MODULE A DETECTOR TELEMETRY)</span>
+                <button type="button" class="btn-action text-mono btn-copy-evidence" id="btn-copy-evidence-json" title="Copy complete formatted evidence JSON to clipboard">Copy JSON</button>
+              </div>
+              <pre class="evidence-json-block text-mono" id="exp-evidence" tabindex="0">&mdash;</pre>
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ====================================================================
+           WORKSPACE 3: PREDICTION (168h DRIFT FORECAST)
+           ==================================================================== -->
+      <div class="workspace-panel" id="ws-prognostics">
+
+        <!-- Forecast Summary & Notice -->
+        <section class="eng-card" id="section-prognostic-assessment" aria-labelledby="heading-prognostics-title">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-prognostics-title" class="card-title">MODULE B LOCKED RIDGE PREDICTION (168h FORECAST) &amp; UNCERTAINTY</h2>
+              <span class="card-subtitle">Horizon: 168 h &bull; Model: Locked Ridge Regression (&lambda;=1.0) &bull; Features: [v0, v24]</span>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="btn-action text-mono" id="btn-export-prognostics-csv">Export Prediction CSV</button>
+            </div>
+          </div>
+
+          <div class="prognostic-notice-box" id="prognostic-breach-notice">
+            <div class="notice-head">PREDICTION EVIDENCE &bull; INFORMATIONAL ONLY</div>
+            <div class="notice-body">
+              Predicted specification breach is informational prediction evidence and does not alter current screening disposition.
+              Predictive rejection is <strong>NOT AUTHORIZED</strong>; no autonomous hardware scrap or lot rejection may occur based on forecasts.
+            </div>
+          </div>
+
+          <!-- Forecast Table -->
+          <div class="table-wrap">
+            <table class="eng-table" id="prognostics-table">
+              <thead>
+                <tr>
+                  <th style="width: 120px;">Parameter</th>
+                  <th style="width: 120px;">Observed at As-Of</th>
+                  <th style="width: 130px;">Predicted 168h</th>
+                  <th style="width: 190px;">90% Prediction Interval</th>
+                  <th style="width: 140px;">Delta from Current</th>
+                  <th style="width: 140px;">Delta from Baseline</th>
+                  <th style="width: 110px;">Frozen &sigma;_eff</th>
+                  <th style="width: 120px;">Status</th>
+                </tr>
+              </thead>
+              <tbody id="prognostics-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Section: Safety Slope & Early Rejection Decision Layer -->
+        <section class="eng-card" id="section-safety-slope" aria-labelledby="heading-safety-slope-title">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-safety-slope-title" class="card-title">SAFETY-SLOPE &bull; EARLY REJECTION DECISION LAYER</h2>
+              <span class="card-subtitle">MIL-PRF-19500/703 Table I Screening Margins &bull; Rate Formula: (y_hat_168 - y_24) / 144 &bull; Early Scrap Disposition</span>
+            </div>
+            <div id="safety-overall-badge">
+              <span class="badge badge-pass" id="badge-overall-early-reject">CONTINUE &bull; WITHIN SAFETY SLOPE</span>
+            </div>
+          </div>
+
+          <!-- Safety Slope Vector Gauge (Visual) -->
+          <div class="safety-gauge-row" id="safety-gauge-row">
+            <!-- Dynamically populated by renderSafetyGauges() -->
+          </div>
+
+          <div class="table-wrap">
+            <table class="eng-table" id="safety-slope-table">
+              <thead>
+                <tr>
+                  <th style="width: 110px;">Parameter</th>
+                  <th style="width: 110px;">Observed 24h</th>
+                  <th style="width: 120px;">Predicted 168h</th>
+                  <th style="width: 150px;">Predicted Drift Rate</th>
+                  <th style="width: 150px;">Calculated Safety Slope</th>
+                  <th style="width: 130px;">Safety Threshold</th>
+                  <th style="width: 110px;">Margin</th>
+                  <th style="width: 130px;">Decision</th>
+                  <th>Engineering Arithmetic Rationale</th>
+                </tr>
+              </thead>
+              <tbody id="safety-slope-tbody">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+
+                <!-- Prognostic Visualizations & Interpretation Panel -->
+        <div class="prognostic-dual-grid">
+          <!-- Left: Engineering Interpretation -->
+          <section class="eng-card" aria-labelledby="heading-prog-interp">
+            <div class="card-header">
+              <h2 id="heading-prog-interp" class="card-title">ENGINEERING PREDICTION INTERPRETATION PANEL</h2>
+            </div>
+            <div class="prog-interp-list">
+              <div class="prog-interp-item">
+                <span class="prog-interp-lbl">FORECAST CROSSES SPECIFICATION?</span>
+                <span class="prog-interp-val text-mono" id="val-breach-flag">NO</span>
+              </div>
+              <div class="prog-interp-item">
+                <span class="prog-interp-lbl">PREDICTION INTERVAL INTERSECTS SPECIFICATION?</span>
+                <span class="prog-interp-val text-mono" id="val-pi-breach-flag">NO</span>
+              </div>
+              <div class="prog-interp-item">
+                <span class="prog-interp-lbl">NUMERICAL DIVERGENCE STATUS:</span>
+                <span class="prog-interp-val text-mono" id="val-divergence-flag">NOMINAL (LOCKED NUMERICAL POLICY)</span>
+              </div>
+              <div class="prog-interp-item">
+                <span class="prog-interp-lbl">DISPOSITION RECOMMENDATION:</span>
+                <span class="prog-interp-val text-mono highlight" id="val-disp-rec">INFORMATIONAL PREDICTION EVIDENCE ONLY</span>
+              </div>
+            </div>
+          </section>
+
+          <!-- Right: Model Provenance Metadata (Collapsible) -->
+          <section class="eng-card" aria-labelledby="heading-model-meta">
+            <div class="card-header">
+              <h2 id="heading-model-meta" class="card-title">MODEL PROVENANCE &amp; ARCHITECTURE</h2>
+              <span class="card-subtitle">Frozen Phase 5 Lineage</span>
+            </div>
+            <div class="model-meta-list text-mono">
+              <div class="meta-row"><span class="meta-lbl">Model Family:</span> <span id="pm-family">Ridge Regression (L2 &lambda;=1.0)</span></div>
+              <div class="meta-row"><span class="meta-lbl">Training Partition:</span> <span id="pm-train">LOT_CAL_001_TO_LOT_CAL_050 (1,000 components)</span></div>
+              <div class="meta-row"><span class="meta-lbl">Transform Space:</span> <span>IDSS: LOG10(x) &bull; Others: IDENTITY</span></div>
+              <div class="meta-row"><span class="meta-lbl">Frozen Lineage Hash:</span> <span class="break-hash">bde6989e24d195ab4b53f93c46c2156d1c336fe820baf149d76d32943e135667</span></div>
+              <div class="meta-row"><span class="meta-lbl">Residual Calibrations:</span> <span>&sigma;_eff: IDSS=0.1077 &bull; VGS=0.0152 &bull; RDS=0.4503 &bull; IGSS=0.1086</span></div>
+              <div class="meta-row"><span class="meta-lbl">Safety Slope Policy:</span> <span class="badge badge-pass">ACTIVE &bull; CALCULATED DECISION RULE (144h HORIZON)</span></div>
+            </div>
+          </section>
+        </div>
+
+      </div>
+
+      <!-- ====================================================================
+           WORKSPACE 3: DATA (DATASET SELECTION & INGESTION)
+           ==================================================================== -->
+      <div class="workspace-panel active" id="ws-data">
+
+        <!-- Mission Workflow Stepper (Explaining the Actual Flow of Work) -->
+        <div class="workflow-stepper-card">
+          <div class="stepper-header">
+            <div class="stepper-header-left">
+              <span class="badge badge-qualifier">ISRO // CQSD WORKFLOW</span>
+              <span class="stepper-title">Component Screening &amp; Prognostic Workflow Sequence</span>
+            </div>
+            <span class="stepper-hint text-mono">Step 1 of 4 &bull; Ingest telemetry to begin</span>
+          </div>
+          <div class="stepper-steps-grid">
+            <div class="stepper-step active" id="step-guide-1">
+              <div class="step-num">1</div>
+              <div class="step-details">
+                <span class="step-name">1. Dataset Ingestion</span>
+                <span class="step-desc">Select demo lot or upload CSV</span>
+              </div>
+            </div>
+            <div class="stepper-sep">&rarr;</div>
+            <div class="stepper-step" id="step-guide-2">
+              <div class="step-num">2</div>
+              <div class="step-details">
+                <span class="step-name">2. Dynamic Screening</span>
+                <span class="step-desc">Tray matrix &amp; 6 detectors</span>
+              </div>
+            </div>
+            <div class="stepper-sep">&rarr;</div>
+            <div class="stepper-step" id="step-guide-3">
+              <div class="step-num">3</div>
+              <div class="step-details">
+                <span class="step-name">3. Prediction</span>
+                <span class="step-desc">168h forecast &amp; safety slope</span>
+              </div>
+            </div>
+            <div class="stepper-sep">&rarr;</div>
+            <div class="stepper-step" id="step-guide-4">
+              <div class="step-num">4</div>
+              <div class="step-details">
+                <span class="step-name">4. Traceability &amp; CoC</span>
+                <span class="step-desc">SHA-256 seal &amp; QA sign-off</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <section class="eng-card" aria-labelledby="heading-data-workspace">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-data-workspace" class="card-title">DATA WORKSPACE &bull; DATASET SELECTION &amp; INGESTION</h2>
+              <span class="card-subtitle">Select which dataset the engineering workstation should analyze &bull; Demo benchmark or uploaded telemetry</span>
+            </div>
+          </div>
+
+          <!-- NON-NEGOTIABLE UX REQUIREMENT: DATASET DROPDOWN AT TOP -->
+          <div class="dataset-dropdown-bar">
+            <label for="select-main-dataset" class="ctrl-label">SELECT DATASET:</label>
+            <select id="select-main-dataset" class="ctrl-select text-mono main-dataset-select">
+              <option value="phase4b_demo">Phase 4B Demo Dataset (Synthetic Demonstration Data)</option>
+              <option value="upload_own">Upload my own dataset</option>
+            </select>
+          </div>
+
+          <!-- STATE 1: DEMO DATASET STATE -->
+          <div class="dataset-state-box" id="box-demo-dataset-state">
+            <div class="state-box-header">
+              <span class="state-box-title">DATASET INFORMATION</span>
+              <span class="badge badge-qualifier">DEMO &bull; SYNTHETIC</span>
+            </div>
+            <div class="dataset-meta-grid text-mono">
+              <div class="meta-item"><span class="m-k">Name:</span> <span class="m-v">Phase 4B Demo Dataset</span></div>
+              <div class="meta-item"><span class="m-k">Source:</span> <span class="m-v">Synthetic demonstration data (Quarantined)</span></div>
+              <div class="meta-item"><span class="m-k">Part Number:</span> <span class="m-v">IRHNJ57130 (Rad-Hard Power MOSFET)</span></div>
+              <div class="meta-item"><span class="m-k">Lots Available:</span> <span class="m-v" id="demo-meta-lots">100 lots (LOT_CAL_001 – LOT_CAL_100)</span></div>
+              <div class="meta-item"><span class="m-k">Total Components:</span> <span class="m-v" id="demo-meta-comps">2,000 components (20 per lot)</span></div>
+              <div class="meta-item"><span class="m-k">Parameters:</span> <span class="m-v">IDSS, VGS(th), RDS(on), IGSS</span></div>
+              <div class="meta-item"><span class="m-k">Checkpoints:</span> <span class="m-v">0h, 24h, 48h, 72h, 96h, 120h, 144h, 168h</span></div>
+              <div class="meta-item"><span class="m-k">Specification:</span> <span class="m-v">MIL-PRF-19500/703 Table I Limits</span></div>
+            </div>
+
+            <div class="dataset-action-strip">
+              <button type="button" class="btn-primary text-mono btn-action-flow" id="btn-analyze-demo">ANALYZE DATASET &bull; PROCEED TO SCREENING &rarr;</button>
+              <div class="dataset-action-hint">
+                Loads Phase 4B Demo Dataset into active workstation context for locked Module A screening and Module B prognostics.
+              </div>
+            </div>
+          </div>
+
+          <!-- STATE 2: UPLOAD DATA STATE -->
+          <div class="dataset-state-box" id="box-upload-dataset-state" style="display: none;">
+            <div class="state-box-header">
+              <span class="state-box-title">UPLOAD TELEMETRY</span>
+              <span class="badge badge-qualifier">USER DATA &bull; UPLOADED</span>
+            </div>
+
+            <!-- Drag and Drop Zone -->
+            <div class="upload-dropzone" id="upload-dropzone">
+              <input type="file" id="file-input-csv" accept=".csv" class="file-input-hidden" />
+              <div class="dropzone-content">
+                <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                <div class="dropzone-title">Drop CSV file here</div>
+                <div class="dropzone-subtitle">or click to browse your local filesystem (.csv format)</div>
+                <button type="button" class="btn-primary text-mono" id="btn-choose-file">Choose File</button>
+              </div>
+            </div>
+
+            <div class="template-strip">
+              <span class="dim">Canonical Schema: component_id, lot_id, parameter_name, elapsed_hours, value, unit, temperature_C, test_condition, instrument_id, channel_id, measurement_quality, rework_count</span>
+              <button type="button" class="btn-action text-mono" id="btn-download-template">Download CSV Template</button>
+            </div>
+
+            <!-- Dataset Validation Report Card -->
+            <div class="validation-report-box" id="upload-validation-report" style="display: none;">
+              <div class="val-report-header">
+                <span class="val-report-title">DATASET VALIDATION</span>
+                <span class="badge badge-pass" id="val-report-badge">READY</span>
+              </div>
+
+              <div class="validation-grid text-mono">
+                <div class="val-metric"><span class="v-lbl">Rows:</span> <span class="v-val" id="val-rows">&mdash;</span></div>
+                <div class="val-metric"><span class="v-lbl">Lots:</span> <span class="v-val" id="val-lots">&mdash;</span></div>
+                <div class="val-metric"><span class="v-lbl">Components:</span> <span class="v-val" id="val-comps">&mdash;</span></div>
+                <div class="val-metric"><span class="v-lbl">Parameters:</span> <span class="v-val" id="val-params">&mdash;</span></div>
+                <div class="val-metric"><span class="v-lbl">Checkpoints:</span> <span class="v-val" id="val-checkpoints">&mdash;</span></div>
+                <div class="val-metric"><span class="v-lbl">Units:</span> <span class="v-val" id="val-units">&#10003; Verified</span></div>
+                <div class="val-metric"><span class="v-lbl">Required fields:</span> <span class="v-val" id="val-fields">&#10003; Verified</span></div>
+                <div class="val-metric"><span class="v-lbl">Missing values:</span> <span class="v-val" id="val-missing">0</span></div>
+                <div class="val-metric"><span class="v-lbl">Duplicate rows:</span> <span class="v-val" id="val-duplicates">0</span></div>
+                <div class="val-metric"><span class="v-lbl">Invalid records:</span> <span class="v-val" id="val-invalid">0</span></div>
+                <div class="val-metric full-val"><span class="v-lbl">Status:</span> <span class="v-val highlight" id="val-status-text">READY</span></div>
+              </div>
+
+              <!-- 20-Row Preview Table -->
+              <div class="preview-section">
+                <div class="preview-head">
+                  <span>PREVIEW FIRST 20 ROWS &bull; COLUMN MAPPING</span>
+                  <span class="dim text-mono" id="preview-filename">telemetry.csv</span>
+                </div>
+                <div class="table-wrap preview-table-wrap">
+                  <table class="eng-table" id="preview-table">
+                    <thead>
+                      <tr>
+                        <th>Row</th>
+                        <th>component_id</th>
+                        <th>lot_id</th>
+                        <th>parameter_name</th>
+                        <th>elapsed_hours</th>
+                        <th>value</th>
+                        <th>unit</th>
+                        <th>temperature_C</th>
+                        <th>instrument_id</th>
+                        <th>channel_id</th>
+                      </tr>
+                    </thead>
+                    <tbody id="preview-tbody">
+                      <!-- Populated dynamically -->
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- Run Analysis Action Strip -->
+              <div class="upload-action-strip">
+                <button type="button" class="btn-primary text-mono btn-action-flow" id="btn-run-analysis">ANALYZE DATASET &bull; PROCEED TO SCREENING &rarr;</button>
+                <div class="upload-action-desc">
+                  Executes locked Module A screening and locked Ridge model against the uploaded dataset.
+                  Confirmation required before analysis.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 11: Model Status Semantics Box -->
+          <div class="model-status-card">
+            <div class="model-status-head">MODEL STATUS</div>
+            <div class="model-status-body text-mono">
+              <div><strong>Architecture:</strong> Locked Ridge Regression (L2 &lambda;=1.0)</div>
+              <div><strong>Training:</strong> Frozen calibration data (LOT_CAL_001 – LOT_CAL_050)</div>
+              <div><strong>User dataset:</strong> Inference only</div>
+              <div><strong>Retraining:</strong> Not performed</div>
+              <div><strong>Recalibration:</strong> Not performed</div>
+            </div>
+          </div>
+
+          <!-- Section 14: Engineering Report Generation Section -->
+          <div class="report-generation-card">
+            <div class="card-header">
+              <div>
+                <h3 class="card-title">ENGINEERING REPORT GENERATION</h3>
+                <span class="card-subtitle">Generate shareable verification and compliance reports from active analysis</span>
+              </div>
+            </div>
+            <div class="report-actions-row">
+              <button type="button" class="btn-primary text-mono" id="btn-generate-pdf-report">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Generate Report (Print/PDF)
+              </button>
+              <button type="button" class="btn-action text-mono" id="btn-export-audit-json-report">Export Audit JSON</button>
+              <button type="button" class="btn-action text-mono" id="btn-export-evidence-csv-report">Export Evidence CSV</button>
+            </div>
+            <div class="report-disclaimer-note">
+              <strong>REPORT SEMANTICS &amp; GOVERNANCE:</strong> Reports strictly distinguish measured specification failure, Module A evidence, Module B forecast, and predicted future specification breach. Predicted breaches are informational evidence and do NOT constitute autonomous hardware rejection authority. Predictive rejection is not authorized.
+            </div>
+          </div>
+        </section>
+
+      </div>
+
+      <!-- ====================================================================
+           WORKSPACE 4: TRACEABILITY
+           ==================================================================== -->
+      <div class="workspace-panel" id="ws-traceability">
+
+        <section class="eng-card" id="section-traceability" aria-labelledby="heading-traceability">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-traceability" class="card-title">QUALITY ASSURANCE &amp; FORENSIC TRACEABILITY</h2>
+              <span class="card-subtitle">Cryptographic digests, lineage manifest SHA-256, and deterministic pipeline records</span>
+            </div>
+            <div class="card-actions">
+              <button type="button" class="btn-action text-mono" id="btn-download-audit-json">Download Audit JSON</button>
+              <button type="button" class="btn-action text-mono" id="btn-copy-canonical-hash">Copy Result Hash</button>
+            </div>
+          </div>
+
+          <!-- Traceability Metadata Grid -->
+          <div class="traceability-sections-grid">
+            <!-- 1. Dataset Provenance -->
+            <div class="trace-group">
+              <div class="trace-group-title">1. DATASET PROVENANCE</div>
+              <div class="trace-group-content text-mono">
+                <div class="tr-row"><span class="tr-k">Active Dataset:</span> <span class="tr-v" id="tr-active-dataset">Phase 4B Demo</span></div>
+                <div class="tr-row"><span class="tr-k">Telemetry Source:</span> <span class="tr-v" id="tr-source">SYNTHETIC_PHASE4B</span></div>
+                <div class="tr-row"><span class="tr-k">File Metadata:</span> <span class="tr-v" id="tr-file-meta">data/synthetic_phase4b/observations.csv</span></div>
+                <div class="tr-row"><span class="tr-k">Dataset Checksum:</span> <span class="tr-v break-hash">6e680a6b7d14fe83f98219c670a41fdf74a0bb2367d30ca5df8b0ba995b0586e</span></div>
+              </div>
+            </div>
+
+            <!-- 2. Model Provenance -->
+            <div class="trace-group">
+              <div class="trace-group-title">2. MODEL PROVENANCE</div>
+              <div class="trace-group-content text-mono">
+                <div class="tr-row"><span class="tr-k">Model Version:</span> <span class="tr-v">LOCKED_RIDGE_PHASE5_FINAL</span></div>
+                <div class="tr-row"><span class="tr-k">Coefficient Digest:</span> <span class="tr-v">IEEE-754 Bit-Exact Verified</span></div>
+                <div class="tr-row"><span class="tr-k">Sigma Digest:</span> <span class="tr-v">&sigma;_eff Frozen Evaluation</span></div>
+                <div class="tr-row"><span class="tr-k">Training Manifest:</span> <span class="tr-v break-hash" id="tr-lineage">bde6989e24d195ab4b53f93c46c2156d1c336fe820baf149d76d32943e135667</span></div>
+              </div>
+            </div>
+
+            <!-- 3. Screening Provenance -->
+            <div class="trace-group full-width">
+              <div class="trace-group-title">3. DETERMINISTIC EXECUTION PROVENANCE</div>
+              <div class="trace-group-content text-mono">
+                <div class="tr-row"><span class="tr-k">Component ID:</span> <span class="tr-v" id="tr-cid">LOT_CAL_001_C001</span></div>
+                <div class="tr-row"><span class="tr-k">Lot ID:</span> <span class="tr-v" id="tr-lot">LOT_CAL_001</span></div>
+                <div class="tr-row"><span class="tr-k">As-Of Checkpoint:</span> <span class="tr-v" id="tr-asof">24 h</span></div>
+                <div class="tr-row"><span class="tr-k">Input Telemetry Hash (SHA-256):</span> <span class="tr-v break-hash" id="audit-input-hash">&mdash;</span></div>
+                <div class="tr-row highlight-row">
+                  <span class="tr-k">Canonical Result Hash (SHA-256):</span>
+                  <span class="tr-v break-hash highlight" id="audit-canonical-hash">&mdash;</span>
+                </div>
+                <div class="tr-row"><span class="tr-k">Runtime Run ID:</span> <span class="tr-v" id="tr-runid">&mdash;</span></div>
+                <div class="tr-row"><span class="tr-k">Created At Timestamp:</span> <span class="tr-v" id="tr-timestamp">&mdash;</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Certificate of Conformance (CoC) -->
+          <div class="coc-section" id="coc-section">
+            <div class="coc-card" id="coc-card">
+              <div class="coc-header">
+                <div class="coc-org-name">ISRO // URSC &mdash; COMPONENT QUALIFICATION & SCREENING DIVISION</div>
+                <div class="coc-doc-title">CERTIFICATE OF SCREENING CONFORMANCE</div>
+                <div class="coc-doc-subtitle">Burn-In / Environmental Stress Screening &bull; MIL-PRF-19500/703 Table I &bull; MIL-STD-750 Method 1038/1042</div>
+              </div>
+              <div class="coc-fields-grid text-mono" id="coc-fields">
+                <div class="coc-field"><span class="coc-field-label">Component ID:</span><span class="coc-field-value" id="coc-cid">LOT_CAL_001_C001</span></div>
+                <div class="coc-field"><span class="coc-field-label">Lot / Batch ID:</span><span class="coc-field-value" id="coc-lot">LOT_CAL_001</span></div>
+                <div class="coc-field"><span class="coc-field-label">Part Number:</span><span class="coc-field-value">IRHNJ57130</span></div>
+                <div class="coc-field"><span class="coc-field-label">Qual Level:</span><span class="coc-field-value">MIL-PRF-19500 Space Level</span></div>
+                <div class="coc-field"><span class="coc-field-label">Screening State:</span><span class="coc-field-value" id="coc-state">PASS (NOMINAL_STABLE)</span></div>
+                <div class="coc-field"><span class="coc-field-label">As-Of Checkpoint:</span><span class="coc-field-value" id="coc-asof">24 h</span></div>
+                <div class="coc-field"><span class="coc-field-label">Burn-In Condition:</span><span class="coc-field-value">HTRB 150.0&deg;C / 80V Bias / 168h</span></div>
+                <div class="coc-field"><span class="coc-field-label">Dataset Source:</span><span class="coc-field-value" id="coc-source">SYNTHETIC PHASE 4B (Demo)</span></div>
+                <div class="coc-field full-width"><span class="coc-field-label">SHA-256 Tamper Seal:</span><span class="coc-field-value break-hash" id="coc-hash">&mdash;</span></div>
+              </div>
+              <div class="coc-signoff-grid">
+                <div class="coc-signoff-block">
+                  <span class="coc-signoff-role">QA INSPECTOR</span>
+                  <div class="coc-signoff-line"></div>
+                  <span class="coc-signoff-sub">Name / Badge ID / Date</span>
+                </div>
+                <div class="coc-signoff-block">
+                  <span class="coc-signoff-role">R&QA CONCURRENCE</span>
+                  <div class="coc-signoff-line"></div>
+                  <span class="coc-signoff-sub">R&QA Engineer / Stamp / Date</span>
+                </div>
+                <div class="coc-signoff-block">
+                  <span class="coc-signoff-role">DISPOSITION AUTHORITY</span>
+                  <div class="coc-signoff-line"></div>
+                  <span class="coc-signoff-sub">Project Manager / Authorization / Date</span>
+                </div>
+              </div>
+              <div class="coc-seal">
+                <div class="coc-seal-label">CRYPTOGRAPHIC TAMPER-PROOF SEAL</div>
+                <div class="coc-seal-hash" id="coc-seal-hash">&mdash;</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Forensic ASCII Card -->
+          <div class="ascii-card-container">
+            <div class="ascii-card-head">
+              <span class="card-subtitle text-mono">COMPLETE FORENSIC ASCII EVIDENCE CARD</span>
+              <button type="button" class="btn-action text-mono" id="btn-copy-ascii">Copy Card</button>
+            </div>
+            <pre class="ascii-block" id="ascii-card-box">Loading forensic evidence card...</pre>
+          </div>
+
+          <!-- Expandable Audit Record JSON -->
+          <details class="json-details">
+            <summary class="json-summary text-mono">EXPAND COMPLETE DETERMINISTIC AUDIT RECORD JSON</summary>
+            <pre class="json-block text-mono" id="audit-json-box">Loading audit record...</pre>
+          </details>
+        </section>
+
+      </div>
+
+    </main>
+  </div>
+
+  <script src="/app.js" type="module"></script>
+</body>
+</html>

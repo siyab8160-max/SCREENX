@@ -1,0 +1,28 @@
+{
+  "manifest_version": "1.0.0",
+  "artifact_suite": "PHASE_4B_NULL_A_CALIBRATION_SUITE_v1.0.0",
+  "freeze_level": "FREEZE_0_CALIBRATION_LOCKED",
+  "created_at_utc": "2026-09-17T17:34:14.686732+00:00",
+  "elapsed_seconds": 2.883861,
+  "calibration_seed": 194572359,
+  "sample_accounting": {
+    "n_lots": 5000,
+    "lot_size": 20,
+    "n_components": 100000,
+    "n_parameters": 4,
+    "total_parameter_series": 400000,
+    "checkpoints_per_series": 7
+  },
+  "total_reference_distributions": 68,
+  "files": {
+    "calibration_reference_table.json": {
+      "sha256": "153d387597ba6a247ed5302a7512730c678bc3ce39e056848cd9135fc39c7d60",
+      "bytes": 123069
+    },
+    "calibration_distributions.npz": {
+      "sha256": "147f1d38ed9b197af6b6301b9b454223d5cce54286fcfeb89a1ea15cec055d98",
+      "bytes": 13718198
+    }
+  },
+  "integrity_status": "CALIBRATION_INTEGRITY_VERIFIED"
+}

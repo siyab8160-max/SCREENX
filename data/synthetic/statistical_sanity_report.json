@@ -1,0 +1,32 @@
+{
+  "component_count": 395,
+  "lot_count": 14,
+  "parameter_count": 3,
+  "checkpoint_count": 4,
+  "total_observation_records": 4609,
+  "total_ground_truth_records": 4740,
+  "trajectory_class_counts": {
+    "stable": 335,
+    "linear_drift": 18,
+    "high_but_stable": 16,
+    "abrupt_failure": 11,
+    "accelerating_drift": 9,
+    "lot_outlier": 6
+  },
+  "missingness_count": 131,
+  "missingness_rate": 0.027637130801687764,
+  "negative_observation_count": 4,
+  "zero_observation_count": 0,
+  "non_finite_count": 0,
+  "equipment_shift_observation_count": 188,
+  "rework_regime_lot_counts": {
+    "R0": 9,
+    "R1": 2,
+    "R2": 3
+  },
+  "ground_truth_abnormal_components": 60,
+  "ground_truth_abnormal_by_24h": 29,
+  "ground_truth_abnormal_by_96h": 60,
+  "ground_truth_abnormal_by_168h": 60,
+  "absolute_limit_crossing_count": 62
+}

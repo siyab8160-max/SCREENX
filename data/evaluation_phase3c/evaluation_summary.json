@@ -1,0 +1,294 @@
+{
+  "evaluation_release": "PHASE_3C_EVALUATION_v1.0.0",
+  "benchmark_release": "PHASE_2F_FROZEN_BENCHMARK_v1.0.0",
+  "accounting_contract": "TP + FP + TN + FN + EXCLUDED = 398",
+  "state_evolution": {
+    "T0h": {
+      "PASS": 253,
+      "ALERT": 135,
+      "FAIL": 10,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "TOTAL": 398,
+      "qualifiers": {
+        "NOMINAL_STABLE": 253,
+        "PEER_OUTLIER_STATIONARY": 135,
+        "SPECIFICATION_FAILURE": 10
+      }
+    },
+    "T24h": {
+      "PASS": 254,
+      "ALERT": 129,
+      "FAIL": 15,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "TOTAL": 398,
+      "qualifiers": {
+        "NOMINAL_STABLE": 254,
+        "PEER_OUTLIER_STATIONARY": 129,
+        "SPECIFICATION_FAILURE": 10,
+        "COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT": 4,
+        "COMPONENT_DEGRADATION": 1
+      }
+    },
+    "T96h": {
+      "PASS": 219,
+      "ALERT": 120,
+      "FAIL": 18,
+      "INSUFFICIENT_DATA": 7,
+      "EQUIPMENT_SUSPECTED": 34,
+      "TOTAL": 398,
+      "qualifiers": {
+        "NOMINAL_STABLE": 219,
+        "PEER_OUTLIER_STATIONARY": 119,
+        "EQUIPMENT_ONLY": 34,
+        "SPECIFICATION_FAILURE": 13,
+        "INSUFFICIENT_EVIDENCE": 7,
+        "COMPONENT_DEGRADATION": 6
+      }
+    },
+    "T168h": {
+      "PASS": 219,
+      "ALERT": 119,
+      "FAIL": 23,
+      "INSUFFICIENT_DATA": 7,
+      "EQUIPMENT_SUSPECTED": 30,
+      "TOTAL": 398,
+      "qualifiers": {
+        "NOMINAL_STABLE": 219,
+        "PEER_OUTLIER_STATIONARY": 116,
+        "EQUIPMENT_ONLY": 30,
+        "COMPONENT_DEGRADATION": 13,
+        "SPECIFICATION_FAILURE": 13,
+        "INSUFFICIENT_EVIDENCE": 7
+      }
+    }
+  },
+  "scenario_breakdown_168h": {
+    "accelerating_drift": {
+      "count": 3,
+      "PASS": 0,
+      "ALERT": 0,
+      "FAIL": 3,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "SPECIFICATION_FAILURE": 3
+      }
+    },
+    "equipment_common_mode": {
+      "count": 32,
+      "PASS": 0,
+      "ALERT": 0,
+      "FAIL": 2,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 30,
+      "qualifiers": {
+        "EQUIPMENT_ONLY": 30,
+        "SPECIFICATION_FAILURE": 2
+      }
+    },
+    "high_but_stable": {
+      "count": 169,
+      "PASS": 55,
+      "ALERT": 111,
+      "FAIL": 0,
+      "INSUFFICIENT_DATA": 3,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "PEER_OUTLIER_STATIONARY": 111,
+        "NOMINAL_STABLE": 55,
+        "INSUFFICIENT_EVIDENCE": 3
+      }
+    },
+    "insufficient_data": {
+      "count": 8,
+      "PASS": 1,
+      "ALERT": 0,
+      "FAIL": 7,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "COMPONENT_DEGRADATION": 7,
+        "NOMINAL_STABLE": 1
+      }
+    },
+    "linear_drift": {
+      "count": 10,
+      "PASS": 3,
+      "ALERT": 5,
+      "FAIL": 2,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "COMPONENT_DEGRADATION": 5,
+        "NOMINAL_STABLE": 3,
+        "PEER_OUTLIER_STATIONARY": 2
+      }
+    },
+    "lot_outlier": {
+      "count": 1,
+      "PASS": 0,
+      "ALERT": 0,
+      "FAIL": 0,
+      "INSUFFICIENT_DATA": 1,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "INSUFFICIENT_EVIDENCE": 1
+      }
+    },
+    "mixed_compound": {
+      "count": 2,
+      "PASS": 0,
+      "ALERT": 0,
+      "FAIL": 2,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "COMPONENT_DEGRADATION": 1,
+        "SPECIFICATION_FAILURE": 1
+      }
+    },
+    "stable": {
+      "count": 166,
+      "PASS": 158,
+      "ALERT": 3,
+      "FAIL": 2,
+      "INSUFFICIENT_DATA": 3,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "NOMINAL_STABLE": 158,
+        "PEER_OUTLIER_STATIONARY": 3,
+        "INSUFFICIENT_EVIDENCE": 3,
+        "SPECIFICATION_FAILURE": 2
+      }
+    },
+    "static_limit_breach": {
+      "count": 6,
+      "PASS": 1,
+      "ALERT": 0,
+      "FAIL": 5,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "SPECIFICATION_FAILURE": 5,
+        "NOMINAL_STABLE": 1
+      }
+    },
+    "subtle_abrupt_change": {
+      "count": 1,
+      "PASS": 1,
+      "ALERT": 0,
+      "FAIL": 0,
+      "INSUFFICIENT_DATA": 0,
+      "EQUIPMENT_SUSPECTED": 0,
+      "qualifiers": {
+        "NOMINAL_STABLE": 1
+      }
+    }
+  },
+  "confusion_matrices": {
+    "target_a_specification": {
+      "target_name": "Target A (Absolute Specification Non-Compliance)",
+      "TP": 11,
+      "FP": 2,
+      "TN": 382,
+      "FN": 3,
+      "EXCLUDED": 0,
+      "TOTAL_ACCOUNTED": 398,
+      "sensitivity_recall": 0.7857142857142857,
+      "specificity": 0.9947916666666666,
+      "precision": 0.8461538461538461,
+      "false_positive_rate": 0.005208333333333333
+    },
+    "target_b_temporal_degradation": {
+      "target_name": "Target B (Temporal Degradation)",
+      "TP": 6,
+      "FP": 7,
+      "TN": 375,
+      "FN": 10,
+      "EXCLUDED": 0,
+      "TOTAL_ACCOUNTED": 398,
+      "sensitivity_recall": 0.375,
+      "specificity": 0.981675392670157,
+      "precision": 0.46153846153846156,
+      "false_positive_rate": 0.01832460732984293
+    },
+    "target_c_equipment_environment": {
+      "target_name": "Target C (Equipment / Common-Mode Environment)",
+      "TP": 30,
+      "FP": 0,
+      "TN": 338,
+      "FN": 30,
+      "EXCLUDED": 0,
+      "TOTAL_ACCOUNTED": 398,
+      "sensitivity_recall": 0.5,
+      "specificity": 1.0,
+      "precision": 1.0,
+      "false_positive_rate": 0.0
+    },
+    "target_d_nominal_stable": {
+      "target_name": "Target D (Nominal Stable Acceptance)",
+      "TP": 158,
+      "FP": 61,
+      "TN": 171,
+      "FN": 8,
+      "EXCLUDED": 0,
+      "TOTAL_ACCOUNTED": 398,
+      "sensitivity_recall": 0.9518072289156626,
+      "specificity": 0.7370689655172413,
+      "precision": 0.7214611872146118,
+      "false_positive_rate": 0.2629310344827586
+    }
+  },
+  "phase_3b_vs_phase_3c_comparison": {
+    "high_but_stable_false_fail_count": {
+      "phase_3b": 0,
+      "phase_3c": 0
+    },
+    "high_but_stable_false_fail_rate": {
+      "phase_3b": 0.0,
+      "phase_3c": 0.0
+    },
+    "specification_sensitivity": {
+      "phase_3b": 0.8571428571428571,
+      "phase_3c": 0.7857142857142857
+    },
+    "specification_specificity": {
+      "phase_3b": 0.9947916666666666,
+      "phase_3c": 0.9947916666666666
+    },
+    "temporal_degradation_recall": {
+      "phase_3b": 0.0625,
+      "phase_3c": 0.375
+    },
+    "temporal_evidence_masking_rate": {
+      "phase_3b": 0.9375,
+      "phase_3c": 0.0
+    },
+    "equipment_recall": {
+      "phase_3b": 1.0,
+      "phase_3c": 0.5
+    },
+    "equipment_false_alarm_rate": {
+      "phase_3b": 0.8415300546448088,
+      "phase_3c": 0.0
+    },
+    "equipment_suspected_population_rate": {
+      "phase_3b": 0.8065326633165829,
+      "phase_3c": 0.07537688442211055
+    },
+    "pass_rate_at_168h": {
+      "phase_3b": 0.07035175879396985,
+      "phase_3c": 0.550251256281407
+    },
+    "alert_rate_at_168h": {
+      "phase_3b": 0.05527638190954774,
+      "phase_3c": 0.2989949748743719
+    },
+    "fail_rate_at_168h": {
+      "phase_3b": 0.05025125628140704,
+      "phase_3c": 0.05778894472361809
+    }
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "dataset_status": "PHASE_2F_DEVELOPMENT",
+  "is_frozen": false,
+  "generator_version": "2.0.0-phase2f-dev",
+  "master_seed": 26170,
+  "configuration_hash": "72f19a27ef39345ef57db52fa9efaaf791546d8c258129c904fb6e76ea46e914",
+  "generated_at_utc": "2026-09-17T03:15:19.798942+00:00",
+  "component_anchor": "IRHNJ57130 / JANSR2N7481U3",
+  "governing_specification": "MIL-PRF-19500/703",
+  "package_type": "SMD-0.5 (TO-276AA)",
+  "total_lots": 16,
+  "total_components": 398,
+  "total_observations": 6361,
+  "missingness_rate": 0.0010992462311557789,
+  "homogeneous_coupling_fraction": 0.4371859296482412,
+  "parameters": [
+    "IDSS",
+    "VGS(th)",
+    "RDS(on)",
+    "IGSS"
+  ],
+  "checkpoints": [
+    0,
+    24,
+    96,
+    168
+  ],
+  "observations_sha256": "b4282e0743cd6a0b2b74354e431bf8f308b03281c44c0437d30f7b53bd6ca983",
+  "ground_truth_sha256": "4bf2155fcc7698813f766e1dea9730213e0a6097e484bfa786eb1b94925f3d2b"
+}

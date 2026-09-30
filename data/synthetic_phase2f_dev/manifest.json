@@ -1,0 +1,301 @@
+{
+  "artifact_type": "PHASE_2F_DEVELOPMENT_SYNTHETIC_DATASET",
+  "status": "DEVELOPMENT_ONLY_NOT_FROZEN",
+  "created_at_utc": "2026-09-17T03:15:19.839872+00:00",
+  "generator_version": "2.0.0-phase2f-dev",
+  "master_seed": 26170,
+  "files": {
+    "observations.csv": {
+      "records": 6361,
+      "sha256": "b4282e0743cd6a0b2b74354e431bf8f308b03281c44c0437d30f7b53bd6ca983"
+    },
+    "ground_truth.csv": {
+      "records": 6368,
+      "sha256": "4bf2155fcc7698813f766e1dea9730213e0a6097e484bfa786eb1b94925f3d2b"
+    }
+  },
+  "forensic_summary": {
+    "is_valid": true,
+    "errors": [],
+    "warnings": [],
+    "lot_count": 16,
+    "component_count": 398,
+    "observation_count": 6361,
+    "missingness_rate": 0.0010992462311557789,
+    "parameter_counts": {
+      "IDSS": 1591,
+      "VGS(th)": 1590,
+      "RDS(on)": 1590,
+      "IGSS": 1590
+    },
+    "component_scenario_counts": {
+      "insufficient_data": 8,
+      "stable": 166,
+      "high_but_stable": 169,
+      "linear_drift": 10,
+      "accelerating_drift": 3,
+      "static_limit_breach": 6,
+      "equipment_common_mode": 32,
+      "mixed_compound": 2,
+      "subtle_abrupt_change": 1,
+      "lot_outlier": 1
+    },
+    "parameter_scenario_counts": {
+      "linear_drift": 11,
+      "stable": 1274,
+      "high_but_stable": 170,
+      "accelerating_drift": 4,
+      "equipment_common_mode": 92,
+      "static_limit_breach": 6,
+      "subtle_abrupt_change": 2,
+      "insufficient_data": 32,
+      "lot_outlier": 1
+    },
+    "observation_scenario_counts": {
+      "stable": 5096,
+      "high_but_stable": 680,
+      "equipment_common_mode": 368,
+      "insufficient_data": 128,
+      "linear_drift": 44,
+      "static_limit_breach": 24,
+      "accelerating_drift": 16,
+      "subtle_abrupt_change": 8,
+      "lot_outlier": 4
+    },
+    "parameter_trajectory_counts": {
+      "IDSS": {
+        "linear_drift": 8,
+        "stable": 293,
+        "high_but_stable": 55,
+        "equipment_common_mode": 32,
+        "static_limit_breach": 2,
+        "insufficient_data": 8
+      },
+      "IGSS": {
+        "stable": 387,
+        "static_limit_breach": 2,
+        "subtle_abrupt_change": 1,
+        "insufficient_data": 8
+      },
+      "RDS(on)": {
+        "stable": 298,
+        "high_but_stable": 57,
+        "accelerating_drift": 4,
+        "equipment_common_mode": 30,
+        "static_limit_breach": 1,
+        "insufficient_data": 8
+      },
+      "VGS(th)": {
+        "stable": 296,
+        "high_but_stable": 58,
+        "linear_drift": 3,
+        "equipment_common_mode": 30,
+        "static_limit_breach": 1,
+        "subtle_abrupt_change": 1,
+        "insufficient_data": 8,
+        "lot_outlier": 1
+      }
+    },
+    "homogeneous_coupling_fraction": 0.4371859296482412,
+    "homogeneous_abnormal_coupling_fraction": 0.05172413793103448,
+    "p_all_same_all": 0.4371859296482412,
+    "p_all_same_abnormal": 0.05172413793103448,
+    "p_all_same_degrading": 0.0,
+    "p_single_drift_degrading": 0.9375,
+    "p_two_drift_degrading": 0.0625,
+    "p_three_drift_degrading": 0.0,
+    "p_four_drift_degrading": 0.0,
+    "pairwise_correlations": {
+      "log(IDSS)_vs_log(RDSon)": -0.10530978693484472,
+      "VGSth_vs_asinh(IGSS)": -0.3520071693002172
+    },
+    "common_mode_statistics": {
+      "chamber_drift_lot": "LOT_E01",
+      "parameter": "IDSS",
+      "checkpoint_excursion": "96h vs 24h",
+      "mean_shift": 0.42139346173842723,
+      "median_shift": 0.2160491168952544,
+      "std_shift": 0.5068413005090012,
+      "fraction_affected": 1.0,
+      "channel_bias_lot": "LOT_E02",
+      "between_channel_variance": 0.2323518574700713,
+      "within_channel_variance": 0.7203979266755498,
+      "channel_f_ratio": 0.3225326571139857
+    },
+    "static_limit_breach_count": 6,
+    "temporal_anomalies_below_limit": 11,
+    "subtle_snr_distribution": {
+      "min": 1.8119912835443175,
+      "max": 2.344972513010468,
+      "mean": 2.0819371079212963,
+      "median": 2.0888475272091034
+    },
+    "subtle_failure_table": [
+      {
+        "component_id": "LOT_D04_C001",
+        "parameter_name": "IDSS",
+        "baseline_value": 0.5762385544580507,
+        "terminal_observed_value": 0.6454469417272067,
+        "noise_scale": 0.04,
+        "computed_snr": 2.344972513010468,
+        "is_below_limit": true
+      },
+      {
+        "component_id": "LOT_D04_C002",
+        "parameter_name": "IDSS",
+        "baseline_value": 1.877429409368478,
+        "terminal_observed_value": 1.7503936691447628,
+        "noise_scale": 0.04,
+        "computed_snr": 1.8119912835443175,
+        "is_below_limit": true
+      },
+      {
+        "component_id": "LOT_D04_C003",
+        "parameter_name": "IDSS",
+        "baseline_value": 0.5442576651254211,
+        "terminal_observed_value": 0.6205886007752837,
+        "noise_scale": 0.04,
+        "computed_snr": 2.0888475272091034,
+        "is_below_limit": true
+      }
+    ],
+    "small_lot_counts": {
+      "LOT_D01": 30,
+      "LOT_D02": 30,
+      "LOT_D03": 30,
+      "LOT_D04": 30,
+      "LOT_E01": 30,
+      "LOT_E02": 30,
+      "LOT_L01": 30,
+      "LOT_M01": 30,
+      "LOT_N01": 30,
+      "LOT_N02": 30,
+      "LOT_S01": 3,
+      "LOT_S02": 5,
+      "LOT_S03": 8,
+      "LOT_S04": 12,
+      "LOT_S05": 20,
+      "LOT_W01": 50
+    },
+    "as_of_leakage_clean": true,
+    "as_of_leakage_audit": {
+      "checkpoint_0h": {
+        "records_in_slice": 1592,
+        "max_elapsed_hours": 0,
+        "future_records_count": 0,
+        "ground_truth_columns_count": 0,
+        "sample_lot_stats": {
+          "LOT_D01": {
+            "IDSS_median_at_0": 0.5460939642741562,
+            "IGSS_median_at_0": 0.21064281440702556,
+            "RDS(on)_median_at_0": 47.72765624577113,
+            "VGS(th)_median_at_0": 2.947422701033756
+          },
+          "LOT_D02": {
+            "IDSS_median_at_0": 0.6419616055675352,
+            "IGSS_median_at_0": -0.08909971710409115,
+            "RDS(on)_median_at_0": 47.7745947440862,
+            "VGS(th)_median_at_0": 2.922877706252235
+          },
+          "LOT_D03": {
+            "IDSS_median_at_0": 0.35362232685546247,
+            "IGSS_median_at_0": 0.011338384969048751,
+            "RDS(on)_median_at_0": 48.596087578431835,
+            "VGS(th)_median_at_0": 2.9251513812348624
+          }
+        }
+      },
+      "checkpoint_24h": {
+        "records_in_slice": 3184,
+        "max_elapsed_hours": 24,
+        "future_records_count": 0,
+        "ground_truth_columns_count": 0,
+        "sample_lot_stats": {
+          "LOT_D01": {
+            "IDSS_median_at_24": 0.5810092381067419,
+            "IGSS_median_at_24": 0.008034850862806808,
+            "RDS(on)_median_at_24": 47.5837837484013,
+            "VGS(th)_median_at_24": 2.9519595742769087
+          },
+          "LOT_D02": {
+            "IDSS_median_at_24": 0.6380436775824827,
+            "IGSS_median_at_24": -0.14617687938077895,
+            "RDS(on)_median_at_24": 47.859452380555965,
+            "VGS(th)_median_at_24": 2.902865756060255
+          },
+          "LOT_D03": {
+            "IDSS_median_at_24": 0.3636103002708759,
+            "IGSS_median_at_24": -0.07666217185108072,
+            "RDS(on)_median_at_24": 48.90507656151849,
+            "VGS(th)_median_at_24": 2.9267577168877263
+          }
+        }
+      },
+      "checkpoint_96h": {
+        "records_in_slice": 4769,
+        "max_elapsed_hours": 96,
+        "future_records_count": 0,
+        "ground_truth_columns_count": 0,
+        "sample_lot_stats": {
+          "LOT_D01": {
+            "IDSS_median_at_96": 0.547597476178518,
+            "IGSS_median_at_96": 0.08475653398322394,
+            "RDS(on)_median_at_96": 48.01664448770963,
+            "VGS(th)_median_at_96": 2.958769620676315
+          },
+          "LOT_D02": {
+            "IDSS_median_at_96": 0.6339664554834485,
+            "IGSS_median_at_96": -0.17227995705704177,
+            "RDS(on)_median_at_96": 47.76366176244544,
+            "VGS(th)_median_at_96": 2.9260464680864993
+          },
+          "LOT_D03": {
+            "IDSS_median_at_96": 0.35526348121197704,
+            "IGSS_median_at_96": -0.25653247623487707,
+            "RDS(on)_median_at_96": 49.729356911665946,
+            "VGS(th)_median_at_96": 2.9255052837391857
+          }
+        }
+      },
+      "checkpoint_168h": {
+        "records_in_slice": 6361,
+        "max_elapsed_hours": 168,
+        "future_records_count": 0,
+        "ground_truth_columns_count": 0,
+        "sample_lot_stats": {
+          "LOT_D01": {
+            "IDSS_median_at_168": 0.5360291958479232,
+            "IGSS_median_at_168": 0.16385369710992392,
+            "RDS(on)_median_at_168": 47.28139993782129,
+            "VGS(th)_median_at_168": 2.9716932259320066
+          },
+          "LOT_D02": {
+            "IDSS_median_at_168": 0.6385047318524452,
+            "IGSS_median_at_168": -0.07510804479652586,
+            "RDS(on)_median_at_168": 47.69029651641293,
+            "VGS(th)_median_at_168": 2.9241294461640024
+          },
+          "LOT_D03": {
+            "IDSS_median_at_168": 0.3601065615376775,
+            "IGSS_median_at_168": 0.41195014686374165,
+            "RDS(on)_median_at_168": 49.94008806644387,
+            "VGS(th)_median_at_168": 2.935235899962654
+          }
+        }
+      },
+      "all_slices_immutable": true
+    },
+    "ground_truth_contamination_clean": true,
+    "reproducibility_verified": true,
+    "igss_signed_audit": {
+      "has_positive": true,
+      "has_negative": true,
+      "has_zero": true,
+      "has_near_zero": true,
+      "min_observed_nA": -215.75295172312775,
+      "max_observed_nA": 147.6297140489975,
+      "positive_breaches_count": 3,
+      "negative_breaches_count": 4
+    }
+  }
+}

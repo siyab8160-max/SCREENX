@@ -1,0 +1,25 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Caches and logs
+.pytest_cache/
+*.log
+
+# OS & IDE files
+.DS_Store
+.vscode/
+.idea/
+
+# Local Scratch & Temporary Notes (kept locally on disk, excluded from git)
+scratch/
+
+# Historical Phase Drafts & Raw Sprint Notes (kept locally on disk, excluded from git)
+docs/archive/
+
+# Virtual Environments
+.venv/
+venv/
+env/

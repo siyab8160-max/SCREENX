@@ -1,0 +1,156 @@
+{
+  "audit_name": "D_ATE_STANDARDIZED_RESIDUAL_NULL_MONTE_CARLO_AUDIT",
+  "timestamp_utc": "2026-09-17T10:45:00Z",
+  "methodology": "Monte Carlo Null Simulation (Phase 3C Epistemic Standard)",
+  "null_distribution": "Standard Normal N(0, 1) in canonical transformed representation space",
+  "random_seed": 26170,
+  "num_simulated_fixtures": 10000,
+  "simultaneous_channels_per_fixture": 16,
+  "decision_threshold_Z": 3.42,
+  "threshold_layer_classification": "Layer F Benchmark/Design Parameter (Bonferroni FWER ~ 0.01 under Gaussian null)",
+  "scale_estimation_method": "1.4826 * MAD_lot",
+  "sample_size_suppression_boundary": "N_k < 4",
+  "finite_sample_justification": "For very small N_k (N_k < 4), the finite-sample distribution of the median is poorly approximated by the asymptotic normal standard-error formula, making tail-based channel-bias inference unreliable.",
+  "channel_subgroup_results": {
+    "N_k_4": {
+      "N_k": 4,
+      "N_other": 60,
+      "N_lot": 64,
+      "simulations": 10000,
+      "std_z": 0.9056883270952556,
+      "mean_z": -0.009131673156819795,
+      "percentiles": {
+        "50": 0.6114510976789469,
+        "90": 1.464319829844337,
+        "95": 1.7738558822854877,
+        "99": 2.3493570796927656,
+        "99.9": 2.988275324175594
+      },
+      "max_abs_z": 4.072707169932401,
+      "false_positives_ch1": 3,
+      "empirical_fpr_per_channel": 0.0003,
+      "fpr_95_ci": [
+        0.00010203219941781012,
+        0.0008817357722363795
+      ],
+      "false_positives_fixture_total": 61,
+      "empirical_fwer_16_channels": 0.0061,
+      "fwer_95_ci": [
+        0.00475210315987151,
+        0.00782721043068283
+      ]
+    },
+    "N_k_5": {
+      "N_k": 5,
+      "N_other": 75,
+      "N_lot": 80,
+      "simulations": 10000,
+      "std_z": 0.9696523714812741,
+      "mean_z": 0.022544074791251548,
+      "percentiles": {
+        "50": 0.6620414118348494,
+        "90": 1.5702442059751036,
+        "95": 1.889049717176216,
+        "99": 2.5574377146527856,
+        "99.9": 3.339726243590528
+      },
+      "max_abs_z": 3.9609214455230646,
+      "false_positives_ch1": 9,
+      "empirical_fpr_per_channel": 0.0009,
+      "fpr_95_ci": [
+        0.00047357706058500574,
+        0.0017097301130243718
+      ],
+      "false_positives_fixture_total": 125,
+      "empirical_fwer_16_channels": 0.0125,
+      "fwer_95_ci": [
+        0.010502016506099209,
+        0.014872381905310471
+      ]
+    },
+    "N_k_8": {
+      "N_k": 8,
+      "N_other": 120,
+      "N_lot": 128,
+      "simulations": 10000,
+      "std_z": 0.931704506786581,
+      "mean_z": -0.0032413748750242137,
+      "percentiles": {
+        "50": 0.6309663977928428,
+        "90": 1.5237354841204518,
+        "95": 1.8300825573081538,
+        "99": 2.3772031160802283,
+        "99.9": 3.0660724593109676
+      },
+      "max_abs_z": 3.8566895787592244,
+      "false_positives_ch1": 6,
+      "empirical_fpr_per_channel": 0.0006,
+      "fpr_95_ci": [
+        0.0002750134763309977,
+        0.001308524096300786
+      ],
+      "false_positives_fixture_total": 53,
+      "empirical_fwer_16_channels": 0.0053,
+      "fwer_95_ci": [
+        0.004054522887776702,
+        0.006925405100170722
+      ]
+    },
+    "N_k_12": {
+      "N_k": 12,
+      "N_other": 180,
+      "N_lot": 192,
+      "simulations": 10000,
+      "std_z": 0.9577306632124679,
+      "mean_z": -5.1985162058133485e-05,
+      "percentiles": {
+        "50": 0.6427268181642235,
+        "90": 1.5888679610809124,
+        "95": 1.8864816573987095,
+        "99": 2.451168631780937,
+        "99.9": 3.1349068652001817
+      },
+      "max_abs_z": 3.965800890267333,
+      "false_positives_ch1": 4,
+      "empirical_fpr_per_channel": 0.0004,
+      "fpr_95_ci": [
+        0.00015556283662307484,
+        0.0010281283353569795
+      ],
+      "false_positives_fixture_total": 63,
+      "empirical_fwer_16_channels": 0.0063,
+      "fwer_95_ci": [
+        0.004927565458326495,
+        0.008051594532879576
+      ]
+    },
+    "N_k_20": {
+      "N_k": 20,
+      "N_other": 300,
+      "N_lot": 320,
+      "simulations": 10000,
+      "std_z": 0.9706462172562437,
+      "mean_z": -0.011025606080469371,
+      "percentiles": {
+        "50": 0.6595832343552792,
+        "90": 1.6054243113374127,
+        "95": 1.8889313524355036,
+        "99": 2.515659898761187,
+        "99.9": 3.059696948845435
+      },
+      "max_abs_z": 3.68972568848367,
+      "false_positives_ch1": 1,
+      "empirical_fpr_per_channel": 0.0001,
+      "fpr_95_ci": [
+        1.765267360112231e-05,
+        0.0005662688974013381
+      ],
+      "false_positives_fixture_total": 57,
+      "empirical_fwer_16_channels": 0.0057,
+      "fwer_95_ci": [
+        0.004402415829723049,
+        0.007377204959527834
+      ]
+    }
+  }
+}

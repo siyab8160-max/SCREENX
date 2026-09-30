@@ -1,0 +1,142 @@
+{
+  "release_identifier": "PHASE_2F_FROZEN_BENCHMARK_v1.0.0",
+  "dataset_name": "SIH26170 Phase 2F Frozen Physics-Informed Synthetic Benchmark",
+  "status": "FROZEN_IMMUTABLE_BENCHMARK",
+  "freeze_timestamp_utc": "2026-09-17T03:34:45.341942+00:00",
+  "source_development_path": "data/synthetic_phase2f_dev/",
+  "governing_specification": "MIL-PRF-19500/703",
+  "target_component": "IRHNJ57130 / JANSR2N7481U3",
+  "package_type": "Hermetic Ceramic SMD-0.5 (TO-276AA)",
+  "generator_version": "2.0.0-phase2f-frozen",
+  "master_seed": 26170,
+  "seed_derivation": "HMAC-SHA256 hierarchical derivation",
+  "ontology_version": "1.0.0-optionA-reconciled",
+  "threshold_configuration_version": "1.0.0-provenance-classified",
+  "configuration_hash": "a4bb3f75f8211bf38b4c38cde0bbd1908eeecb75039700de84b1cc0c56f6dd27",
+  "benchmark_dimensions": {
+    "observation_row_count": 6361,
+    "ground_truth_row_count": 6368,
+    "lot_count": 16,
+    "component_count": 398,
+    "parameter_count": 4,
+    "parameters": [
+      "IDSS",
+      "VGS(th)",
+      "RDS(on)",
+      "IGSS"
+    ],
+    "checkpoints_hours": [
+      0,
+      24,
+      96,
+      168
+    ],
+    "expected_measurement_slots": 6368,
+    "missing_observations_count": 7,
+    "missingness_rate": 0.0010992462311557789,
+    "missingness_epistemic_layer": "Layer F (Benchmark Design Parameter - ATE Dropout)"
+  },
+  "primary_cryptographic_hashes": {
+    "observations.csv": {
+      "records": 6361,
+      "bytes": 842978,
+      "sha256": "b4282e0743cd6a0b2b74354e431bf8f308b03281c44c0437d30f7b53bd6ca983"
+    },
+    "ground_truth.csv": {
+      "records": 6368,
+      "bytes": 531118,
+      "sha256": "4bf2155fcc7698813f766e1dea9730213e0a6097e484bfa786eb1b94925f3d2b"
+    }
+  },
+  "all_frozen_files": {
+    "configuration_snapshot.json": {
+      "bytes": 7802,
+      "sha256": "a4bb3f75f8211bf38b4c38cde0bbd1908eeecb75039700de84b1cc0c56f6dd27"
+    },
+    "generation_metadata.json": {
+      "bytes": 922,
+      "sha256": "25cc3d7cc908ad511c08193221dd7b196ea2fa45505bbc0682fb80fb107fab00"
+    },
+    "ground_truth.csv": {
+      "bytes": 531118,
+      "sha256": "4bf2155fcc7698813f766e1dea9730213e0a6097e484bfa786eb1b94925f3d2b"
+    },
+    "manifest.json": {
+      "bytes": 9660,
+      "sha256": "dc39abcdd4ed22274041bc678404b3c074a8665265619af3944d8994ecaebc44"
+    },
+    "observations.csv": {
+      "bytes": 842978,
+      "sha256": "b4282e0743cd6a0b2b74354e431bf8f308b03281c44c0437d30f7b53bd6ca983"
+    },
+    "scenario_manifest.json": {
+      "bytes": 223416,
+      "sha256": "8f7b756255adfe444a3f15ba55b739d07e478565fb4e27639000905c49116b2e"
+    }
+  },
+  "scenario_counts": {
+    "component_level": {
+      "total": 398,
+      "stable": 166,
+      "high_but_stable": 169,
+      "equipment_common_mode": 32,
+      "linear_drift": 10,
+      "insufficient_data": 8,
+      "static_limit_breach": 6,
+      "accelerating_drift": 3,
+      "mixed_compound": 2,
+      "subtle_abrupt_change": 1,
+      "lot_outlier": 1
+    },
+    "parameter_level": {
+      "total": 1592,
+      "stable": 1274,
+      "high_but_stable": 170,
+      "equipment_common_mode": 92,
+      "insufficient_data": 32,
+      "linear_drift": 11,
+      "static_limit_breach": 6,
+      "accelerating_drift": 4,
+      "subtle_abrupt_change": 2,
+      "lot_outlier": 1
+    },
+    "observation_level": {
+      "total": 6368,
+      "stable": 5096,
+      "high_but_stable": 680,
+      "equipment_common_mode": 368,
+      "insufficient_data": 128,
+      "linear_drift": 44,
+      "static_limit_breach": 24,
+      "accelerating_drift": 16,
+      "subtle_abrupt_change": 8,
+      "lot_outlier": 4
+    }
+  },
+  "scientific_boundary_statement": {
+    "verified": [
+      "Infineon IRHNJ57130 / JANSR2N7481U3 MIL-PRF-19500/703 Table I limits",
+      "MIL-PRF-19500 general screening and burn-in PDA rules (<=5% initial, <=3% resubmission)",
+      "Deterministic bit-for-bit mathematical reproducibility under HMAC-SHA256 seeds",
+      "Zero ground-truth columns leaked into observations.csv",
+      "Real as-of historical slice immutability across 0h, 24h, 96h, 168h"
+    ],
+    "synthetic_benchmark_design": [
+      "Scenario injection and latent degradation kinetics",
+      "Subtle anomaly SNR difficulty envelope [1.5, 2.5]",
+      "Missingness rate of 0.1099% (7 ATE test abort omissions)",
+      "Small-lot DPAT suppression heuristic (N < 8)",
+      "Chamber temperature excursion (+5C at 96h) and ATE socket channel offsets"
+    ],
+    "surrogate_evidence": [
+      "NASA Ames IRF520NPBF power-cycling data provides structural temporal evidence for nonlinear resistance degradation curves z(t) = R(t)/R(0). Quarantined from device qualification claims."
+    ],
+    "not_established": [
+      "No prediction of real IRHNJ57130 mission failure rates",
+      "No real spaceflight degradation kinetics",
+      "No ISRO space qualification validation",
+      "No operational screening performance claims prior to Module A execution",
+      "No claim of physical statistical independence in real hardware"
+    ]
+  }
+}

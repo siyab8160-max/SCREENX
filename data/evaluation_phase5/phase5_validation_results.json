@@ -1,0 +1,809 @@
+{
+  "metadata": {
+    "evaluation_stage": "PHASE_5_INDEPENDENT_VALIDATION",
+    "governing_protocol": "docs/PHASE_5_MODEL_SELECTION_PROTOCOL.md",
+    "model_lock": "LOCKED_PRE_VALIDATION",
+    "n_calibration_components": 1000,
+    "n_calibration_lots": 50,
+    "n_validation_components": 500,
+    "n_validation_lots": 25,
+    "observations_hash": "b5de6a03022a9350b6f304b9af593768e7f83a8fc61fde6ca98e690cfa1f275f",
+    "selected_model": "RIDGE_REGRESSION",
+    "training_partition": "LOT_CAL_001_TO_LOT_CAL_050",
+    "validation_partition": "LOT_VAL_001_TO_LOT_VAL_025"
+  },
+  "parameter_metrics": {
+    "IDSS": {
+      "baselines": {
+        "carry_forward_mae": 0.060032884095460176,
+        "ridge_improvement_vs_carry_forward_pct": 8.641729896074171,
+        "two_point_linear_mae": 0.3167566049648432
+      },
+      "lot_distribution": {
+        "lot_mae_max": 0.1088249029808284,
+        "lot_mae_mean": 0.05484500440310724,
+        "lot_mae_min": 0.02820989248307353,
+        "lot_mae_std": 0.019864569520767747
+      },
+      "model_lineage": {
+        "coefficients": [
+          0.002339561050919542,
+          0.4657038355352779,
+          0.49182429074872763
+        ],
+        "hyperparameters": {
+          "l2_reg": 1.0
+        },
+        "preprocessor_params": {
+          "u0_mean": -0.6531782275064498,
+          "u0_std": 0.2631649486340792,
+          "u24_mean": -0.6498853231928525,
+          "u24_std": 0.2688817418176729
+        }
+      },
+      "n_samples": 500,
+      "parameter_name": "IDSS",
+      "per_lot_breakdown": {
+        "LOT_VAL_001": {
+          "coverage_90": 1.0,
+          "mae": 0.044012663599854854,
+          "mean_width": 0.22152058415585224,
+          "n_samples": 20
+        },
+        "LOT_VAL_002": {
+          "coverage_90": 0.95,
+          "mae": 0.0377613373717615,
+          "mean_width": 0.19209785438230328,
+          "n_samples": 20
+        },
+        "LOT_VAL_003": {
+          "coverage_90": 0.9,
+          "mae": 0.05492662346651729,
+          "mean_width": 0.22653124743933856,
+          "n_samples": 20
+        },
+        "LOT_VAL_004": {
+          "coverage_90": 0.95,
+          "mae": 0.05121486540515245,
+          "mean_width": 0.1792749034562445,
+          "n_samples": 20
+        },
+        "LOT_VAL_005": {
+          "coverage_90": 0.85,
+          "mae": 0.059328548821973116,
+          "mean_width": 0.23663480854756758,
+          "n_samples": 20
+        },
+        "LOT_VAL_006": {
+          "coverage_90": 0.95,
+          "mae": 0.0453028802955774,
+          "mean_width": 0.20231763831581376,
+          "n_samples": 20
+        },
+        "LOT_VAL_007": {
+          "coverage_90": 0.95,
+          "mae": 0.035302723388027736,
+          "mean_width": 0.17075984333646504,
+          "n_samples": 20
+        },
+        "LOT_VAL_008": {
+          "coverage_90": 0.85,
+          "mae": 0.0524935961401326,
+          "mean_width": 0.17545200469364144,
+          "n_samples": 20
+        },
+        "LOT_VAL_009": {
+          "coverage_90": 0.75,
+          "mae": 0.051152841382275126,
+          "mean_width": 0.18547292384910294,
+          "n_samples": 20
+        },
+        "LOT_VAL_010": {
+          "coverage_90": 0.95,
+          "mae": 0.04682465756194708,
+          "mean_width": 0.18992504130440485,
+          "n_samples": 20
+        },
+        "LOT_VAL_011": {
+          "coverage_90": 0.9,
+          "mae": 0.02820989248307353,
+          "mean_width": 0.14880739397186687,
+          "n_samples": 20
+        },
+        "LOT_VAL_012": {
+          "coverage_90": 0.95,
+          "mae": 0.04098274079612743,
+          "mean_width": 0.18237939377163787,
+          "n_samples": 20
+        },
+        "LOT_VAL_013": {
+          "coverage_90": 0.95,
+          "mae": 0.03950381428241275,
+          "mean_width": 0.17050006795377715,
+          "n_samples": 20
+        },
+        "LOT_VAL_014": {
+          "coverage_90": 0.7,
+          "mae": 0.0792475343434387,
+          "mean_width": 0.20765642220106567,
+          "n_samples": 20
+        },
+        "LOT_VAL_015": {
+          "coverage_90": 0.95,
+          "mae": 0.048599638875540016,
+          "mean_width": 0.23964209983376508,
+          "n_samples": 20
+        },
+        "LOT_VAL_016": {
+          "coverage_90": 0.85,
+          "mae": 0.05992349978324096,
+          "mean_width": 0.1750933950554488,
+          "n_samples": 20
+        },
+        "LOT_VAL_017": {
+          "coverage_90": 0.9,
+          "mae": 0.04826385016803081,
+          "mean_width": 0.21728762556592315,
+          "n_samples": 20
+        },
+        "LOT_VAL_018": {
+          "coverage_90": 0.9,
+          "mae": 0.03517739960970442,
+          "mean_width": 0.17671019574356972,
+          "n_samples": 20
+        },
+        "LOT_VAL_019": {
+          "coverage_90": 0.9,
+          "mae": 0.059098959586527625,
+          "mean_width": 0.24776857954515222,
+          "n_samples": 20
+        },
+        "LOT_VAL_020": {
+          "coverage_90": 0.75,
+          "mae": 0.06400206107650838,
+          "mean_width": 0.1770397072442135,
+          "n_samples": 20
+        },
+        "LOT_VAL_021": {
+          "coverage_90": 0.9,
+          "mae": 0.03947570182550016,
+          "mean_width": 0.15252613887969801,
+          "n_samples": 20
+        },
+        "LOT_VAL_022": {
+          "coverage_90": 0.7,
+          "mae": 0.09985445520896448,
+          "mean_width": 0.2312120851163182,
+          "n_samples": 20
+        },
+        "LOT_VAL_023": {
+          "coverage_90": 0.55,
+          "mae": 0.1088249029808284,
+          "mean_width": 0.2299382138859682,
+          "n_samples": 20
+        },
+        "LOT_VAL_024": {
+          "coverage_90": 0.9,
+          "mae": 0.050198139361900575,
+          "mean_width": 0.17920144940035337,
+          "n_samples": 20
+        },
+        "LOT_VAL_025": {
+          "coverage_90": 0.55,
+          "mae": 0.09144178226266364,
+          "mean_width": 0.19191852928630584,
+          "n_samples": 20
+        }
+      },
+      "primary_metrics": {
+        "coverage_rate_90": 0.858,
+        "mae": 0.05484500440310724,
+        "mean_interval_width": 0.19630672587743192,
+        "median_abs_error": 0.04304779489866309,
+        "rmse": 0.07226952088095558,
+        "winkler_score": 0.3014980750967924
+      },
+      "uncertainty_provenance": {
+        "calibration_oof_count": 1000,
+        "interval_quantile_z90": 1.6448536269514722,
+        "noise_floor": 0.05,
+        "sigma_eff": 0.10770869821030792
+      },
+      "unit": "uA"
+    },
+    "IGSS": {
+      "baselines": {
+        "carry_forward_mae": 0.8420729845914237,
+        "ridge_improvement_vs_carry_forward_pct": 9.13414640901873,
+        "two_point_linear_mae": 4.457322342547142
+      },
+      "lot_distribution": {
+        "lot_mae_max": 2.5698466817234267,
+        "lot_mae_mean": 0.7651568053080495,
+        "lot_mae_min": 0.36954620082840883,
+        "lot_mae_std": 0.49060753926814893
+      },
+      "model_lineage": {
+        "coefficients": [
+          0.32574744762123486,
+          0.39407454363980804,
+          0.3816214087816265
+        ],
+        "hyperparameters": {
+          "l2_reg": 1.0
+        },
+        "preprocessor_params": {
+          "u0_mean": 1.4378550174766347,
+          "u0_std": 0.43544635769150863,
+          "u24_mean": 1.4353528550777614,
+          "u24_std": 0.4372779019070325
+        }
+      },
+      "n_samples": 500,
+      "parameter_name": "IGSS",
+      "per_lot_breakdown": {
+        "LOT_VAL_001": {
+          "coverage_90": 1.0,
+          "mae": 0.4309061070224514,
+          "mean_width": 2.1903918167402985,
+          "n_samples": 20
+        },
+        "LOT_VAL_002": {
+          "coverage_90": 0.95,
+          "mae": 0.37825734741171235,
+          "mean_width": 1.9627565184355014,
+          "n_samples": 20
+        },
+        "LOT_VAL_003": {
+          "coverage_90": 1.0,
+          "mae": 0.46061998567604584,
+          "mean_width": 2.399121882599002,
+          "n_samples": 20
+        },
+        "LOT_VAL_004": {
+          "coverage_90": 1.0,
+          "mae": 0.4118842267190866,
+          "mean_width": 2.4725960475959523,
+          "n_samples": 20
+        },
+        "LOT_VAL_005": {
+          "coverage_90": 0.9,
+          "mae": 0.6427752245760133,
+          "mean_width": 2.645364445625687,
+          "n_samples": 20
+        },
+        "LOT_VAL_006": {
+          "coverage_90": 0.95,
+          "mae": 0.5941870552422049,
+          "mean_width": 2.6076884601466594,
+          "n_samples": 20
+        },
+        "LOT_VAL_007": {
+          "coverage_90": 0.95,
+          "mae": 0.5380826579022377,
+          "mean_width": 2.953333000030632,
+          "n_samples": 20
+        },
+        "LOT_VAL_008": {
+          "coverage_90": 1.0,
+          "mae": 0.5154672434109834,
+          "mean_width": 2.4546373594293467,
+          "n_samples": 20
+        },
+        "LOT_VAL_009": {
+          "coverage_90": 1.0,
+          "mae": 0.6840901488257563,
+          "mean_width": 3.228820520977849,
+          "n_samples": 20
+        },
+        "LOT_VAL_010": {
+          "coverage_90": 0.9,
+          "mae": 0.651064030964475,
+          "mean_width": 2.5750877995564965,
+          "n_samples": 20
+        },
+        "LOT_VAL_011": {
+          "coverage_90": 0.8,
+          "mae": 0.7259741315670117,
+          "mean_width": 2.3984351171050777,
+          "n_samples": 20
+        },
+        "LOT_VAL_012": {
+          "coverage_90": 1.0,
+          "mae": 0.4246041836853718,
+          "mean_width": 2.1011244224598626,
+          "n_samples": 20
+        },
+        "LOT_VAL_013": {
+          "coverage_90": 0.9,
+          "mae": 0.5911355499753315,
+          "mean_width": 2.2711512537075595,
+          "n_samples": 20
+        },
+        "LOT_VAL_014": {
+          "coverage_90": 0.9,
+          "mae": 0.657201070987748,
+          "mean_width": 2.7002512833466423,
+          "n_samples": 20
+        },
+        "LOT_VAL_015": {
+          "coverage_90": 0.95,
+          "mae": 0.36954620082840883,
+          "mean_width": 2.3509966636876256,
+          "n_samples": 20
+        },
+        "LOT_VAL_016": {
+          "coverage_90": 0.65,
+          "mae": 1.177594062392695,
+          "mean_width": 2.6356959752269105,
+          "n_samples": 20
+        },
+        "LOT_VAL_017": {
+          "coverage_90": 0.9,
+          "mae": 0.5011398373767639,
+          "mean_width": 2.024402778693219,
+          "n_samples": 20
+        },
+        "LOT_VAL_018": {
+          "coverage_90": 0.45,
+          "mae": 1.657718516088708,
+          "mean_width": 2.9681447240846883,
+          "n_samples": 20
+        },
+        "LOT_VAL_019": {
+          "coverage_90": 0.5,
+          "mae": 1.2613377246721258,
+          "mean_width": 2.5740062645434643,
+          "n_samples": 20
+        },
+        "LOT_VAL_020": {
+          "coverage_90": 1.0,
+          "mae": 0.6283020622677313,
+          "mean_width": 2.604407938152256,
+          "n_samples": 20
+        },
+        "LOT_VAL_021": {
+          "coverage_90": 0.9,
+          "mae": 0.47878006786595523,
+          "mean_width": 1.9543447848009454,
+          "n_samples": 20
+        },
+        "LOT_VAL_022": {
+          "coverage_90": 0.5,
+          "mae": 1.3507567758291186,
+          "mean_width": 2.7633311621944183,
+          "n_samples": 20
+        },
+        "LOT_VAL_023": {
+          "coverage_90": 0.45,
+          "mae": 2.5698466817234267,
+          "mean_width": 3.238673855465881,
+          "n_samples": 20
+        },
+        "LOT_VAL_024": {
+          "coverage_90": 0.65,
+          "mae": 0.8815425000575461,
+          "mean_width": 2.5229817528154506,
+          "n_samples": 20
+        },
+        "LOT_VAL_025": {
+          "coverage_90": 1.0,
+          "mae": 0.5461067396323283,
+          "mean_width": 2.7079978624612306,
+          "n_samples": 20
+        }
+      },
+      "primary_metrics": {
+        "coverage_rate_90": 0.848,
+        "mae": 0.7651568053080493,
+        "mean_interval_width": 2.5322297475953066,
+        "median_abs_error": 0.5251980248689886,
+        "rmse": 1.2304836160042403,
+        "winkler_score": 5.006696631868688
+      },
+      "uncertainty_provenance": {
+        "calibration_oof_count": 1000,
+        "interval_quantile_z90": 1.6448536269514722,
+        "noise_floor": 0.1,
+        "sigma_eff": 0.313914638540121
+      },
+      "unit": "nA"
+    },
+    "RDS(on)": {
+      "baselines": {
+        "carry_forward_mae": 0.8148349487564264,
+        "ridge_improvement_vs_carry_forward_pct": 9.205878531773198,
+        "two_point_linear_mae": 4.219335795800211
+      },
+      "lot_distribution": {
+        "lot_mae_max": 1.519139566340004,
+        "lot_mae_mean": 0.7398222331394736,
+        "lot_mae_min": 0.4430275076711389,
+        "lot_mae_std": 0.2493041412273555
+      },
+      "model_lineage": {
+        "coefficients": [
+          0.2216503092658105,
+          0.47211305007616733,
+          0.47157972530839826
+        ],
+        "hyperparameters": {
+          "l2_reg": 1.0
+        },
+        "preprocessor_params": {
+          "u0_mean": 3.855434026687836,
+          "u0_std": 0.10020359792439941,
+          "u24_mean": 3.85561068432916,
+          "u24_std": 0.10080474321742997
+        }
+      },
+      "n_samples": 500,
+      "parameter_name": "RDS(on)",
+      "per_lot_breakdown": {
+        "LOT_VAL_001": {
+          "coverage_90": 0.95,
+          "mae": 0.6191054207151631,
+          "mean_width": 2.9523751600609205,
+          "n_samples": 20
+        },
+        "LOT_VAL_002": {
+          "coverage_90": 0.95,
+          "mae": 0.4430275076711389,
+          "mean_width": 2.6773762332419913,
+          "n_samples": 20
+        },
+        "LOT_VAL_003": {
+          "coverage_90": 1.0,
+          "mae": 0.5989495749797218,
+          "mean_width": 3.012756840159239,
+          "n_samples": 20
+        },
+        "LOT_VAL_004": {
+          "coverage_90": 0.95,
+          "mae": 0.6898559381729786,
+          "mean_width": 2.971148468820135,
+          "n_samples": 20
+        },
+        "LOT_VAL_005": {
+          "coverage_90": 1.0,
+          "mae": 0.582782586472711,
+          "mean_width": 3.181652579688276,
+          "n_samples": 20
+        },
+        "LOT_VAL_006": {
+          "coverage_90": 0.9,
+          "mae": 0.9469899070170943,
+          "mean_width": 3.2917807794278247,
+          "n_samples": 20
+        },
+        "LOT_VAL_007": {
+          "coverage_90": 0.95,
+          "mae": 0.548021105651797,
+          "mean_width": 3.098199096434954,
+          "n_samples": 20
+        },
+        "LOT_VAL_008": {
+          "coverage_90": 0.95,
+          "mae": 0.5363372825402386,
+          "mean_width": 2.950260049148575,
+          "n_samples": 20
+        },
+        "LOT_VAL_009": {
+          "coverage_90": 0.95,
+          "mae": 0.6152758580305754,
+          "mean_width": 2.8540404144541207,
+          "n_samples": 20
+        },
+        "LOT_VAL_010": {
+          "coverage_90": 0.8,
+          "mae": 0.7549239314437586,
+          "mean_width": 2.7392357952046216,
+          "n_samples": 20
+        },
+        "LOT_VAL_011": {
+          "coverage_90": 1.0,
+          "mae": 0.4726017424386207,
+          "mean_width": 3.0561757197107067,
+          "n_samples": 20
+        },
+        "LOT_VAL_012": {
+          "coverage_90": 0.95,
+          "mae": 0.7319878514048227,
+          "mean_width": 2.7578233642239223,
+          "n_samples": 20
+        },
+        "LOT_VAL_013": {
+          "coverage_90": 0.9,
+          "mae": 0.8497838994154254,
+          "mean_width": 2.8453815843533183,
+          "n_samples": 20
+        },
+        "LOT_VAL_014": {
+          "coverage_90": 0.95,
+          "mae": 0.6737949968506705,
+          "mean_width": 2.9247407639634107,
+          "n_samples": 20
+        },
+        "LOT_VAL_015": {
+          "coverage_90": 0.95,
+          "mae": 0.6818421409180108,
+          "mean_width": 2.8238768233720415,
+          "n_samples": 20
+        },
+        "LOT_VAL_016": {
+          "coverage_90": 0.65,
+          "mae": 1.2976466247480947,
+          "mean_width": 3.3172653147738473,
+          "n_samples": 20
+        },
+        "LOT_VAL_017": {
+          "coverage_90": 0.55,
+          "mae": 1.519139566340004,
+          "mean_width": 3.148439675302217,
+          "n_samples": 20
+        },
+        "LOT_VAL_018": {
+          "coverage_90": 0.9,
+          "mae": 0.5959977981679057,
+          "mean_width": 2.947499315520782,
+          "n_samples": 20
+        },
+        "LOT_VAL_019": {
+          "coverage_90": 0.85,
+          "mae": 0.8050842239204499,
+          "mean_width": 3.001952360543825,
+          "n_samples": 20
+        },
+        "LOT_VAL_020": {
+          "coverage_90": 0.9,
+          "mae": 0.6541419572633987,
+          "mean_width": 3.0612858567662307,
+          "n_samples": 20
+        },
+        "LOT_VAL_021": {
+          "coverage_90": 0.95,
+          "mae": 0.6081124415541318,
+          "mean_width": 3.0232289875127263,
+          "n_samples": 20
+        },
+        "LOT_VAL_022": {
+          "coverage_90": 0.95,
+          "mae": 0.5889243731200345,
+          "mean_width": 2.6220822282783343,
+          "n_samples": 20
+        },
+        "LOT_VAL_023": {
+          "coverage_90": 0.85,
+          "mae": 1.1525570454831655,
+          "mean_width": 3.232636370645723,
+          "n_samples": 20
+        },
+        "LOT_VAL_024": {
+          "coverage_90": 0.85,
+          "mae": 0.8466741266357445,
+          "mean_width": 2.9448068087341337,
+          "n_samples": 20
+        },
+        "LOT_VAL_025": {
+          "coverage_90": 0.95,
+          "mae": 0.6819979275311813,
+          "mean_width": 3.0974065801594115,
+          "n_samples": 20
+        }
+      },
+      "primary_metrics": {
+        "coverage_rate_90": 0.902,
+        "mae": 0.7398222331394734,
+        "mean_interval_width": 2.981337086820052,
+        "median_abs_error": 0.6330088554937774,
+        "rmse": 0.9325801449552376,
+        "winkler_score": 3.720340441271595
+      },
+      "uncertainty_provenance": {
+        "calibration_oof_count": 1000,
+        "interval_quantile_z90": 1.6448536269514722,
+        "noise_floor": 0.01,
+        "sigma_eff": 0.01849040791683378
+      },
+      "unit": "mOhm"
+    },
+    "VGS(th)": {
+      "baselines": {
+        "carry_forward_mae": 0.025881288581683176,
+        "ridge_improvement_vs_carry_forward_pct": 9.249960509010565,
+        "two_point_linear_mae": 0.144312943742427
+      },
+      "lot_distribution": {
+        "lot_mae_max": 0.04391969779691644,
+        "lot_mae_mean": 0.023487279608654422,
+        "lot_mae_min": 0.013790077794286981,
+        "lot_mae_std": 0.007241686492815634
+      },
+      "model_lineage": {
+        "coefficients": [
+          0.10161611496225995,
+          0.46955701792095267,
+          0.49620187685502853
+        ],
+        "hyperparameters": {
+          "l2_reg": 1.0
+        },
+        "preprocessor_params": {
+          "u0_mean": 2.992440786609757,
+          "u0_std": 0.13352128861002024,
+          "u24_mean": 2.992255262378395,
+          "u24_std": 0.13308437713543012
+        }
+      },
+      "n_samples": 500,
+      "parameter_name": "VGS(th)",
+      "per_lot_breakdown": {
+        "LOT_VAL_001": {
+          "coverage_90": 0.95,
+          "mae": 0.018423680474749116,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_002": {
+          "coverage_90": 1.0,
+          "mae": 0.015906648394744583,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_003": {
+          "coverage_90": 0.95,
+          "mae": 0.021209811845014713,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_004": {
+          "coverage_90": 0.85,
+          "mae": 0.025404970744522394,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_005": {
+          "coverage_90": 0.9,
+          "mae": 0.02248443740750301,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_006": {
+          "coverage_90": 1.0,
+          "mae": 0.017419562642423836,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_007": {
+          "coverage_90": 1.0,
+          "mae": 0.01773155086799578,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_008": {
+          "coverage_90": 1.0,
+          "mae": 0.019892061084083902,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_009": {
+          "coverage_90": 1.0,
+          "mae": 0.018339863184400083,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_010": {
+          "coverage_90": 1.0,
+          "mae": 0.019938135330847116,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_011": {
+          "coverage_90": 0.95,
+          "mae": 0.020114037162607047,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_012": {
+          "coverage_90": 0.9,
+          "mae": 0.02388717037483279,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_013": {
+          "coverage_90": 0.95,
+          "mae": 0.020011168308888737,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_014": {
+          "coverage_90": 0.9,
+          "mae": 0.022705947873309994,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_015": {
+          "coverage_90": 0.7,
+          "mae": 0.032450046507938056,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_016": {
+          "coverage_90": 0.75,
+          "mae": 0.03723335719772756,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_017": {
+          "coverage_90": 1.0,
+          "mae": 0.017357172319473934,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_018": {
+          "coverage_90": 1.0,
+          "mae": 0.015349467108536175,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_019": {
+          "coverage_90": 0.85,
+          "mae": 0.03281495383985087,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_020": {
+          "coverage_90": 0.95,
+          "mae": 0.024076290707983207,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_021": {
+          "coverage_90": 0.6,
+          "mae": 0.04391969779691644,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_022": {
+          "coverage_90": 0.95,
+          "mae": 0.027177109345038142,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_023": {
+          "coverage_90": 0.75,
+          "mae": 0.03168269582925065,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_024": {
+          "coverage_90": 0.9,
+          "mae": 0.027862076073435403,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        },
+        "LOT_VAL_025": {
+          "coverage_90": 1.0,
+          "mae": 0.013790077794286981,
+          "mean_width": 0.10027748888710342,
+          "n_samples": 20
+        }
+      },
+      "primary_metrics": {
+        "coverage_rate_90": 0.912,
+        "mae": 0.023487279608654422,
+        "mean_interval_width": 0.10027748888710342,
+        "median_abs_error": 0.020650593353313207,
+        "rmse": 0.02954496317942763,
+        "winkler_score": 0.12245543640212235
+      },
+      "uncertainty_provenance": {
+        "calibration_oof_count": 1000,
+        "interval_quantile_z90": 1.6448536269514722,
+        "noise_floor": 0.01,
+        "sigma_eff": 0.03048219222793542
+      },
+      "unit": "V"
+    }
+  }
+}
