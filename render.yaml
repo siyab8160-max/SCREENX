@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: sih26170-screenx
+    runtime: python
+    region: oregon
+    plan: free
+    buildCommand: pip install -r requirements.txt && pip install -e .
+    startCommand: python3 src/sih26170/service/server.py
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: PYTHONUNBUFFERED
+        value: "1"

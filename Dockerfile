@@ -23,4 +23,4 @@ EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=5s --start-period=5s --retries=3     CMD curl -f http://localhost:${PORT}/health || exit 1
 
-CMD ["python3", "src/sih26170/service/server.py", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["python3", "src/sih26170/service/server.py"]

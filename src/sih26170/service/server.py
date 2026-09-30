@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import mimetypes
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from pathlib import Path
@@ -107,7 +108,7 @@ class WorkstationRequestHandler(SimpleHTTPRequestHandler):
 
 
 def create_server(
-    host: str = "127.0.0.1",
+    host: str = "0.0.0.0",
     port: int = 8000,
     router: Optional[ServiceRouter] = None,
 ) -> ThreadingHTTPServer:
@@ -118,9 +119,11 @@ def create_server(
 
 
 def main() -> None:
+    default_host = os.environ.get("HOST", "0.0.0.0")
+    default_port = int(os.environ.get("PORT", "8000"))
     parser = argparse.ArgumentParser(description="SIH26170 Engineering Workstation HTTP Server")
-    parser.add_argument("--host", default="127.0.0.1", help="Binding host (default: 127.0.0.1)")
-    parser.add_argument("--port", type=int, default=8000, help="Port (default: 8000)")
+    parser.add_argument("--host", default=default_host, help=f"Binding host (default: {default_host})")
+    parser.add_argument("--port", type=int, default=default_port, help=f"Port (default: {default_port})")
     args = parser.parse_args()
 
     server = create_server(host=args.host, port=args.port)
