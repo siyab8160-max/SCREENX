@@ -67,6 +67,11 @@ def build_engineering_explainability(
 
     if state == "PASS":
         why_flagged = "Component showed nominal behavior across all parameters with zero specification breaches."
+    elif state == "HOLD":
+        why_flagged = (
+            "Component placed on engineering quarantine HOLD pending second-pass re-test or Material Review Board (MRB) review. "
+            "Space hardware is preserved from premature scrap."
+        )
     elif state == "EQUIPMENT_SUSPECTED":
         why_flagged = (
             "Screening flagged common-mode equipment/chamber motion; "

@@ -93,6 +93,7 @@ function getStateBadgeHtml(stateStr) {
   let cls = 'badge-insufficient';
   if (s === 'PASS') cls = 'badge-pass';
   else if (s === 'ALERT') cls = 'badge-alert';
+  else if (s === 'HOLD') cls = 'badge-hold';
   else if (s === 'FAIL') cls = 'badge-fail';
   else if (s === 'EQUIPMENT_SUSPECTED') cls = 'badge-equipment';
   else if (s === 'INSUFFICIENT_DATA') cls = 'badge-insufficient';

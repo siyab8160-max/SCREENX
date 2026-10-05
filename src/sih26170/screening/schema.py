@@ -16,9 +16,10 @@ from typing import Any, Dict, List, Optional, Tuple
 
 
 class ScreeningState(str, Enum):
-    """Canonical screening states for Module A (Spec Section 10)."""
+    """Canonical screening states for Module A (Spec Section 10 + Space Flight Extension)."""
     PASS = "PASS"
     ALERT = "ALERT"
+    HOLD = "HOLD"
     FAIL = "FAIL"
     INSUFFICIENT_DATA = "INSUFFICIENT_DATA"
     EQUIPMENT_SUSPECTED = "EQUIPMENT_SUSPECTED"
@@ -76,7 +77,7 @@ class EquipmentStatus(str, Enum):
 
 
 class DispositionQualifier(str, Enum):
-    """Epistemic qualifier enriching canonical 5 screening states (Spec Section 10)."""
+    """Epistemic qualifier enriching canonical screening states (Spec Section 10)."""
     SPECIFICATION_FAILURE = "SPECIFICATION_FAILURE"
     INSUFFICIENT_EVIDENCE = "INSUFFICIENT_EVIDENCE"
     COMPONENT_DEGRADATION = "COMPONENT_DEGRADATION"
@@ -84,6 +85,8 @@ class DispositionQualifier(str, Enum):
     EQUIPMENT_ONLY = "EQUIPMENT_ONLY"
     PEER_OUTLIER_STATIONARY = "PEER_OUTLIER_STATIONARY"
     NOMINAL_STABLE = "NOMINAL_STABLE"
+    HOLD_FOR_RETEST = "HOLD_FOR_RETEST"
+    HOLD_SCREENING_MARGIN = "HOLD_SCREENING_MARGIN"
 
 
 class SufficiencyStatus(str, Enum):

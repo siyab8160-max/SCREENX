@@ -603,6 +603,13 @@ body {
   border: 1px solid var(--state-alert-border);
 }
 
+.badge-hold {
+  background-color: rgba(147, 51, 234, 0.15);
+  color: #A855F7;
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  font-weight: 700;
+}
+
 .badge-fail {
   background-color: var(--state-fail-bg);
   color: var(--state-fail-text);

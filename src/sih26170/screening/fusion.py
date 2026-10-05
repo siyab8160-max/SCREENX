@@ -131,6 +131,20 @@ def fuse_parameter_evidence(
             all_reasons,
         )
 
+    # Precedence Level 4a: Space Hardware Quarantine (Class C Screening Margin Breach + Subtle Drift)
+    # Space hardware is expensive — we don't binary-scrap unless we're certain.
+    # Class C margin breach accompanied by active subtle drift triggers HOLD for re-test/engineering review.
+    if (
+        spec_ev.status == SpecificationStatus.SCREENING_MARGIN_BREACH
+        and temp_ev.status == TemporalDriftStatus.SUBTLE_DRIFT
+    ):
+        return (
+            ScreeningState.HOLD,
+            DispositionQualifier.HOLD_SCREENING_MARGIN,
+            "HOLD_SCREENING_MARGIN_BREACH_WITH_DRIFT",
+            all_reasons,
+        )
+
     if temp_ev.status == TemporalDriftStatus.SUBTLE_DRIFT:
         return (
             ScreeningState.ALERT,
@@ -185,6 +199,7 @@ def fuse_component_evidence(
     all_reasons: List[str] = []
     failing_results: List[Tuple[str, ParameterScreeningResult]] = []
     insufficient_results: List[Tuple[str, ParameterScreeningResult]] = []
+    hold_results: List[Tuple[str, ParameterScreeningResult]] = []
     alert_results: List[Tuple[str, ParameterScreeningResult]] = []
     equipment_results: List[Tuple[str, ParameterScreeningResult]] = []
 
@@ -197,6 +212,8 @@ def fuse_component_evidence(
             failing_results.append((p_name, res))
         elif res.parameter_state == ScreeningState.INSUFFICIENT_DATA:
             insufficient_results.append((p_name, res))
+        elif res.parameter_state == ScreeningState.HOLD:
+            hold_results.append((p_name, res))
         elif res.parameter_state == ScreeningState.ALERT:
             alert_results.append((p_name, res))
         elif res.parameter_state == ScreeningState.EQUIPMENT_SUSPECTED:
@@ -206,12 +223,16 @@ def fuse_component_evidence(
         if (
             res.temporal_evidence.status in (TemporalDriftStatus.SUBTLE_DRIFT, TemporalDriftStatus.ACCELERATING_DRIFT)
             or res.step_evidence.status == AbruptStepStatus.ABRUPT_JUMP_ALERT
-            or res.disposition_qualifier == DispositionQualifier.COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT
+            or res.disposition_qualifier in (
+                DispositionQualifier.COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT,
+                DispositionQualifier.HOLD_SCREENING_MARGIN,
+                DispositionQualifier.HOLD_FOR_RETEST,
+            )
         ):
             drifting_params.append(p_name)
 
     # Secondary explanatory flag for compound multi-parameter degradation
-    non_nominal_count = len(failing_results) + len(alert_results)
+    non_nominal_count = len(failing_results) + len(hold_results) + len(alert_results)
     compound_evidence = (len(drifting_params) >= 2) or (non_nominal_count >= 2)
 
     # Precedence 1: Multi-parameter compound failure/drift -> FAIL with compound reason
@@ -247,6 +268,19 @@ def fuse_component_evidence(
         return (
             ScreeningState.INSUFFICIENT_DATA,
             DispositionQualifier.INSUFFICIENT_EVIDENCE,
+            f"{p_name}:{res.primary_reason_code}",
+            all_reasons,
+            compound_evidence,
+        )
+
+    # Precedence 3.5: Space Hardware Quarantine Hold (Margin Breach with Drift / Confounded Wearout)
+    # Space hardware is expensive — we don't binary-scrap unless we're certain.
+    # Component is quarantined for diagnostic re-test rather than condemned to scrap.
+    if hold_results:
+        p_name, res = hold_results[0]
+        return (
+            ScreeningState.HOLD,
+            res.disposition_qualifier,
             f"{p_name}:{res.primary_reason_code}",
             all_reasons,
             compound_evidence,
