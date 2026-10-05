@@ -19,4 +19,4 @@ dependencies = [
 minversion = "7.0"
 addopts = "-ra -q"
 testpaths = ["tests"]
-pythonpath = ["src"]
+pythonpath = [".", "src"]
