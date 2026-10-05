@@ -120,6 +120,7 @@ def build_engineering_explainability(
     for p in ORDERED_PARAMETERS:
         if p in prognostic_forecasts:
             fc = prognostic_forecasts[p]
+            shap_info = fc.metadata.get("shap", {})
             what_predicted[p] = {
                 "target_hours": fc.target_hours,
                 "predicted_value": fc.predicted_value,
@@ -128,6 +129,9 @@ def build_engineering_explainability(
                 "baseline_relative_change": fc.baseline_relative_forecast_change,
                 "is_divergent_fallback": fc.is_divergent_fallback,
                 "model_id": fc.model_id,
+                "shap_attributions": fc.shap_attributions or shap_info.get("shap_values"),
+                "primary_driver": fc.primary_driver or shap_info.get("primary_driver"),
+                "shap_explanation": shap_info.get("explanation"),
             }
             how_uncertain[p] = {
                 "interval_90_lower": fc.interval_lower,
@@ -202,11 +206,14 @@ def build_engineering_explainability(
             elif interp and interp.predicted_spec_breach:
                 safety_note = " [PREDICTED SPEC BREACH AT 168h]"
 
-            ascii_lines.extend([
+            lines_to_add = [
                 f"  [{p}]: Observed = {ev['observed_value']:.4f} {ev['unit']} | State = {ev['parameter_state']}",
                 f"       Screening: D_spec={ev['D_spec']}, D_drift={ev['D_drift']}, D_peer={ev['D_peer']}, D_eq={ev['D_eq']}",
                 f"       Ridge 168h Forecast: {pred_str} | 90% PI: {int_str}{safety_note}",
-            ])
+            ]
+            if fc.get("shap_explanation"):
+                lines_to_add.append(f"       Linear SHAP Driver: {fc['shap_explanation']}")
+            ascii_lines.extend(lines_to_add)
 
     ascii_lines.extend([
         "--------------------------------------------------------------------------------",

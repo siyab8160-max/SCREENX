@@ -131,6 +131,8 @@ class PrognosticForecast:
     predicted_spec_breach: Optional[str] = None
     is_divergent_fallback: bool = False
     raw_unconstrained_u_pred: Optional[float] = None
+    shap_attributions: Optional[Dict[str, float]] = None
+    primary_driver: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
@@ -204,5 +206,7 @@ class PrognosticForecast:
             "predicted_spec_breach": self.predicted_spec_breach,
             "is_divergent_fallback": self.is_divergent_fallback,
             "raw_unconstrained_u_pred": self.raw_unconstrained_u_pred,
+            "shap_attributions": self.shap_attributions,
+            "primary_driver": self.primary_driver,
             "metadata": dict(self.metadata),
         }

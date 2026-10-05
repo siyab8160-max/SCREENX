@@ -70,6 +70,13 @@ CANONICAL_UNITS: Dict[str, str] = {
     "IGSS": "nA",
 }
 
+POPULATION_BASELINE_U: Dict[str, float] = {
+    "IDSS": -2.302585092994046,       # ln(0.1 uA)
+    "VGS(th)": 3.0,                   # 3.0 V
+    "RDS(on)": 3.8066624897703196,     # ln(45.0 mOhm)
+    "IGSS": 0.0,                      # asinh(0.0)
+}
+
 
 def _verify_manifest_lineage(manifest_path: Optional[Path] = None) -> None:
     """Verify that hardcoded IEEE-754 representations match the manifest bit-for-bit."""
@@ -218,6 +225,13 @@ class LockedRidgeModel:
             "divergence_policy": "LOCKED_PHASE_5_NUMERICAL_POLICY",
         }
 
+        # Compute exact closed-form Ridge SHAP attributions
+        shap_res = self.compute_shap_attributions(v0, v24)
+        metadata["shap"] = shap_res
+        metadata["shap_attributions"] = shap_res["shap_values"]
+        metadata["primary_driver"] = shap_res["primary_driver"]
+        metadata["shap_explanation"] = shap_res["explanation"]
+
         return PrognosticForecast(
             component_id=component_id,
             lot_id=lot_id,
@@ -239,8 +253,93 @@ class LockedRidgeModel:
             drift_status=drift_status,
             is_divergent_fallback=is_div,
             raw_unconstrained_u_pred=float(raw_u) if raw_u is not None else None,
+            shap_attributions=shap_res["shap_values"],
+            primary_driver=shap_res["primary_driver"],
             metadata=metadata,
         )
+
+    def compute_shap_attributions(self, v0: float, v24: float) -> Dict[str, Any]:
+        """Compute exact linear Shapley attributions for Ridge forecast.
+
+        For a linear model y_hat = beta_0 + beta_1 * u0 + beta_2 * u24,
+        Shapley values with respect to background reference u_bar are exact:
+            phi_u0 = beta_1 * (u0 - u_bar)
+            phi_u24 = beta_2 * (u24 - u_bar)
+            phi_0 = beta_0 + (beta_1 + beta_2) * u_bar
+
+        Decomposing into physical engineering features:
+            Initial Baseline Level (u0) and Burn-In Drift (u24 - u0):
+            phi_drift_slope = beta_2 * (u24 - u0)
+            phi_baseline_offset = (beta_1 + beta_2) * (u0 - u_bar)
+
+        Guarantees exact efficiency / additivity:
+            phi_0 + phi_baseline_offset + phi_drift_slope == u_hat
+        """
+        try:
+            u0 = transform_parameter(self.parameter_name, v0)
+            u24 = transform_parameter(self.parameter_name, v24)
+        except (ValueError, OverflowError):
+            return {
+                "base_value_u": 0.0,
+                "shap_values": {"slope_0_24": 0.0, "baseline_0h": 0.0, "u0": 0.0, "u24": 0.0},
+                "feature_values": {"slope_0_24": 0.0, "delta_0_24": 0.0, "u0": 0.0, "u24": 0.0},
+                "primary_driver": "baseline_0h",
+                "explanation": "Transformation domain violation; SHAP attributions undefined.",
+            }
+
+        b0, b1, b2 = self.coefficients
+        u_bar = POPULATION_BASELINE_U.get(self.parameter_name, 0.0)
+
+        # Base value E[u] under population null
+        phi_0 = b0 + (b1 + b2) * u_bar
+
+        # Physical feature decomposition
+        delta_u = u24 - u0
+        phi_drift_slope = b2 * delta_u
+        phi_baseline_offset = (b1 + b2) * (u0 - u_bar)
+
+        # Raw feature attributions
+        phi_u0 = b1 * (u0 - u_bar)
+        phi_u24 = b2 * (u24 - u_bar)
+
+        abs_drift = abs(phi_drift_slope)
+        abs_base = abs(phi_baseline_offset)
+        total_mag = abs_drift + abs_base + 1e-9
+
+        if abs_drift >= abs_base:
+            primary_driver = "slope_0_24"
+            pct = (abs_drift / total_mag) * 100.0
+            sign_str = "+" if phi_drift_slope >= 0 else ""
+            explanation = (
+                f"slope_0_24 was the primary driver "
+                f"({sign_str}{phi_drift_slope:.4f} transformed attribution, {pct:.1f}% of total predicted shift)"
+            )
+        else:
+            primary_driver = "baseline_0h"
+            pct = (abs_base / total_mag) * 100.0
+            sign_str = "+" if phi_baseline_offset >= 0 else ""
+            explanation = (
+                f"baseline_0h was the primary driver "
+                f"({sign_str}{phi_baseline_offset:.4f} transformed attribution, {pct:.1f}% of total predicted shift)"
+            )
+
+        return {
+            "base_value_u": float(phi_0),
+            "shap_values": {
+                "slope_0_24": float(phi_drift_slope),
+                "baseline_0h": float(phi_baseline_offset),
+                "u0": float(phi_u0),
+                "u24": float(phi_u24),
+            },
+            "feature_values": {
+                "slope_0_24": float(delta_u / 24.0),
+                "delta_0_24": float(delta_u),
+                "u0": float(u0),
+                "u24": float(u24),
+            },
+            "primary_driver": primary_driver,
+            "explanation": explanation,
+        }
 
 
 _MODEL_CACHE: Dict[str, LockedRidgeModel] = {}
