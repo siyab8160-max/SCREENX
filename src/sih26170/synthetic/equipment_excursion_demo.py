@@ -33,12 +33,22 @@ from sih26170.screening.schema import (
     EquipmentStatus,
     ScreeningState,
 )
-from tests.screening.test_scenarios import make_nominal_lot
+def _make_nominal_demo_lot(lot_id: str = "LOT_DEMO_EXCURSION", n_components: int = 16) -> pd.DataFrame:
+    """Generate a clean, nominal baseline lot across 0h, 24h, 96h, 168h."""
+    rows = []
+    for i in range(1, n_components + 1):
+        cid = f"{lot_id}_C{i:03d}"
+        for t in [0, 24, 96, 168]:
+            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "IDSS", "elapsed_hours": t, "value": 0.50 + 0.01 * (i % 3), "unit": "uA", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
+            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "VGS(th)", "elapsed_hours": t, "value": 2.85 + 0.01 * (i % 3), "unit": "V", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
+            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "RDS(on)", "elapsed_hours": t, "value": 45.0 + 0.1 * (i % 3), "unit": "mOhm", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
+            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "IGSS", "elapsed_hours": t, "value": 5.0 + 0.1 * (i % 3), "unit": "nA", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
+    return pd.DataFrame(rows)
 
 
 def generate_equipment_drift_demo_lot() -> pd.DataFrame:
     """Generate a 16-component screening lot with instrument drift on socket CH_05."""
-    df = make_nominal_lot(lot_id="LOT_DEMO_EXCURSION", n_components=16)
+    df = _make_nominal_demo_lot(lot_id="LOT_DEMO_EXCURSION", n_components=16)
 
     # Assign 4 channels with 4 components each
     channel_mapping = {
