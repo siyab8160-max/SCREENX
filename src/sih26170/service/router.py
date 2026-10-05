@@ -70,6 +70,18 @@ class ServiceRouter:
             info = ModelLineageInfo()
             return 200, info.to_dict()
 
+        # Route: GET /demo/equipment_excursion
+        if path == "/demo/equipment_excursion":
+            from sih26170.synthetic.equipment_excursion_demo import run_equipment_drift_comparison
+            as_of_hours = 24
+            if "as_of" in query and query["as_of"]:
+                try:
+                    as_of_hours = int(query["as_of"][0])
+                except ValueError:
+                    as_of_hours = 24
+            data = run_equipment_drift_comparison(as_of_hours=as_of_hours)
+            return 200, data
+
         # Route: GET /lots
         if path == "/lots":
             lots = self.demo_loader.list_lots()

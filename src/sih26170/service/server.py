@@ -40,7 +40,13 @@ class WorkstationRequestHandler(SimpleHTTPRequestHandler):
     def do_HEAD(self) -> None:
         parsed = urlparse(self.path)
         path = parsed.path.rstrip("/")
-        if path in ("/health", "/model_lineage", "/lots") or path.startswith("/lots/") or path.startswith("/components/"):
+        if (
+            path in ("/health", "/model_lineage", "/lots")
+            or path.startswith("/lots/")
+            or path.startswith("/components/")
+            or path.startswith("/demo/")
+            or path.startswith("/benchmarks/")
+        ):
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
             self.end_headers()
@@ -56,6 +62,8 @@ class WorkstationRequestHandler(SimpleHTTPRequestHandler):
             path in ("/health", "/model_lineage", "/lots")
             or path.startswith("/lots/")
             or path.startswith("/components/")
+            or path.startswith("/demo/")
+            or path.startswith("/benchmarks/")
         )
 
         if is_api:
