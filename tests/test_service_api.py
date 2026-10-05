@@ -111,6 +111,64 @@ def test_api_sub_resource_views(router: ServiceRouter):
     assert a_status == 200
     assert "canonical_result_hash" in a_body["audit_record"]
 
+    # 5. Unified Explain view (Item 3.1 & API Interoperability)
+    exp_status, exp_body = router.dispatch("GET", f"/components/{cid}/explain?as_of=24")
+    assert exp_status == 200
+    assert exp_body["component_id"] == cid
+    assert exp_body["as_of_hours"] == 24
+    assert "disposition" in exp_body
+    assert "inspector_justification" in exp_body
+    assert "detector_evidence" in exp_body
+    assert "prognostics" in exp_body
+    assert "known_limitations" in exp_body
+    assert len(exp_body["known_limitations"]) == 4
+
+    # Check detector evidence contains all 6 detectors
+    rds_ev = exp_body["detector_evidence"]["RDS(on)"]
+    for det in ["D_spec", "D_peer", "D_drift", "D_step", "D_eq", "D_suff"]:
+        assert det in rds_ev
+
+    # Check prognostics contains SHAP, 90% interval, and counterfactual
+    rds_prog = exp_body["prognostics"]["RDS(on)"]
+    assert "conformal_interval_90" in rds_prog
+    assert "shap_decomposition" in rds_prog
+    assert "safety_slope" in rds_prog
+    assert "counterfactual" in rds_prog
+    assert "boundary_24h_value" in rds_prog["counterfactual"]
+
+    # 6. /api/v1 prefix route normalization
+    api_status, api_body = router.dispatch("GET", f"/api/v1/components/{cid}/explain?as_of=24")
+    assert api_status == 200
+    assert api_body["component_id"] == cid
+
+
+def test_api_known_limitations(router: ServiceRouter):
+    status, body = router.dispatch("GET", "/known_limitations")
+    assert status == 200
+    assert body["status"] == "DISCLOSED"
+    assert body["total_limitations"] == 4
+    assert len(body["known_limitations"]) == 4
+    ids = [item["id"] for item in body["known_limitations"]]
+    assert "KL-01-SUB-NOISE-DRIFT" in ids
+    assert "KL-02-LATE-ONSET-WEAROUT" in ids
+    assert "KL-03-SMALL-SAMPLE-SOCKET-BIAS" in ids
+    assert "KL-04-ABRUPT-STEP-THRESHOLD" in ids
+
+
+def test_api_counterfactual_exactness(router: ServiceRouter):
+    # Test on known defective component LOT_CAL_001_C017 (RDS(on) failure)
+    status, body = router.dispatch("GET", "/components/LOT_CAL_001_C017/explain?as_of=24")
+    assert status == 200
+    rds_cf = body["prognostics"]["RDS(on)"]["counterfactual"]
+    assert rds_cf["is_breaching"] is True
+    # At boundary, predicted value should match target limit 60.0 mOhm
+    from sih26170.prognostics.locked_models import get_locked_ridge_model
+    model = get_locked_ridge_model("RDS(on)")
+    v0 = body["prognostics"]["RDS(on)"]["v0"]
+    y24_bound = rds_cf["boundary_24h_value"]
+    pred_at_bound, _, _, _, _ = model.predict_physical(v0, y24_bound)
+    assert abs(pred_at_bound - 60.0) < 1e-4
+
 
 def test_api_model_lineage(router: ServiceRouter):
     status, body = router.dispatch("GET", "/model_lineage")

@@ -21,6 +21,7 @@ from sih26170.screening.fusion import (
     fuse_component_evidence,
     fuse_parameter_evidence,
 )
+from sih26170.screening.joint import evaluate_joint_mahalanobis
 from sih26170.screening.peer import evaluate_peer_deviation
 from sih26170.screening.schema import (
     AbruptStepStatus,
@@ -307,6 +308,11 @@ def screen_component(
                 lot_scale_prev=lot_scale_prev,
             )
 
+            # Link device-specific temporal excess residual to equipment evidence record
+            dev_resid = temp_ev.g_excess if temp_ev.g_excess is not None else temp_ev.normalized_drift
+            if dev_resid is not None:
+                eq_ev.device_specific_evidence = float(round(abs(dev_resid), 4))
+
         # G. Fuse evidence for this parameter
         p_state, p_qualifier, p_prim_reason, p_reasons = fuse_parameter_evidence(
             spec_ev=spec_ev,
@@ -316,6 +322,7 @@ def screen_component(
             eq_ev=eq_ev,
             suff_ev=suff_ev,
         )
+
 
         param_results[param] = ParameterScreeningResult(
             parameter=param,
@@ -334,12 +341,21 @@ def screen_component(
             disposition_qualifier=p_qualifier,
         )
 
-    # 3. Component-level evidence fusion across all four parameters
-    comp_state, comp_qualifier, comp_primary_reason, comp_all_reasons, compound_flag = fuse_component_evidence(
-        param_results
+    # 3. Evaluate Detector G: Joint-Parameter Multivariate Backstop (D_joint)
+    joint_ev = evaluate_joint_mahalanobis(
+        component_id=component_id,
+        lot_id=lot_id,
+        checkpoint=as_of_hours,
+        lot_observations_as_of=lot_df,
     )
 
-    # 4. Generate deterministic audit hash
+    # 4. Component-level evidence fusion across all four parameters and joint backstop
+    comp_state, comp_qualifier, comp_primary_reason, comp_all_reasons, compound_flag = fuse_component_evidence(
+        param_results,
+        joint_evidence=joint_ev,
+    )
+
+    # 5. Generate deterministic audit hash
     input_hash = compute_telemetry_hash(comp_df)
 
     return ComponentScreeningResult(
@@ -354,6 +370,7 @@ def screen_component(
         as_of_hours=as_of_hours,
         audit_hash=input_hash,
         disposition_qualifier=comp_qualifier,
+        joint_evidence=joint_ev,
     )
 
 

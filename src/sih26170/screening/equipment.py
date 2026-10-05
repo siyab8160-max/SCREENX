@@ -272,6 +272,8 @@ def evaluate_equipment_environment(
         channel_id=channel_id,
     )
 
+    floor = get_noise_floor(parameter)
+
     # 3. Synthesize equipment status
     if chamber_ev.suspected:
         status = EquipmentStatus.CHAMBER_EXCURSION_SUSPECTED
@@ -290,6 +292,15 @@ def evaluate_equipment_environment(
         suspected = False
         reason_code = "NOMINAL_EQUIPMENT_ENVIRONMENT"
 
+    # 4. Quantitative common-mode evidence calculation
+    cm_mag = 0.0
+    if chamber_ev.lot_median_shift is not None:
+        cm_mag = max(cm_mag, abs(float(chamber_ev.lot_median_shift)) / max(floor, 1e-9))
+    if ate_ev.z_score is not None and ate_ev.suspected:
+        cm_mag = max(cm_mag, abs(float(ate_ev.z_score)))
+
+    cal_score = float(round(max(0.0, min(1.0, cm_mag / 5.0)), 4)) if cm_mag > 0 else 0.0
+
     return EquipmentEvidence(
         lot_id=lot_id,
         checkpoint=checkpoint,
@@ -303,4 +314,7 @@ def evaluate_equipment_environment(
         reason_code=reason_code,
         chamber_evidence=chamber_ev,
         ate_evidence=ate_ev,
+        common_mode_evidence=float(round(cm_mag, 4)) if cm_mag > 0 else 0.0,
+        device_specific_evidence=None,  # Populated with excess drift during fusion
+        calibrated_score=cal_score,
     )

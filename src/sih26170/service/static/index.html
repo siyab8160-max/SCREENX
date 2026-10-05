@@ -173,7 +173,7 @@
           <div class="card-header">
             <h2 id="heading-screening-summary" class="card-title">SECTION A &bull; SCREENING SUMMARY</h2>
             <div class="card-actions">
-              <button type="button" class="btn-highlight-action" id="btn-launch-eq-demo">&#9889; ATE Fixture Drift Scenario [CH_05 Excursion]</button>
+              <button type="button" class="btn-highlight-action" id="btn-launch-eq-demo">&#9881; ATE Fixture &amp; Socket Diagnostics</button>
               <span class="badge badge-qualifier" id="card-asof-tag">AS-OF: 24 h</span>
             </div>
           </div>
@@ -235,6 +235,7 @@
             <div class="tray-legend">
               <div class="tray-legend-item"><span class="tray-legend-dot dot-pass"></span> PASS</div>
               <div class="tray-legend-item"><span class="tray-legend-dot dot-alert"></span> ALERT / DRIFT</div>
+              <div class="tray-legend-item"><span class="tray-legend-dot dot-hold"></span> HOLD / QUARANTINE</div>
               <div class="tray-legend-item"><span class="tray-legend-dot dot-fail"></span> FAIL / REJECT</div>
               <div class="tray-legend-item"><span class="tray-legend-dot dot-equipment"></span> EQUIPMENT / FIXTURE DRIFT</div>
               <div class="tray-legend-item"><span class="tray-legend-dot dot-selected"></span> SELECTED</div>
@@ -343,8 +344,24 @@
         <!-- Section E — Screening Interpretation -->
         <section class="eng-card" aria-labelledby="heading-screening-explain">
           <div class="card-header">
-            <h2 id="heading-screening-explain" class="card-title">SECTION E &bull; SCREENING INTERPRETATION</h2>
-            <span class="card-subtitle">Structured engineering explanation &bull; Deterministic reason codes</span>
+            <div>
+              <h2 id="heading-screening-explain" class="card-title">SECTION E &bull; SCREENING INTERPRETATION &amp; AUDIT EXPLAINABILITY</h2>
+              <span class="card-subtitle">Structured engineering explanation &bull; Inspector-grade natural language &bull; Deterministic reason codes</span>
+            </div>
+            <div class="card-actions">
+              <span class="badge badge-subtle text-mono" id="explainability-mode-tag">AUDIT MODE: COMPLIANT</span>
+            </div>
+          </div>
+
+          <!-- Inspector-Grade Plain-Language Justification Banner (Item 3.3) -->
+          <div class="inspector-justification-banner" id="inspector-justification-banner">
+            <div class="inspector-justification-header">
+              <span class="justification-badge">INSPECTOR-GRADE JUSTIFICATION</span>
+              <span class="justification-audit-ref text-mono" id="justification-audit-ref">SOP-SCREENX-QA-EVAL &bull; CANONICAL AUDIT EVIDENCE</span>
+            </div>
+            <p class="inspector-justification-text text-mono" id="inspector-justification-text">
+              Loading component evaluation telemetry...
+            </p>
           </div>
 
           <div class="explainability-grid">
@@ -371,6 +388,45 @@
               </div>
               <pre class="evidence-json-block text-mono" id="exp-evidence" tabindex="0">&mdash;</pre>
             </div>
+          </div>
+
+          <!-- Counterfactual Boundary Analysis (Item 3.2) -->
+          <div class="counterfactual-container" id="counterfactual-container">
+            <div class="counterfactual-header">
+              <span class="exp-title">CLOSED-FORM COUNTERFACTUAL BOUNDARY ANALYSIS</span>
+              <span class="counterfactual-formula text-mono">u_24_boundary = (u_limit - &beta;_0 - &beta;_1&middot;u_0) / &beta;_2</span>
+            </div>
+            <div class="table-wrap">
+              <table class="eng-table counterfactual-table" id="counterfactual-table">
+                <thead>
+                  <tr>
+                    <th style="width: 100px;">Parameter</th>
+                    <th style="width: 110px;">Observed 24h</th>
+                    <th style="width: 110px;">168h Forecast</th>
+                    <th style="width: 110px;">Spec Limit</th>
+                    <th style="width: 130px;">24h Boundary Value</th>
+                    <th style="width: 120px;">Margin / Delta</th>
+                    <th>Counterfactual Inspector Justification</th>
+                  </tr>
+                </thead>
+                <tbody id="counterfactual-tbody">
+                  <!-- Dynamically populated -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Audited System Boundaries & Known Limitations Disclosure (Item 3.4) -->
+          <div class="limitations-container" id="limitations-container">
+            <details class="limitations-details" id="limitations-details" open>
+              <summary class="limitations-summary">
+                <span class="limitations-title">&#9662; AUDITED SYSTEM BOUNDARIES &amp; KNOWN LIMITATIONS DISCLOSURE</span>
+                <span class="limitations-tag text-mono">4 BOUNDARIES FORMALLY DISCLOSED</span>
+              </summary>
+              <div class="limitations-grid" id="limitations-grid">
+                <!-- Dynamically populated from /known_limitations -->
+              </div>
+            </details>
           </div>
         </section>
 
@@ -918,47 +974,186 @@
     </main>
   </div>
 
-  <!-- MODAL: 60-SECOND EQUIPMENT EXCURSION DEMONSTRATION -->
+  <!-- MODAL: ATE FIXTURE & SOCKET CALIBRATION DIAGNOSTICS CONSOLE -->
   <div class="modal-overlay hidden" id="modal-equipment-excursion" role="dialog" aria-modal="true" aria-labelledby="modal-eq-title">
     <div class="modal-window">
       <div class="modal-head">
-        <div class="modal-title" id="modal-eq-title">&#9889; ATE FIXTURE DRIFT SCENARIO &bull; CH_05 INSTRUMENT DRIFT DEMO</div>
+        <div class="modal-brand-cluster">
+          <span class="sys-id" style="font-size: 13px;">SCREENX</span>
+          <span class="sys-sep">//</span>
+          <div class="modal-title-text" id="modal-eq-title">&#9881; ATE FIXTURE &amp; SOCKET CALIBRATION DIAGNOSTICS</div>
+          <span class="badge badge-equipment text-mono" id="modal-eq-scope-badge">ISRO QA INSTRUMENT AUDIT</span>
+        </div>
         <button type="button" class="modal-close-btn" id="btn-close-eq-modal" aria-label="Close modal">&times;</button>
       </div>
+
       <div class="modal-body">
+        <!-- Diagnostic Scope Selector Bar -->
+        <div class="diag-scope-bar">
+          <div class="scope-label-group">
+            <span class="sum-lbl">AUDIT SCOPE:</span>
+            <div class="scope-tabs-wrap">
+              <button type="button" class="scope-tab-btn active" id="btn-scope-current-lot">
+                Inspected Lot: <strong id="diag-current-lot-label" class="text-mono">LOT_CAL_001</strong>
+              </button>
+              <button type="button" class="scope-tab-btn" id="btn-scope-demo-excursion">
+                Excursion Reference: <strong class="text-mono">LOT_DEMO_EXCURSION</strong>
+              </button>
+            </div>
+          </div>
+          <div class="scope-meta-group">
+            <span class="badge badge-qualifier text-mono" id="diag-asof-badge">AS-OF: 24h</span>
+            <span class="badge badge-insufficient text-mono">BONFERRONI &alpha; = 0.01</span>
+          </div>
+        </div>
+
+        <!-- Telemetry & Chamber Environment Assessment -->
         <div class="demo-pitch-box" id="demo-pitch-box">
-          Loading scenario data...
+          <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted);">
+            <span class="status-dot online"></span>
+            <span class="text-mono" style="font-size: 11.5px;">Executing ATE fixture &amp; socket telemetry audit...</span>
+          </div>
         </div>
 
+        <!-- Socket Channel Integrity Matrix Table -->
+        <div class="diag-channels-section">
+          <div class="section-subhead-row">
+            <span class="card-title text-mono" style="font-size: 11.5px;">SOCKET CHANNEL RESIDUAL MATRIX (DETECTOR E &bull; D_EQ)</span>
+            <span class="text-muted text-mono" style="font-size: 10.5px;">CRITICAL THRESHOLD: |Z_channel| &ge; 3.42&sigma;</span>
+          </div>
+          <div class="diag-table-wrap" id="diag-channels-table-wrap">
+            <table class="diag-table text-mono">
+              <thead>
+                <tr>
+                  <th>SOCKET CHANNEL</th>
+                  <th>DUT GANG (N_k)</th>
+                  <th>MONITORED PARAM</th>
+                  <th>MEDIAN OFFSET</th>
+                  <th>RESIDUAL (Z_channel)</th>
+                  <th>CHANNEL STATUS</th>
+                  <th>PRESCRIBED QA ACTION</th>
+                </tr>
+              </thead>
+              <tbody id="diag-channels-tbody">
+                <tr>
+                  <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 16px;">
+                    Loading channel telemetry matrix...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Decoupled Engineering Root Cause Analysis -->
         <div class="demo-split-grid">
-          <!-- Left: Competitor / Naive Screener Outcome -->
+          <!-- Left: Confounded Screening Failure Mode -->
           <div class="demo-outcome-card fail">
-            <span class="badge badge-fail">NAIVE SCREENER (NO FIXTURE TRACKING)</span>
-            <div class="demo-stat-badge" style="color: #DC2626;" id="demo-naive-stat">4 REJECTS</div>
-            <p style="font-size: 11.5px; line-height: 1.45; color: #7F1D1D;">
-              All 4 components on socket channel CH_05 are flagged as extreme peer outliers (|Z| &gt; 4.0&sigma;) and irreversibly condemned to the scrap bin.
+            <div class="card-head-row">
+              <span class="fail-title text-mono">UNCOMPENSATED SCREENING (FAILURE MODE)</span>
+              <span class="badge badge-fail">CONFOUNDED DEFECT BIAS</span>
+            </div>
+
+            <div class="outcome-stat-hero">
+              <div class="demo-stat-badge text-mono" id="demo-naive-stat">CONFOUNDED</div>
+              <span class="stat-pill-fail" id="demo-naive-pill">HIGH FALSE SCRAP RISK</span>
+            </div>
+
+            <p class="outcome-desc" id="demo-naive-desc">
+              Conventional screeners lack ATE fixture tracking. Socket contact oxidation or probe card resistance shifts are confounded with intrinsic silicon degradation, mistakenly condemning valid flight hardware to scrap.
             </p>
-            <div style="font-size: 11px; margin-top: 8px; font-weight: 700; color: #991B1B;">
-              FLIGHT LOSS: $4,000 USD (4 x $1,000 Space MOSFETs)
+
+            <div class="outcome-telemetry-box fail-box">
+              <div class="telemetry-kv">
+                <span class="kv-lbl">ROOT CAUSE ISOLATION:</span>
+                <span class="kv-val text-mono text-danger" id="demo-naive-cause">CONFOUNDED (Zero Channel Tracking)</span>
+              </div>
+              <div class="telemetry-kv">
+                <span class="kv-lbl">CONVENTIONAL DISPOSITION:</span>
+                <span class="kv-val text-mono text-danger" id="demo-naive-disp">IRREVERSIBLE REJECT</span>
+              </div>
+              <div class="telemetry-kv highlight-row">
+                <span class="kv-lbl">RISK TO FLIGHT PROGRAM:</span>
+                <span class="kv-val text-mono text-danger" id="demo-naive-risk">False condemnation of space-qualified silicon</span>
+              </div>
             </div>
           </div>
 
-          <!-- Right: SCREENX Outcome -->
+          <!-- Right: SCREENX Decoupled Evidence -->
           <div class="demo-outcome-card pass">
-            <span class="badge badge-equipment">SCREENX MULTI-DETECTOR FUSION</span>
-            <div class="demo-stat-badge" style="color: #16A34A;" id="demo-screenx-stat">4 PRESERVED</div>
-            <p style="font-size: 11.5px; line-height: 1.45; color: #14532D;">
-              Detector E isolates systematic +6.5 m&Omega; contact resistance on socket CH_05 (Z_channel = +7.8&sigma; &gt; 3.42). System outputs EQUIPMENT_SUSPECTED.
+            <div class="card-head-row">
+              <span class="pass-title text-mono">SCREENX DECOUPLED DISPOSITION</span>
+              <span class="badge badge-pass">ISRO MISSION STANDARD</span>
+            </div>
+
+            <div class="outcome-stat-hero">
+              <div class="demo-stat-badge text-mono" id="demo-screenx-stat">DECOUPLED</div>
+              <span class="stat-pill-pass" id="demo-screenx-pill">HARDWARE PRESERVED</span>
+            </div>
+
+            <p class="outcome-desc" id="demo-screenx-desc">
+              Detector E evaluates standardized residuals across socket channels (Z_channel). Isolates common-mode fixture contact shifts from device physics, correctly emitting EQUIPMENT_SUSPECTED.
             </p>
-            <div style="font-size: 11px; margin-top: 8px; font-weight: 700; color: #15803D;">
-              HARDWARE SAVED: 100% of Good Silicon Preserved
+
+            <div class="outcome-telemetry-box pass-box">
+              <div class="telemetry-kv">
+                <span class="kv-lbl">ROOT CAUSE ISOLATION:</span>
+                <span class="kv-val text-mono text-success" id="demo-screenx-cause">ISOLATED (Common-Mode Decoupled)</span>
+              </div>
+              <div class="telemetry-kv">
+                <span class="kv-lbl">SCREENING DISPOSITION:</span>
+                <span class="kv-val text-mono text-success" id="demo-screenx-disp">EQUIPMENT_SUSPECTED (Quarantine Fixture)</span>
+              </div>
+              <div class="telemetry-kv highlight-row">
+                <span class="kv-lbl">QA OUTCOME:</span>
+                <span class="kv-val text-mono text-success" id="demo-screenx-outcome">Re-test on verified socket; 0% false scrap</span>
+              </div>
             </div>
           </div>
         </div>
 
-        <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 8px;">
-          <button type="button" class="btn-primary text-mono" id="btn-inspect-eq-workstation" style="padding: 6px 16px;">Inspect Scenario in Workstation &rarr;</button>
-          <button type="button" class="btn-action text-mono" id="btn-dismiss-eq-modal">Dismiss Demonstration</button>
+        <!-- QA Engineering Corrective Action Protocol (SOP) -->
+        <div class="diag-sop-card" id="diag-sop-box">
+          <div class="sop-head">
+            <span class="pitch-eyebrow" style="color: var(--accent-blue);">QA CORRECTIVE ACTION PROTOCOL &bull; SOP-SCREENX-ATE-04</span>
+            <span class="badge badge-qualifier text-mono" id="sop-status-badge">ACTION REQUIRED</span>
+          </div>
+          <div class="sop-steps-grid">
+            <div class="sop-step">
+              <div class="sop-step-num text-mono">01</div>
+              <div class="sop-step-body">
+                <strong>FIXTURE MAINTENANCE WORK ORDER</strong>
+                <p id="sop-fixture-text">Quarantine suspect socket fixture. Submit cleanroom maintenance ticket for pogo-pin cleaning, contact probe inspection, and 4-wire Kelvin resistance calibration.</p>
+              </div>
+            </div>
+            <div class="sop-step">
+              <div class="sop-step-num text-mono">02</div>
+              <div class="sop-step-body">
+                <strong>NON-DESTRUCTIVE COMPONENT RE-TEST</strong>
+                <p id="sop-component-text">Tag affected DUTs as EQUIPMENT_SUSPECTED. Retain full chain-of-custody. Route components to re-screening on alternate validated socket channel. Do NOT condemn to scrap.</p>
+              </div>
+            </div>
+            <div class="sop-step">
+              <div class="sop-step-num text-mono">03</div>
+              <div class="sop-step-body">
+                <strong>COMPLIANCE AUDIT RECORD</strong>
+                <p id="sop-audit-text">Record channel Z-score, test socket identifier, and corrective action in deterministic audit ledger with SHA-256 tamper-proof seal.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="modal-footer">
+        <div class="modal-footer-info">
+          <span class="status-dot online"></span>
+          <span class="text-mono text-muted" id="diag-footer-lot-tag" style="font-size: 11px;">ATE AUDIT: LOT_CAL_001 &bull; DETERMINISTIC AUDIT READY</span>
+        </div>
+        <div class="modal-footer-actions">
+          <button type="button" class="btn-action text-mono" id="btn-dismiss-eq-modal">Close Diagnostics</button>
+          <button type="button" class="btn-highlight-action" id="btn-inspect-eq-workstation">&#9881; Inspect Lot in Workstation &rarr;</button>
         </div>
       </div>
     </div>

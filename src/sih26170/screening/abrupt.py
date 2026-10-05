@@ -110,6 +110,9 @@ def evaluate_abrupt_step(
         status = AbruptStepStatus.NO_STEP
         reason_code = "NOMINAL_STEP_INTERVAL"
 
+    from sih26170.screening.calibration import calibrate_step_score
+    cal_score = calibrate_step_score(max_j_ratio)
+
     return StepEvidence(
         parameter=parameter,
         previous_checkpoint=max_t_prev,
@@ -118,5 +121,7 @@ def evaluate_abrupt_step(
         step_ratio=float(max_j_ratio),
         status=status,
         reason_code=reason_code,
+        calibrated_score=cal_score,
     )
+
 

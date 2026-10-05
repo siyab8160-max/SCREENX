@@ -11,7 +11,7 @@ Compliant with docs/PHASE_3A_MODULE_A_SPEC.md Sections 11 & 13 & Phase 3C Pre-Im
 
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any, Dict, List, Optional
 from sih26170.screening.schema import (
     ComponentScreeningResult,
     ParameterScreeningResult,
@@ -129,3 +129,37 @@ def generate_explainability_card(result: ComponentScreeningResult) -> str:
 def export_explainability_dict(result: ComponentScreeningResult) -> Dict[str, Any]:
     """Export machine-readable dictionary representation of the explainability card."""
     return result.to_dict()
+
+
+def generate_inspector_justification(
+    screening_result: ComponentScreeningResult,
+    component_id: str = "",
+    lot_id: str = "",
+    as_of_hours: int = 24,
+) -> str:
+    """Inspector-grade plain-language justification sentence generator."""
+    from sih26170.pipeline.explainability import generate_inspector_justification as _gen
+    cid = component_id or screening_result.component_id
+    lid = lot_id or screening_result.lot_id
+    ck = as_of_hours or screening_result.checkpoint
+    return _gen(screening_result, cid, lid, ck)
+
+
+def calculate_counterfactual_explanation(
+    parameter_name: str,
+    v0: float,
+    v24: float,
+    limit_low: Optional[float] = None,
+    limit_high: Optional[float] = None,
+    predicted_168h: float = 0.0,
+    unit: str = "",
+) -> Optional[Dict[str, Any]]:
+    """Closed-form counterfactual 24h boundary calculation."""
+    from sih26170.pipeline.explainability import calculate_counterfactual_explanation as _calc
+    return _calc(parameter_name, v0, v24, limit_low, limit_high, predicted_168h, unit)
+
+
+def get_known_limitations_disclosure() -> List[Dict[str, Any]]:
+    """Source-attributed known limitations disclosure."""
+    from sih26170.pipeline.explainability import get_known_limitations_disclosure as _get
+    return _get()

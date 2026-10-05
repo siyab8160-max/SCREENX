@@ -129,6 +129,9 @@ def evaluate_peer_deviation(
         status = PeerDeviationStatus.PEER_NORMAL
         reason_code = "PEER_NORMAL"
 
+    from sih26170.screening.calibration import calibrate_peer_score
+    cal_score = calibrate_peer_score(z)
+
     return PeerEvidence(
         parameter=parameter,
         observed_value=float(observed_value),
@@ -141,4 +144,6 @@ def evaluate_peer_deviation(
         peer_count=len(u_peers),
         reason_code=reason_code,
         reference_slice="PER-LOT BASELINE REFERENCE",
+        calibrated_score=cal_score,
     )
+

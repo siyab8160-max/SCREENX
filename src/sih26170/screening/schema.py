@@ -56,6 +56,7 @@ class TemporalDriftStatus(str, Enum):
     STATIONARY = "STATIONARY"  # |g(T)| < 2.5
     SUBTLE_DRIFT = "SUBTLE_DRIFT"  # |g(T)| >= 2.5
     ACCELERATING_DRIFT = "ACCELERATING_DRIFT"  # |g(T)| >= 3.0 and kappa * beta > 0
+    PERSISTENT_DRIFT = "PERSISTENT_DRIFT"  # CUSUM accumulation across residual trajectory
     INSUFFICIENT_HISTORY = "INSUFFICIENT_HISTORY"  # Only 1 observation (t=0)
     TEMPORALLY_CONFOUNDED_BY_EQUIPMENT = "TEMPORALLY_CONFOUNDED_BY_EQUIPMENT"
 
@@ -83,6 +84,7 @@ class DispositionQualifier(str, Enum):
     COMPONENT_DEGRADATION = "COMPONENT_DEGRADATION"
     COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT = "COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT"
     EQUIPMENT_ONLY = "EQUIPMENT_ONLY"
+    EQUIPMENT_HOLD = "EQUIPMENT_HOLD"
     PEER_OUTLIER_STATIONARY = "PEER_OUTLIER_STATIONARY"
     NOMINAL_STABLE = "NOMINAL_STABLE"
     HOLD_FOR_RETEST = "HOLD_FOR_RETEST"
@@ -95,6 +97,42 @@ class SufficiencyStatus(str, Enum):
     INCOMPLETE_HISTORY = "INCOMPLETE_HISTORY"
     CORRUPTED_MEASUREMENT = "CORRUPTED_MEASUREMENT"
     SMALL_LOT_RESTRICTION = "SMALL_LOT_RESTRICTION"
+
+
+class JointStatus(str, Enum):
+    """Status emitted by Detector G / D_joint (Multivariate Joint-Parameter Backstop)."""
+    NOMINAL_JOINT = "NOMINAL_JOINT"
+    JOINT_ANOMALY_ALERT = "JOINT_ANOMALY_ALERT"
+    INSUFFICIENT_PEERS = "INSUFFICIENT_PEERS"
+
+
+@dataclass
+class JointEvidence:
+    """Explicit evidence record for Detector G (Joint-Parameter Multivariate Backstop)."""
+    component_id: str
+    checkpoint: int
+    mahalanobis_distance: Optional[float]
+    critical_threshold: float
+    status: JointStatus
+    suspected: bool
+    reason_code: str
+    feature_contributions: Dict[str, float] = field(default_factory=dict)
+    calibrated_score: Optional[float] = None
+    input_space: str = "delta"
+
+    def to_dict(self) -> Dict[str, Any]:
+        return {
+            "component_id": self.component_id,
+            "checkpoint": self.checkpoint,
+            "mahalanobis_distance": self.mahalanobis_distance,
+            "critical_threshold": self.critical_threshold,
+            "status": self.status.value,
+            "suspected": self.suspected,
+            "reason_code": self.reason_code,
+            "feature_contributions": dict(self.feature_contributions),
+            "calibrated_score": self.calibrated_score,
+            "input_space": self.input_space,
+        }
 
 
 @dataclass
@@ -138,6 +176,7 @@ class PeerEvidence:
     peer_count: int
     reason_code: str
     reference_slice: str = "PER-LOT BASELINE REFERENCE"
+    calibrated_score: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -152,6 +191,7 @@ class PeerEvidence:
             "peer_count": self.peer_count,
             "reason_code": self.reason_code,
             "reference_slice": self.reference_slice,
+            "calibrated_score": self.calibrated_score,
         }
 
 
@@ -171,6 +211,9 @@ class TemporalEvidence:
     g_lot: Optional[float] = None
     g_excess: Optional[float] = None
     lot_reference_note: Optional[str] = None
+    cusum_statistic: Optional[float] = None
+    persistent_drift: bool = False
+    calibrated_score: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -187,6 +230,9 @@ class TemporalEvidence:
             "g_lot": self.g_lot,
             "g_excess": self.g_excess,
             "lot_reference_note": self.lot_reference_note,
+            "cusum_statistic": self.cusum_statistic,
+            "persistent_drift": self.persistent_drift,
+            "calibrated_score": self.calibrated_score,
         }
 
 
@@ -200,6 +246,7 @@ class StepEvidence:
     step_ratio: Optional[float]
     status: AbruptStepStatus
     reason_code: str
+    calibrated_score: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -210,6 +257,7 @@ class StepEvidence:
             "step_ratio": self.step_ratio,
             "status": self.status.value,
             "reason_code": self.reason_code,
+            "calibrated_score": self.calibrated_score,
         }
 
 
@@ -270,6 +318,9 @@ class EquipmentEvidence:
     reason_code: str
     chamber_evidence: Optional[ChamberEvidence] = None
     ate_evidence: Optional[AteEvidence] = None
+    common_mode_evidence: Optional[float] = None
+    device_specific_evidence: Optional[float] = None
+    calibrated_score: Optional[float] = None
 
     def to_dict(self) -> Dict[str, Any]:
         return {
@@ -285,6 +336,9 @@ class EquipmentEvidence:
             "reason_code": self.reason_code,
             "chamber_evidence": self.chamber_evidence.to_dict() if self.chamber_evidence else None,
             "ate_evidence": self.ate_evidence.to_dict() if self.ate_evidence else None,
+            "common_mode_evidence": self.common_mode_evidence,
+            "device_specific_evidence": self.device_specific_evidence,
+            "calibrated_score": self.calibrated_score,
         }
 
 
@@ -366,6 +420,7 @@ class ComponentScreeningResult:
     as_of_hours: int
     audit_hash: str
     disposition_qualifier: DispositionQualifier = DispositionQualifier.NOMINAL_STABLE
+    joint_evidence: Optional[JointEvidence] = None
     created_at: str = field(
         default_factory=lambda: datetime.now(timezone.utc).isoformat()
     )
@@ -383,6 +438,7 @@ class ComponentScreeningResult:
             "parameter_results": {
                 p: res.to_dict() for p, res in self.parameter_results.items()
             },
+            "joint_evidence": self.joint_evidence.to_dict() if self.joint_evidence else None,
             "as_of_hours": self.as_of_hours,
             "audit_hash": self.audit_hash,
             "created_at": self.created_at,

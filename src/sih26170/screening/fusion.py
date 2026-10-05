@@ -29,6 +29,7 @@ from sih26170.screening.schema import (
     DispositionQualifier,
     EquipmentEvidence,
     EquipmentStatus,
+    JointEvidence,
     ParameterScreeningResult,
     PeerDeviationStatus,
     PeerEvidence,
@@ -85,7 +86,7 @@ def fuse_parameter_evidence(
     # Precedence Level 3: Equipment Suspicion Interacting with Temporal Kinetics
     if eq_ev.suspected:
         g_excess = temp_ev.g_excess if temp_ev.g_excess is not None else temp_ev.normalized_drift
-        has_excess_degradation = (g_excess is not None and abs(g_excess) >= 2.5)
+        has_excess_degradation = (g_excess is not None and abs(g_excess) >= 2.5) or temp_ev.persistent_drift
 
         if has_excess_degradation:
             state = (
@@ -95,7 +96,7 @@ def fuse_parameter_evidence(
             )
             prim_reason = (
                 temp_ev.reason_code
-                if temp_ev.status == TemporalDriftStatus.ACCELERATING_DRIFT
+                if temp_ev.status in (TemporalDriftStatus.ACCELERATING_DRIFT, TemporalDriftStatus.PERSISTENT_DRIFT)
                 else (step_ev.reason_code if step_ev.status == AbruptStepStatus.ABRUPT_JUMP_ALERT else "CONFOUNDED_TEMPORAL_DRIFT")
             )
             return (
@@ -131,12 +132,12 @@ def fuse_parameter_evidence(
             all_reasons,
         )
 
-    # Precedence Level 4a: Space Hardware Quarantine (Class C Screening Margin Breach + Subtle Drift)
+    # Precedence Level 4a: Space Hardware Quarantine (Class C Screening Margin Breach + Drift)
     # Space hardware is expensive — we don't binary-scrap unless we're certain.
-    # Class C margin breach accompanied by active subtle drift triggers HOLD for re-test/engineering review.
+    # Class C margin breach accompanied by active subtle or persistent drift triggers HOLD for re-test/engineering review.
     if (
         spec_ev.status == SpecificationStatus.SCREENING_MARGIN_BREACH
-        and temp_ev.status == TemporalDriftStatus.SUBTLE_DRIFT
+        and temp_ev.status in (TemporalDriftStatus.SUBTLE_DRIFT, TemporalDriftStatus.PERSISTENT_DRIFT)
     ):
         return (
             ScreeningState.HOLD,
@@ -145,13 +146,14 @@ def fuse_parameter_evidence(
             all_reasons,
         )
 
-    if temp_ev.status == TemporalDriftStatus.SUBTLE_DRIFT:
+    if temp_ev.status in (TemporalDriftStatus.SUBTLE_DRIFT, TemporalDriftStatus.PERSISTENT_DRIFT):
         return (
             ScreeningState.ALERT,
             DispositionQualifier.COMPONENT_DEGRADATION,
             temp_ev.reason_code,
             all_reasons,
         )
+
 
     # Precedence Level 5: Class C Configured Screening Margin Breach (Tightened Flight Gate)
     if spec_ev.status == SpecificationStatus.SCREENING_MARGIN_BREACH:
@@ -189,7 +191,8 @@ def fuse_parameter_evidence(
 
 
 def fuse_component_evidence(
-    param_results: Dict[str, ParameterScreeningResult]
+    param_results: Dict[str, ParameterScreeningResult],
+    joint_evidence: Optional[JointEvidence] = None,
 ) -> Tuple[ScreeningState, DispositionQualifier, str, List[str], bool]:
     """Fuse parameter-level screening results into component-level screening disposition.
 
@@ -221,7 +224,11 @@ def fuse_component_evidence(
 
         # Check for active degradation drift or step changes
         if (
-            res.temporal_evidence.status in (TemporalDriftStatus.SUBTLE_DRIFT, TemporalDriftStatus.ACCELERATING_DRIFT)
+            res.temporal_evidence.status in (
+                TemporalDriftStatus.SUBTLE_DRIFT,
+                TemporalDriftStatus.ACCELERATING_DRIFT,
+                TemporalDriftStatus.PERSISTENT_DRIFT,
+            )
             or res.step_evidence.status == AbruptStepStatus.ABRUPT_JUMP_ALERT
             or res.disposition_qualifier in (
                 DispositionQualifier.COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT,
@@ -231,9 +238,14 @@ def fuse_component_evidence(
         ):
             drifting_params.append(p_name)
 
+
     # Secondary explanatory flag for compound multi-parameter degradation
     non_nominal_count = len(failing_results) + len(hold_results) + len(alert_results)
-    compound_evidence = (len(drifting_params) >= 2) or (non_nominal_count >= 2)
+    compound_evidence = (
+        (len(drifting_params) >= 2)
+        or (non_nominal_count >= 2)
+        or (joint_evidence is not None and joint_evidence.suspected)
+    )
 
     # Precedence 1: Multi-parameter compound failure/drift -> FAIL with compound reason
     if len(drifting_params) >= 2 or len(failing_results) >= 2:
@@ -314,6 +326,18 @@ def fuse_component_evidence(
             f"{p_name}:{res.primary_reason_code}",
             all_reasons,
             compound_evidence,
+        )
+
+    # Precedence 5.5: Joint-parameter multivariate backstop (D_joint)
+    # Catches correlated sub-threshold multi-parameter drift that escapes univariate cutoffs
+    if joint_evidence is not None and joint_evidence.suspected:
+        all_reasons.append(joint_evidence.reason_code)
+        return (
+            ScreeningState.HOLD,
+            DispositionQualifier.HOLD_SCREENING_MARGIN,
+            f"JOINT:{joint_evidence.reason_code}",
+            all_reasons,
+            True,
         )
 
     # Precedence 6: Default nominal -> PASS

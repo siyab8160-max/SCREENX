@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ModuleBOutputContract",
+  "description": "Production-facing Module B Prognostic Output Schema for SIH 2026 Problem Statement SIH26170. Zero-Anchored Residual HistGBM with regime-conditioned conformal prediction intervals and QA advisory decision support.",
+  "type": "object",
+  "required": [
+    "component_id",
+    "lot_id",
+    "parameter_name",
+    "predicted_value",
+    "lower_90",
+    "upper_90",
+    "lower_95",
+    "upper_95",
+    "regime",
+    "uncertainty_width_90",
+    "uncertainty_width_95",
+    "crosses_60",
+    "entirely_below_60",
+    "entirely_above_60",
+    "crosses_65",
+    "entirely_below_65",
+    "entirely_above_65",
+    "advisory_status",
+    "explanation"
+  ],
+  "properties": {
+    "component_id": {
+      "type": "string",
+      "description": "Unique identifier of the device under screening (e.g. COMP_042)."
+    },
+    "lot_id": {
+      "type": "string",
+      "description": "Manufacturing or screening cohort identifier (e.g. LOT01, LOT14)."
+    },
+    "parameter_name": {
+      "type": "string",
+      "enum": ["IDSS", "VGS(th)", "RDS(on)", "IGSS"],
+      "description": "Electrical test parameter according to MIL-PRF-19500/703 Table I."
+    },
+    "predicted_value": {
+      "type": ["number", "null"],
+      "description": "Point forecast at 168h horizon reconstructed from 24h baseline plus predicted delta. Returns NaN/null when data are insufficient."
+    },
+    "lower_90": {
+      "type": ["number", "null"],
+      "description": "Lower bound of the 90% regime-conditioned conformal prediction interval in physical units."
+    },
+    "upper_90": {
+      "type": ["number", "null"],
+      "description": "Upper bound of the 90% regime-conditioned conformal prediction interval in physical units."
+    },
+    "lower_95": {
+      "type": ["number", "null"],
+      "description": "Lower bound of the 95% regime-conditioned conformal prediction interval in physical units."
+    },
+    "upper_95": {
+      "type": ["number", "null"],
+      "description": "Upper bound of the 95% regime-conditioned conformal prediction interval in physical units."
+    },
+    "regime": {
+      "type": "string",
+      "enum": ["ZERO_ANCHORED", "DRIFT_MODEL", "INSUFFICIENT_DATA"],
+      "description": "Forecasting regime selected based on whether 24h excess drift is within training-derived threshold tau_p."
+    },
+    "uncertainty_width_90": {
+      "type": ["number", "null"],
+      "description": "Span of the 90% prediction interval (upper_90 - lower_90) in physical units."
+    },
+    "uncertainty_width_95": {
+      "type": ["number", "null"],
+      "description": "Span of the 95% prediction interval (upper_95 - lower_95) in physical units."
+    },
+    "crosses_60": {
+      "type": "boolean",
+      "description": "For RDS(on): True if 90% prediction interval straddles the 60.0 mOhm screening margin (lower_90 <= 60.0 <= upper_90). False otherwise."
+    },
+    "entirely_below_60": {
+      "type": "boolean",
+      "description": "For RDS(on): True if upper_90 < 60.0 mOhm. False otherwise."
+    },
+    "entirely_above_60": {
+      "type": "boolean",
+      "description": "For RDS(on): True if lower_90 > 60.0 mOhm. False otherwise."
+    },
+    "crosses_65": {
+      "type": "boolean",
+      "description": "For RDS(on): True if 90% prediction interval straddles the 65.0 mOhm specification ceiling (lower_90 <= 65.0 <= upper_90). False otherwise."
+    },
+    "entirely_below_65": {
+      "type": "boolean",
+      "description": "For RDS(on): True if upper_90 < 65.0 mOhm. False otherwise."
+    },
+    "entirely_above_65": {
+      "type": "boolean",
+      "description": "For RDS(on): True if lower_90 > 65.0 mOhm. False otherwise."
+    },
+    "advisory_status": {
+      "type": "string",
+      "enum": ["CONTINUE", "EARLY_WARNING", "INSUFFICIENT_DATA"],
+      "description": "Advisory recommendation for QA engineering review. Informational decision support only; NO autonomous machine control or scrap authority."
+    },
+    "explanation": {
+      "type": "object",
+      "required": [
+        "early_drift_signal",
+        "excess_drift",
+        "selected_regime",
+        "predicted_168h_value",
+        "threshold_proximity",
+        "reason_for_advisory_status"
+      ],
+      "properties": {
+        "early_drift_signal": {
+          "type": ["number", "null"],
+          "description": "Observed drift of component between 0h and 24h in representation space (u24 - u0)."
+        },
+        "excess_drift": {
+          "type": ["number", "null"],
+          "description": "Component drift relative to peer lot median drift (component_drift - lot_drift)."
+        },
+        "selected_regime": {
+          "type": "string",
+          "enum": ["ZERO_ANCHORED", "DRIFT_MODEL", "INSUFFICIENT_DATA"]
+        },
+        "predicted_168h_value": {
+          "type": ["number", "null"],
+          "description": "Reconstructed physical forecast value."
+        },
+        "uncertainty_interval_90": {
+          "type": ["array", "null"],
+          "items": {"type": "number"},
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "uncertainty_interval_95": {
+          "type": ["array", "null"],
+          "items": {"type": "number"},
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "threshold_proximity": {
+          "type": "object",
+          "description": "Physical margins to critical screening thresholds and specification ceilings."
+        },
+        "reason_for_advisory_status": {
+          "type": "string",
+          "description": "Explicit physical and mathematical rationale for advisory status without generic AI buzzwords."
+        },
+        "details": {
+          "type": "object"
+        }
+      }
+    },
+    "unit": {
+      "type": "string",
+      "description": "Physical measurement unit (uA, V, mOhm, nA)."
+    },
+    "is_valid": {
+      "type": "boolean",
+      "description": "True if input measurements were sufficient and prognostic evaluation succeeded."
+    },
+    "refusal_reason": {
+      "type": ["string", "null"],
+      "description": "Explicit explanation if evaluation was refused due to insufficient data."
+    },
+    "predicted_drift_rate": {
+      "type": ["number", "null"],
+      "description": "Predicted drift rate over 144h horizon (predicted_value - value_24h) / 144.0 [unit/hour]."
+    },
+    "safety_slope": {
+      "type": ["number", "null"],
+      "description": "Calculated safety slope toward configured safety threshold (safety_threshold - value_24h) / 144.0 [unit/hour]."
+    },
+    "safety_threshold": {
+      "type": ["number", "null"],
+      "description": "Configured physical safety threshold."
+    }
+  }
+}

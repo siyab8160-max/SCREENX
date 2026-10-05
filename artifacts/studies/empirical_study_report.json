@@ -1,0 +1,1275 @@
+{
+  "benchmark_title": "SCREENX Empirical Technical Evaluation & Verification Study",
+  "dataset_directory": "/Users/siyabhardwaj/Desktop/SIH26170_UNIFIED/data/synthetic_phase4b",
+  "total_records": 56000,
+  "lots_evaluated": [
+    "LOT_CAL_001",
+    "LOT_CAL_002"
+  ],
+  "calibration_lots": [
+    "LOT_CAL_001",
+    "LOT_CAL_002"
+  ],
+  "validation_lots": [
+    "LOT_CAL_001",
+    "LOT_CAL_002"
+  ],
+  "metric_1_anomaly_detection": {
+    "1.1_cost_sensitive_risk": {
+      "metric_id": "1.1",
+      "description": "Cost-sensitive risk minimization (asymmetric escape penalty)",
+      "lots_evaluated": [
+        "LOT_CAL_001",
+        "LOT_CAL_002"
+      ],
+      "n_components": 40,
+      "static_confusion_matrix": {
+        "tp": 0,
+        "fp": 0,
+        "fn": 1,
+        "tn": 39
+      },
+      "screenx_confusion_matrix": {
+        "tp": 1,
+        "fp": 5,
+        "fn": 0,
+        "tn": 34
+      },
+      "aerospace_standard_ratio_20": {
+        "cost_ratio_fn_to_fp": 20.0,
+        "c_fn": 20.0,
+        "c_fp": 1.0,
+        "static_total_cost": 20.0,
+        "static_normalized_cost": 0.5,
+        "screenx_total_cost": 5.0,
+        "screenx_normalized_cost": 0.125,
+        "cost_reduction_ratio": 4.0
+      },
+      "cost_curves": [
+        {
+          "cost_ratio_fn_to_fp": 1.0,
+          "c_fn": 1.0,
+          "c_fp": 1.0,
+          "static_total_cost": 1.0,
+          "static_normalized_cost": 0.025,
+          "screenx_total_cost": 5.0,
+          "screenx_normalized_cost": 0.125,
+          "cost_reduction_ratio": 0.2
+        },
+        {
+          "cost_ratio_fn_to_fp": 2.0,
+          "c_fn": 2.0,
+          "c_fp": 1.0,
+          "static_total_cost": 2.0,
+          "static_normalized_cost": 0.05,
+          "screenx_total_cost": 5.0,
+          "screenx_normalized_cost": 0.125,
+          "cost_reduction_ratio": 0.4
+        },
+        {
+          "cost_ratio_fn_to_fp": 5.0,
+          "c_fn": 5.0,
+          "c_fp": 1.0,
+          "static_total_cost": 5.0,
+          "static_normalized_cost": 0.125,
+          "screenx_total_cost": 5.0,
+          "screenx_normalized_cost": 0.125,
+          "cost_reduction_ratio": 1.0
+        },
+        {
+          "cost_ratio_fn_to_fp": 10.0,
+          "c_fn": 10.0,
+          "c_fp": 1.0,
+          "static_total_cost": 10.0,
+          "static_normalized_cost": 0.25,
+          "screenx_total_cost": 5.0,
+          "screenx_normalized_cost": 0.125,
+          "cost_reduction_ratio": 2.0
+        },
+        {
+          "cost_ratio_fn_to_fp": 20.0,
+          "c_fn": 20.0,
+          "c_fp": 1.0,
+          "static_total_cost": 20.0,
+          "static_normalized_cost": 0.5,
+          "screenx_total_cost": 5.0,
+          "screenx_normalized_cost": 0.125,
+          "cost_reduction_ratio": 4.0
+        },
+        {
+          "cost_ratio_fn_to_fp": 50.0,
+          "c_fn": 50.0,
+          "c_fp": 1.0,
+          "static_total_cost": 50.0,
+          "static_normalized_cost": 1.25,
+          "screenx_total_cost": 5.0,
+          "screenx_normalized_cost": 0.125,
+          "cost_reduction_ratio": 10.0
+        }
+      ]
+    },
+    "1.2_multivariate_joint_backstop": {
+      "metric_id": "1.2",
+      "description": "Multivariate Joint Mahalanobis Backstop (D_joint)",
+      "threshold": 4.25,
+      "components_evaluated": 40,
+      "mean_mahalanobis_nominal": 2.082,
+      "p95_mahalanobis_nominal": 3.614,
+      "mean_mahalanobis_defective": 3.173,
+      "p05_mahalanobis_defective": 3.173,
+      "separation_ratio": 1.52,
+      "contingency": {
+        "tp": 0,
+        "fp": 1,
+        "fn": 1,
+        "tn": 38
+      }
+    },
+    "1.3_strict_union_fusion": {
+      "metric_id": "1.3",
+      "description": "Deterministic Union/OR Fusion without AND bottlenecks",
+      "status": "Production-hardened in sih26170.screening.fusion",
+      "policy": "MAX_SEVERITY_OVERRIDE_AND_FALLBACK"
+    }
+  },
+  "metric_2_drift_prediction": {
+    "2.1_relative_vs_direct_drift": {
+      "metric_id": "2.1",
+      "description": "Relative drift target (delta_u) vs direct level modeling comparison",
+      "calibration_lots_count": 2,
+      "evaluation_lots_count": 2,
+      "parameter_results": {
+        "IDSS": {
+          "parameter": "IDSS",
+          "unit": "uA",
+          "domain_category": "surface_leakage",
+          "direct_mae": 0.041340584142509886,
+          "direct_rmse": 0.05625767374245108,
+          "direct_medae": 0.03341026499378477,
+          "relative_mae": 0.04478366653438316,
+          "relative_rmse": 0.05966662104056011,
+          "relative_medae": 0.0346352559437037,
+          "mae_delta_pct": 8.328577022531253,
+          "optimal_target": "direct_level",
+          "physics_rationale": "Wide dynamic-range leakage: delta isolates oxide/p-n degradation from lot baseline offset"
+        },
+        "VGS(th)": {
+          "parameter": "VGS(th)",
+          "unit": "V",
+          "domain_category": "bulk_conduction",
+          "direct_mae": 0.023324108165817193,
+          "direct_rmse": 0.02804136131342893,
+          "direct_medae": 0.022884978532021316,
+          "relative_mae": 0.02310047447655027,
+          "relative_rmse": 0.02911493596690427,
+          "relative_medae": 0.019815782945537652,
+          "mae_delta_pct": -0.9588091757980701,
+          "optimal_target": "relative_delta",
+          "physics_rationale": "Tight-tolerance bulk parameter: direct 2-point estimator regularizes measurement noise"
+        },
+        "RDS(on)": {
+          "parameter": "RDS(on)",
+          "unit": "mOhm",
+          "domain_category": "bulk_conduction",
+          "direct_mae": 0.6157355823644677,
+          "direct_rmse": 0.7264798841220786,
+          "direct_medae": 0.5234693836805953,
+          "relative_mae": 0.622249955066685,
+          "relative_rmse": 0.7887298686497696,
+          "relative_medae": 0.5569334533355068,
+          "mae_delta_pct": 1.0579821742965843,
+          "optimal_target": "direct_level",
+          "physics_rationale": "Tight-tolerance bulk parameter: direct 2-point estimator regularizes measurement noise"
+        },
+        "IGSS": {
+          "parameter": "IGSS",
+          "unit": "nA",
+          "domain_category": "surface_leakage",
+          "direct_mae": 0.3753303897003315,
+          "direct_rmse": 0.4825894044220249,
+          "direct_medae": 0.29100549788707575,
+          "relative_mae": 0.3708434698523345,
+          "relative_rmse": 0.47535529542444915,
+          "relative_medae": 0.27643162386126696,
+          "mae_delta_pct": -1.1954587134762515,
+          "optimal_target": "relative_delta",
+          "physics_rationale": "Wide dynamic-range leakage: delta isolates oxide/p-n degradation from lot baseline offset"
+        }
+      }
+    },
+    "2.2_regularization_lambda_nested_cv": {
+      "metric_id": "2.2",
+      "description": "Regularization strength lambda sweep via lot-grouped nested CV",
+      "folds": 5,
+      "lots_evaluated": 2,
+      "parameter_sweeps": {
+        "IDSS": {
+          "parameter": "IDSS",
+          "optimal_lambda": 0.1206792640639329,
+          "optimal_cv_mae": 0.04492140526629218,
+          "locked_lambda": 1.0,
+          "locked_lambda_cv_mae": 0.051017913375701496,
+          "gap_to_optimum_pct": 13.571499095519107,
+          "within_half_percent_valley": false,
+          "cv_curve": [
+            {
+              "lambda": 0.001,
+              "cv_mae": 0.04747691300716532
+            },
+            {
+              "lambda": 0.0013257113655901094,
+              "cv_mae": 0.04744758391369121
+            },
+            {
+              "lambda": 0.0017575106248547913,
+              "cv_mae": 0.04740922019562764
+            },
+            {
+              "lambda": 0.002329951810515372,
+              "cv_mae": 0.04735925272485091
+            },
+            {
+              "lambda": 0.0030888435964774815,
+              "cv_mae": 0.04729453470983509
+            },
+            {
+              "lambda": 0.004094915062380427,
+              "cv_mae": 0.04721132088101732
+            },
+            {
+              "lambda": 0.005428675439323859,
+              "cv_mae": 0.04710533330893348
+            },
+            {
+              "lambda": 0.0071968567300115215,
+              "cv_mae": 0.04697197771224215
+            },
+            {
+              "lambda": 0.009540954763499945,
+              "cv_mae": 0.04680679045600057
+            },
+            {
+              "lambda": 0.012648552168552958,
+              "cv_mae": 0.04660947422606146
+            },
+            {
+              "lambda": 0.016768329368110083,
+              "cv_mae": 0.04638839368322488
+            },
+            {
+              "lambda": 0.022229964825261943,
+              "cv_mae": 0.04613621092369762
+            },
+            {
+              "lambda": 0.029470517025518096,
+              "cv_mae": 0.04586024610206659
+            },
+            {
+              "lambda": 0.03906939937054617,
+              "cv_mae": 0.04557368474982906
+            },
+            {
+              "lambda": 0.0517947467923121,
+              "cv_mae": 0.04529567446277344
+            },
+            {
+              "lambda": 0.06866488450043001,
+              "cv_mae": 0.04506250773001964
+            },
+            {
+              "lambda": 0.09102981779915217,
+              "cv_mae": 0.04495881135916857
+            },
+            {
+              "lambda": 0.1206792640639329,
+              "cv_mae": 0.04492140526629218
+            },
+            {
+              "lambda": 0.15998587196060574,
+              "cv_mae": 0.0449650690346472
+            },
+            {
+              "lambda": 0.21209508879201905,
+              "cv_mae": 0.045120010195872806
+            },
+            {
+              "lambda": 0.28117686979742307,
+              "cv_mae": 0.0455143947993886
+            },
+            {
+              "lambda": 0.3727593720314938,
+              "cv_mae": 0.04635585982188124
+            },
+            {
+              "lambda": 0.49417133613238334,
+              "cv_mae": 0.047340690907448316
+            },
+            {
+              "lambda": 0.655128556859551,
+              "cv_mae": 0.048665791894564825
+            },
+            {
+              "lambda": 0.868511373751352,
+              "cv_mae": 0.050200095121315444
+            },
+            {
+              "lambda": 1.151395399326447,
+              "cv_mae": 0.052030143946319635
+            },
+            {
+              "lambda": 1.5264179671752334,
+              "cv_mae": 0.054230034038560894
+            },
+            {
+              "lambda": 2.023589647725158,
+              "cv_mae": 0.056696532413656464
+            },
+            {
+              "lambda": 2.6826957952797246,
+              "cv_mae": 0.05995841986050341
+            },
+            {
+              "lambda": 3.5564803062231287,
+              "cv_mae": 0.06380158090132466
+            },
+            {
+              "lambda": 4.714866363457395,
+              "cv_mae": 0.06852794954853123
+            },
+            {
+              "lambda": 6.25055192527397,
+              "cv_mae": 0.07437978749236929
+            },
+            {
+              "lambda": 8.286427728546842,
+              "cv_mae": 0.08297022678317717
+            },
+            {
+              "lambda": 10.985411419875572,
+              "cv_mae": 0.09481647545801569
+            },
+            {
+              "lambda": 14.563484775012444,
+              "cv_mae": 0.11049723691528182
+            },
+            {
+              "lambda": 19.306977288832496,
+              "cv_mae": 0.13015697132149365
+            },
+            {
+              "lambda": 25.595479226995334,
+              "cv_mae": 0.15518990028903584
+            },
+            {
+              "lambda": 33.9322177189533,
+              "cv_mae": 0.183312805771554
+            },
+            {
+              "lambda": 44.98432668969444,
+              "cv_mae": 0.2138653260242443
+            },
+            {
+              "lambda": 59.636233165946365,
+              "cv_mae": 0.24670652781845775
+            },
+            {
+              "lambda": 79.06043210907701,
+              "cv_mae": 0.27963838299573585
+            },
+            {
+              "lambda": 104.81131341546852,
+              "cv_mae": 0.31228037105389517
+            },
+            {
+              "lambda": 138.9495494373136,
+              "cv_mae": 0.34239713545831263
+            },
+            {
+              "lambda": 184.20699693267164,
+              "cv_mae": 0.36922740113176433
+            },
+            {
+              "lambda": 244.205309454865,
+              "cv_mae": 0.3923961748177304
+            },
+            {
+              "lambda": 323.745754281764,
+              "cv_mae": 0.4118721499908625
+            },
+            {
+              "lambda": 429.1934260128778,
+              "cv_mae": 0.42787802851803725
+            },
+            {
+              "lambda": 568.9866029018293,
+              "cv_mae": 0.44085514107638757
+            },
+            {
+              "lambda": 754.3120063354608,
+              "cv_mae": 0.4514956609056827
+            },
+            {
+              "lambda": 1000.0,
+              "cv_mae": 0.45985159546436816
+            }
+          ]
+        },
+        "VGS(th)": {
+          "parameter": "VGS(th)",
+          "optimal_lambda": 0.28117686979742307,
+          "optimal_cv_mae": 0.02340719866481966,
+          "locked_lambda": 1.0,
+          "locked_lambda_cv_mae": 0.024484974565431326,
+          "gap_to_optimum_pct": 4.604463421893926,
+          "within_half_percent_valley": false,
+          "cv_curve": [
+            {
+              "lambda": 0.001,
+              "cv_mae": 0.026096999295600484
+            },
+            {
+              "lambda": 0.0013257113655901094,
+              "cv_mae": 0.025966916128770345
+            },
+            {
+              "lambda": 0.0017575106248547913,
+              "cv_mae": 0.02583783576210925
+            },
+            {
+              "lambda": 0.002329951810515372,
+              "cv_mae": 0.02568388545916287
+            },
+            {
+              "lambda": 0.0030888435964774815,
+              "cv_mae": 0.025538273162303074
+            },
+            {
+              "lambda": 0.004094915062380427,
+              "cv_mae": 0.02536718161883876
+            },
+            {
+              "lambda": 0.005428675439323859,
+              "cv_mae": 0.02517149927992741
+            },
+            {
+              "lambda": 0.0071968567300115215,
+              "cv_mae": 0.02495434636153454
+            },
+            {
+              "lambda": 0.009540954763499945,
+              "cv_mae": 0.02472115022653132
+            },
+            {
+              "lambda": 0.012648552168552958,
+              "cv_mae": 0.024494524304417356
+            },
+            {
+              "lambda": 0.016768329368110083,
+              "cv_mae": 0.024333467526702846
+            },
+            {
+              "lambda": 0.022229964825261943,
+              "cv_mae": 0.0241746541848699
+            },
+            {
+              "lambda": 0.029470517025518096,
+              "cv_mae": 0.024023733999752495
+            },
+            {
+              "lambda": 0.03906939937054617,
+              "cv_mae": 0.02388532115651413
+            },
+            {
+              "lambda": 0.0517947467923121,
+              "cv_mae": 0.02376252496611625
+            },
+            {
+              "lambda": 0.06866488450043001,
+              "cv_mae": 0.023656834645425784
+            },
+            {
+              "lambda": 0.09102981779915217,
+              "cv_mae": 0.023568311523781284
+            },
+            {
+              "lambda": 0.1206792640639329,
+              "cv_mae": 0.02349596367356057
+            },
+            {
+              "lambda": 0.15998587196060574,
+              "cv_mae": 0.02343816817922697
+            },
+            {
+              "lambda": 0.21209508879201905,
+              "cv_mae": 0.02340979841403834
+            },
+            {
+              "lambda": 0.28117686979742307,
+              "cv_mae": 0.02340719866481966
+            },
+            {
+              "lambda": 0.3727593720314938,
+              "cv_mae": 0.023454370241168775
+            },
+            {
+              "lambda": 0.49417133613238334,
+              "cv_mae": 0.023551721827641217
+            },
+            {
+              "lambda": 0.655128556859551,
+              "cv_mae": 0.023826198424372634
+            },
+            {
+              "lambda": 0.868511373751352,
+              "cv_mae": 0.024232704741775947
+            },
+            {
+              "lambda": 1.151395399326447,
+              "cv_mae": 0.02477631593915538
+            },
+            {
+              "lambda": 1.5264179671752334,
+              "cv_mae": 0.025590898391355033
+            },
+            {
+              "lambda": 2.023589647725158,
+              "cv_mae": 0.026924630072528134
+            },
+            {
+              "lambda": 2.6826957952797246,
+              "cv_mae": 0.028807120473688753
+            },
+            {
+              "lambda": 3.5564803062231287,
+              "cv_mae": 0.0319537141846308
+            },
+            {
+              "lambda": 4.714866363457395,
+              "cv_mae": 0.03746292063091259
+            },
+            {
+              "lambda": 6.25055192527397,
+              "cv_mae": 0.04773865906610073
+            },
+            {
+              "lambda": 8.286427728546842,
+              "cv_mae": 0.062401317191603495
+            },
+            {
+              "lambda": 10.985411419875572,
+              "cv_mae": 0.08221709094403554
+            },
+            {
+              "lambda": 14.563484775012444,
+              "cv_mae": 0.10808850897515956
+            },
+            {
+              "lambda": 19.306977288832496,
+              "cv_mae": 0.1417048507256427
+            },
+            {
+              "lambda": 25.595479226995334,
+              "cv_mae": 0.18511379447032356
+            },
+            {
+              "lambda": 33.9322177189533,
+              "cv_mae": 0.2407197864803038
+            },
+            {
+              "lambda": 44.98432668969444,
+              "cv_mae": 0.3112219317135194
+            },
+            {
+              "lambda": 59.636233165946365,
+              "cv_mae": 0.39945544958308654
+            },
+            {
+              "lambda": 79.06043210907701,
+              "cv_mae": 0.5080994671623333
+            },
+            {
+              "lambda": 104.81131341546852,
+              "cv_mae": 0.63922950099884
+            },
+            {
+              "lambda": 138.9495494373136,
+              "cv_mae": 0.793736588362632
+            },
+            {
+              "lambda": 184.20699693267164,
+              "cv_mae": 0.9707098369689715
+            },
+            {
+              "lambda": 244.205309454865,
+              "cv_mae": 1.1669653253185783
+            },
+            {
+              "lambda": 323.745754281764,
+              "cv_mae": 1.3769500775918484
+            },
+            {
+              "lambda": 429.1934260128778,
+              "cv_mae": 1.5931912198026528
+            },
+            {
+              "lambda": 568.9866029018293,
+              "cv_mae": 1.8072771285194524
+            },
+            {
+              "lambda": 754.3120063354608,
+              "cv_mae": 2.0111240637072108
+            },
+            {
+              "lambda": 1000.0,
+              "cv_mae": 2.1981413075723655
+            }
+          ]
+        },
+        "RDS(on)": {
+          "parameter": "RDS(on)",
+          "optimal_lambda": 0.06866488450043001,
+          "optimal_cv_mae": 0.617102904564111,
+          "locked_lambda": 1.0,
+          "locked_lambda_cv_mae": 0.6521417800913578,
+          "gap_to_optimum_pct": 5.6779631513801485,
+          "within_half_percent_valley": false,
+          "cv_curve": [
+            {
+              "lambda": 0.001,
+              "cv_mae": 0.646887788734587
+            },
+            {
+              "lambda": 0.0013257113655901094,
+              "cv_mae": 0.6436520427346872
+            },
+            {
+              "lambda": 0.0017575106248547913,
+              "cv_mae": 0.6398670252319933
+            },
+            {
+              "lambda": 0.002329951810515372,
+              "cv_mae": 0.6361800740845662
+            },
+            {
+              "lambda": 0.0030888435964774815,
+              "cv_mae": 0.6326647980428419
+            },
+            {
+              "lambda": 0.004094915062380427,
+              "cv_mae": 0.6302416293452456
+            },
+            {
+              "lambda": 0.005428675439323859,
+              "cv_mae": 0.6282133809501207
+            },
+            {
+              "lambda": 0.0071968567300115215,
+              "cv_mae": 0.6261947088907238
+            },
+            {
+              "lambda": 0.009540954763499945,
+              "cv_mae": 0.6242607504783988
+            },
+            {
+              "lambda": 0.012648552168552958,
+              "cv_mae": 0.6224803538211192
+            },
+            {
+              "lambda": 0.016768329368110083,
+              "cv_mae": 0.6209091134214695
+            },
+            {
+              "lambda": 0.022229964825261943,
+              "cv_mae": 0.619586024706648
+            },
+            {
+              "lambda": 0.029470517025518096,
+              "cv_mae": 0.6185342936359799
+            },
+            {
+              "lambda": 0.03906939937054617,
+              "cv_mae": 0.6177655338894462
+            },
+            {
+              "lambda": 0.0517947467923121,
+              "cv_mae": 0.6172859146804097
+            },
+            {
+              "lambda": 0.06866488450043001,
+              "cv_mae": 0.617102904564111
+            },
+            {
+              "lambda": 0.09102981779915217,
+              "cv_mae": 0.6172317974946822
+            },
+            {
+              "lambda": 0.1206792640639329,
+              "cv_mae": 0.6177018326415897
+            },
+            {
+              "lambda": 0.15998587196060574,
+              "cv_mae": 0.6185622005289064
+            },
+            {
+              "lambda": 0.21209508879201905,
+              "cv_mae": 0.6198885145677171
+            },
+            {
+              "lambda": 0.28117686979742307,
+              "cv_mae": 0.6217904731269261
+            },
+            {
+              "lambda": 0.3727593720314938,
+              "cv_mae": 0.624421522347524
+            },
+            {
+              "lambda": 0.49417133613238334,
+              "cv_mae": 0.6279914160496499
+            },
+            {
+              "lambda": 0.655128556859551,
+              "cv_mae": 0.6327826903465903
+            },
+            {
+              "lambda": 0.868511373751352,
+              "cv_mae": 0.6411581189023652
+            },
+            {
+              "lambda": 1.151395399326447,
+              "cv_mae": 0.6647914638142507
+            },
+            {
+              "lambda": 1.5264179671752334,
+              "cv_mae": 0.702929767789209
+            },
+            {
+              "lambda": 2.023589647725158,
+              "cv_mae": 0.7743989406468776
+            },
+            {
+              "lambda": 2.6826957952797246,
+              "cv_mae": 0.8904164159599264
+            },
+            {
+              "lambda": 3.5564803062231287,
+              "cv_mae": 1.0799176718996903
+            },
+            {
+              "lambda": 4.714866363457395,
+              "cv_mae": 1.3886378428683643
+            },
+            {
+              "lambda": 6.25055192527397,
+              "cv_mae": 1.799575661529142
+            },
+            {
+              "lambda": 8.286427728546842,
+              "cv_mae": 2.3522651955106193
+            },
+            {
+              "lambda": 10.985411419875572,
+              "cv_mae": 3.0686830378037726
+            },
+            {
+              "lambda": 14.563484775012444,
+              "cv_mae": 3.9907413033302834
+            },
+            {
+              "lambda": 19.306977288832496,
+              "cv_mae": 5.166529163380806
+            },
+            {
+              "lambda": 25.595479226995334,
+              "cv_mae": 6.64801423258916
+            },
+            {
+              "lambda": 33.9322177189533,
+              "cv_mae": 8.486174444971503
+            },
+            {
+              "lambda": 44.98432668969444,
+              "cv_mae": 10.722669014257352
+            },
+            {
+              "lambda": 59.636233165946365,
+              "cv_mae": 13.377700930759236
+            },
+            {
+              "lambda": 79.06043210907701,
+              "cv_mae": 16.435164929269973
+            },
+            {
+              "lambda": 104.81131341546852,
+              "cv_mae": 19.828642295660806
+            },
+            {
+              "lambda": 138.9495494373136,
+              "cv_mae": 23.434577734110547
+            },
+            {
+              "lambda": 184.20699693267164,
+              "cv_mae": 27.079975380267328
+            },
+            {
+              "lambda": 244.205309454865,
+              "cv_mae": 30.568415554202076
+            },
+            {
+              "lambda": 323.745754281764,
+              "cv_mae": 33.71943500238298
+            },
+            {
+              "lambda": 429.1934260128778,
+              "cv_mae": 36.40682911871798
+            },
+            {
+              "lambda": 568.9866029018293,
+              "cv_mae": 38.57934665451155
+            },
+            {
+              "lambda": 754.3120063354608,
+              "cv_mae": 40.25632333065441
+            },
+            {
+              "lambda": 1000.0,
+              "cv_mae": 41.50456561129438
+            }
+          ]
+        },
+        "IGSS": {
+          "parameter": "IGSS",
+          "optimal_lambda": 0.001,
+          "optimal_cv_mae": 0.3720742020313307,
+          "locked_lambda": 1.0,
+          "locked_lambda_cv_mae": 0.3849334365358312,
+          "gap_to_optimum_pct": 3.4560940893767413,
+          "within_half_percent_valley": false,
+          "cv_curve": [
+            {
+              "lambda": 0.001,
+              "cv_mae": 0.3720742020313307
+            },
+            {
+              "lambda": 0.0013257113655901094,
+              "cv_mae": 0.3720795637003701
+            },
+            {
+              "lambda": 0.0017575106248547913,
+              "cv_mae": 0.372086669475738
+            },
+            {
+              "lambda": 0.002329951810515372,
+              "cv_mae": 0.37209608572657427
+            },
+            {
+              "lambda": 0.0030888435964774815,
+              "cv_mae": 0.3721085620004789
+            },
+            {
+              "lambda": 0.004094915062380427,
+              "cv_mae": 0.3721250897037405
+            },
+            {
+              "lambda": 0.005428675439323859,
+              "cv_mae": 0.3721469791465405
+            },
+            {
+              "lambda": 0.0071968567300115215,
+              "cv_mae": 0.37217596036461226
+            },
+            {
+              "lambda": 0.009540954763499945,
+              "cv_mae": 0.37221431445556297
+            },
+            {
+              "lambda": 0.012648552168552958,
+              "cv_mae": 0.3722650435934929
+            },
+            {
+              "lambda": 0.016768329368110083,
+              "cv_mae": 0.3723320891887206
+            },
+            {
+              "lambda": 0.022229964825261943,
+              "cv_mae": 0.3724206083620146
+            },
+            {
+              "lambda": 0.029470517025518096,
+              "cv_mae": 0.3725373180651801
+            },
+            {
+              "lambda": 0.03906939937054617,
+              "cv_mae": 0.37269091208609706
+            },
+            {
+              "lambda": 0.0517947467923121,
+              "cv_mae": 0.3728925459181908
+            },
+            {
+              "lambda": 0.06866488450043001,
+              "cv_mae": 0.3731563636020151
+            },
+            {
+              "lambda": 0.09102981779915217,
+              "cv_mae": 0.3735000034633066
+            },
+            {
+              "lambda": 0.1206792640639329,
+              "cv_mae": 0.37394496158431223
+            },
+            {
+              "lambda": 0.15998587196060574,
+              "cv_mae": 0.374516616271488
+            },
+            {
+              "lambda": 0.21209508879201905,
+              "cv_mae": 0.37524364897738927
+            },
+            {
+              "lambda": 0.28117686979742307,
+              "cv_mae": 0.3761566017517337
+            },
+            {
+              "lambda": 0.3727593720314938,
+              "cv_mae": 0.37728549432120473
+            },
+            {
+              "lambda": 0.49417133613238334,
+              "cv_mae": 0.37867870883176596
+            },
+            {
+              "lambda": 0.655128556859551,
+              "cv_mae": 0.3806598740712245
+            },
+            {
+              "lambda": 0.868511373751352,
+              "cv_mae": 0.3833986276967552
+            },
+            {
+              "lambda": 1.151395399326447,
+              "cv_mae": 0.3865751144228945
+            },
+            {
+              "lambda": 1.5264179671752334,
+              "cv_mae": 0.3901849672067582
+            },
+            {
+              "lambda": 2.023589647725158,
+              "cv_mae": 0.39446051558829653
+            },
+            {
+              "lambda": 2.6826957952797246,
+              "cv_mae": 0.39953679632797034
+            },
+            {
+              "lambda": 3.5564803062231287,
+              "cv_mae": 0.4053901050689669
+            },
+            {
+              "lambda": 4.714866363457395,
+              "cv_mae": 0.41300030108981345
+            },
+            {
+              "lambda": 6.25055192527397,
+              "cv_mae": 0.4221644289093252
+            },
+            {
+              "lambda": 8.286427728546842,
+              "cv_mae": 0.4352367639141707
+            },
+            {
+              "lambda": 10.985411419875572,
+              "cv_mae": 0.45051184674179207
+            },
+            {
+              "lambda": 14.563484775012444,
+              "cv_mae": 0.4730757470942993
+            },
+            {
+              "lambda": 19.306977288832496,
+              "cv_mae": 0.5112499057866315
+            },
+            {
+              "lambda": 25.595479226995334,
+              "cv_mae": 0.569150536158709
+            },
+            {
+              "lambda": 33.9322177189533,
+              "cv_mae": 0.6392138212963189
+            },
+            {
+              "lambda": 44.98432668969444,
+              "cv_mae": 0.7129906007835914
+            },
+            {
+              "lambda": 59.636233165946365,
+              "cv_mae": 0.7890225011089997
+            },
+            {
+              "lambda": 79.06043210907701,
+              "cv_mae": 0.8635613248891625
+            },
+            {
+              "lambda": 104.81131341546852,
+              "cv_mae": 0.9371054258822964
+            },
+            {
+              "lambda": 138.9495494373136,
+              "cv_mae": 1.0038107197510335
+            },
+            {
+              "lambda": 184.20699693267164,
+              "cv_mae": 1.0650749965944164
+            },
+            {
+              "lambda": 244.205309454865,
+              "cv_mae": 1.1180041905657305
+            },
+            {
+              "lambda": 323.745754281764,
+              "cv_mae": 1.162464754948573
+            },
+            {
+              "lambda": 429.1934260128778,
+              "cv_mae": 1.199062059743191
+            },
+            {
+              "lambda": 568.9866029018293,
+              "cv_mae": 1.2286692570622733
+            },
+            {
+              "lambda": 754.3120063354608,
+              "cv_mae": 1.252276284045887
+            },
+            {
+              "lambda": 1000.0,
+              "cv_mae": 1.2708758455237492
+            }
+          ]
+        }
+      }
+    },
+    "2.3_regime_conditional_conformal": {
+      "metric_id": "2.3",
+      "description": "Regime-conditional conformal calibration analysis",
+      "parameter_results": {
+        "IDSS": {
+          "parameter": "IDSS",
+          "target_coverage": 0.9,
+          "drift_split_threshold_tau": 0.084666989992116,
+          "q_global": 0.13112633901972084,
+          "q_regime_nominal": 0.1154135779675246,
+          "q_regime_drift": 0.14948136227357184,
+          "uniform_coverage_overall": 0.9,
+          "uniform_coverage_high_drift": 0.85,
+          "regime_conditional_coverage_overall": 0.9,
+          "regime_conditional_coverage_high_drift": 0.9,
+          "high_drift_coverage_gain_pct": 5.000000000000004
+        },
+        "VGS(th)": {
+          "parameter": "VGS(th)",
+          "target_coverage": 0.9,
+          "drift_split_threshold_tau": 0.023283304500664403,
+          "q_global": 0.03945689696756582,
+          "q_regime_nominal": 0.05007188017270329,
+          "q_regime_drift": 0.03140918335963079,
+          "uniform_coverage_overall": 0.9,
+          "uniform_coverage_high_drift": 1.0,
+          "regime_conditional_coverage_overall": 0.9,
+          "regime_conditional_coverage_high_drift": 0.9,
+          "high_drift_coverage_gain_pct": -9.999999999999998
+        },
+        "RDS(on)": {
+          "parameter": "RDS(on)",
+          "target_coverage": 0.9,
+          "drift_split_threshold_tau": 0.01223313817805205,
+          "q_global": 0.023910769052826634,
+          "q_regime_nominal": 0.02563834408833725,
+          "q_regime_drift": 0.021639922571062578,
+          "uniform_coverage_overall": 0.9,
+          "uniform_coverage_high_drift": 0.95,
+          "regime_conditional_coverage_overall": 0.9,
+          "regime_conditional_coverage_high_drift": 0.9,
+          "high_drift_coverage_gain_pct": -4.999999999999993
+        },
+        "IGSS": {
+          "parameter": "IGSS",
+          "target_coverage": 0.9,
+          "drift_split_threshold_tau": 0.2612170721977213,
+          "q_global": 0.468276961528368,
+          "q_regime_nominal": 0.4888821568679291,
+          "q_regime_drift": 0.3952565286445872,
+          "uniform_coverage_overall": 0.9,
+          "uniform_coverage_high_drift": 0.95,
+          "regime_conditional_coverage_overall": 0.9,
+          "regime_conditional_coverage_high_drift": 0.9,
+          "high_drift_coverage_gain_pct": -4.999999999999993
+        }
+      }
+    }
+  },
+  "metric_3_explainability": {
+    "3.1_inspector_grade_justifications": {
+      "metric_id": "3.1",
+      "status": "Integrated in pipeline explainability",
+      "audited": true
+    },
+    "3.2_closed_form_counterfactual_inversion": {
+      "metric_id": "3.2",
+      "description": "Closed-form counterfactual exact boundary inversion audit",
+      "samples_audited": 10,
+      "all_inversions_exact": true,
+      "audit_samples": [
+        {
+          "component_id": "LOT_CAL_001_C001",
+          "parameter": "IDSS",
+          "v0": 0.4765705373753445,
+          "v24": 0.4622501639830119,
+          "cf_delta_24h": 216.2877,
+          "boundary_physical_display": 216.7499,
+          "boundary_inversion_error_display": 2.705491990440123e-07,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C002",
+          "parameter": "IDSS",
+          "v0": 0.5470344714958545,
+          "v24": 0.6782618375009818,
+          "cf_delta_24h": 189.5399,
+          "boundary_physical_display": 190.2182,
+          "boundary_inversion_error_display": 6.539564587626501e-07,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C003",
+          "parameter": "IDSS",
+          "v0": 0.4266993955485421,
+          "v24": 0.3791983518688595,
+          "cf_delta_24h": 240.2867,
+          "boundary_physical_display": 240.6659,
+          "boundary_inversion_error_display": 1.2233024904162448e-07,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C004",
+          "parameter": "IDSS",
+          "v0": 0.5042016984913743,
+          "v24": 0.5753119456324569,
+          "cf_delta_24h": 204.9105,
+          "boundary_physical_display": 205.4858,
+          "boundary_inversion_error_display": 4.2354749751893905e-07,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C005",
+          "parameter": "IDSS",
+          "v0": 0.4119657304045171,
+          "v24": 0.4162542158410739,
+          "cf_delta_24h": 248.3921,
+          "boundary_physical_display": 248.8084,
+          "boundary_inversion_error_display": 3.3054041992386374e-07,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C006",
+          "parameter": "IDSS",
+          "v0": 0.5618873010702197,
+          "v24": 0.5120143469638576,
+          "cf_delta_24h": 184.9416,
+          "boundary_physical_display": 185.4537,
+          "boundary_inversion_error_display": 1.2840888583554033e-06,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C007",
+          "parameter": "IDSS",
+          "v0": 0.4020967484779106,
+          "v24": 0.4624083561236138,
+          "cf_delta_24h": 254.1246,
+          "boundary_physical_display": 254.587,
+          "boundary_inversion_error_display": 5.185840450394608e-07,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C008",
+          "parameter": "IDSS",
+          "v0": 0.5977507883792861,
+          "v24": 0.4879180252596649,
+          "cf_delta_24h": 174.4128,
+          "boundary_physical_display": 174.9007,
+          "boundary_inversion_error_display": 2.0600399608383668e-08,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C009",
+          "parameter": "IDSS",
+          "v0": 0.4326010891848794,
+          "v24": 0.3999545153687991,
+          "cf_delta_24h": 237.1559,
+          "boundary_physical_display": 237.5559,
+          "boundary_inversion_error_display": 4.434399691888302e-08,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        },
+        {
+          "component_id": "LOT_CAL_001_C010",
+          "parameter": "IDSS",
+          "v0": 0.5412526506375958,
+          "v24": 0.5631843458908037,
+          "cf_delta_24h": 191.5785,
+          "boundary_physical_display": 192.1417,
+          "boundary_inversion_error_display": 4.769963410922173e-07,
+          "boundary_inversion_error_mathematical": 1.7763568394002505e-15,
+          "passes_inversion_check": true
+        }
+      ],
+      "known_limitations_count": 4
+    },
+    "3.3_known_limitations_disclosure": {
+      "metric_id": "3.3",
+      "count": 4,
+      "disclosures": [
+        {
+          "id": "KL-01-SUB-NOISE-DRIFT",
+          "title": "Sub-Noise-Floor Linear Drift (SNR <= 2.089 dB)",
+          "category": "SIGNAL_TO_NOISE_TRADEOFF",
+          "description": "Components with extremely subtle drift rates whose 0h to 24h deviation is within instrumentation quantization or thermal sensor noise (SNR <= 2.089 dB) are deliberately not flagged at 24h. Suppressing alerts below this noise floor prevents catastrophic false alarm cascades across flight qualification lots.",
+          "benchmark_impact": "2 benchmark cases in evaluation partition exhibited sub-noise floor drift and were retained as PASS until later checkpoints.",
+          "operational_mitigation": "Flagged automatically at 48h/96h burn-in checkpoints as cumulative drift departs from thermal noise floor."
+        },
+        {
+          "id": "KL-02-LATE-ONSET-WEAROUT",
+          "title": "Late-Onset Non-Linear Wearout / Thermal Runaway (T > 96h)",
+          "category": "TEMPORAL_CAUSALITY_BOUNDARY",
+          "description": "Components that remain stationary between 0h and 24h (Delta_u \u2248 0) but undergo sudden exponential dielectric breakdown after 96h cannot be predicted from 24h telemetry alone. Strict temporal causality prohibits retrospective lookahead.",
+          "benchmark_impact": "Physical limitation common to all causal statistical models; documented in empirical validation audits.",
+          "operational_mitigation": "Requires intermediate screening checkpoint at 96h or physics-of-failure accelerated life testing."
+        },
+        {
+          "id": "KL-03-SMALL-SAMPLE-SOCKET-BIAS",
+          "title": "Small-Sample Socket Bias Suppression (N_channel < 4)",
+          "category": "STATISTICAL_STABILITY_POLICY",
+          "description": "Detector D_eq requires at least N >= 4 components tested simultaneously on a specific ATE fixture channel to evaluate socket contact resistance shift. For smaller channel sample counts, socket bias inference is suppressed to prevent spurious false alarms or masking genuine silicon degradation.",
+          "benchmark_impact": "Single-DUT bench stations operate without fixture channel bias correction.",
+          "operational_mitigation": "Enforce standard batch cleanroom testing protocol with minimum 4 components per socket channel."
+        },
+        {
+          "id": "KL-04-ABRUPT-STEP-THRESHOLD",
+          "title": "Abrupt Step Jump Detection Boundary (J(T) < 4.0)",
+          "category": "ROBUST_SENSITIVITY_TUNING",
+          "description": "Detector D_step enforces a jump ratio threshold J(T) >= 4.0 to catch discontinuous micro-plasma or dielectric fissures. Jumps below 4.0 (e.g. J = 1.14 on IGSS) are treated as gradual kinetic drift rather than step discontinuities.",
+          "benchmark_impact": "1 benchmark evaluation case with J = 1.14 was caught via D_drift rather than D_step.",
+          "operational_mitigation": "Continuous union/OR fusion ensures gradual drift detector captures sub-4.0 step transitions."
+        }
+      ]
+    }
+  }
+}

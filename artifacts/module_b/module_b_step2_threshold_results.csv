@@ -1,0 +1,16 @@
+Model,Parameter,Threshold,TP,FP,TN,FN,Precision,Recall,Specificity,F1
+Current Ridge,RDS(on),RDS(on) > 60.0 mOhm (Screening Margin),1,0,24,12,1.0,0.07692307692307693,1.0,0.14285714285714288
+Carry-Forward,RDS(on),RDS(on) > 60.0 mOhm (Screening Margin),1,0,24,12,1.0,0.07692307692307693,1.0,0.14285714285714288
+Linear Extrapolation,RDS(on),RDS(on) > 60.0 mOhm (Screening Margin),4,6,18,9,0.4,0.3076923076923077,0.75,0.34782608695652173
+Current Ridge,RDS(on),RDS(on) > 65.0 mOhm (Spec Ceiling),0,0,27,10,0.0,0.0,1.0,0.0
+Carry-Forward,RDS(on),RDS(on) > 65.0 mOhm (Spec Ceiling),0,0,27,10,0.0,0.0,1.0,0.0
+Linear Extrapolation,RDS(on),RDS(on) > 65.0 mOhm (Spec Ceiling),2,1,26,8,0.6666666666666666,0.2,0.9629629629629629,0.30769230769230765
+Current Ridge,IDSS,IDSS > 10.0 uA (Spec Ceiling),0,0,37,0,0.0,1.0,1.0,0.0
+Carry-Forward,IDSS,IDSS > 10.0 uA (Spec Ceiling),0,0,37,0,0.0,1.0,1.0,0.0
+Linear Extrapolation,IDSS,IDSS > 10.0 uA (Spec Ceiling),0,1,36,0,0.0,1.0,0.972972972972973,0.0
+Current Ridge,VGS(th),VGS(th) > 4.0 V or < 2.0 V (Spec Limits),0,0,35,0,0.0,1.0,1.0,0.0
+Carry-Forward,VGS(th),VGS(th) > 4.0 V or < 2.0 V (Spec Limits),0,0,35,0,0.0,1.0,1.0,0.0
+Linear Extrapolation,VGS(th),VGS(th) > 4.0 V or < 2.0 V (Spec Limits),0,0,35,0,0.0,1.0,1.0,0.0
+Current Ridge,IGSS,|IGSS| > 100.0 nA (Spec Limits),0,0,39,0,0.0,1.0,1.0,0.0
+Carry-Forward,IGSS,|IGSS| > 100.0 nA (Spec Limits),0,0,39,0,0.0,1.0,1.0,0.0
+Linear Extrapolation,IGSS,|IGSS| > 100.0 nA (Spec Limits),0,2,37,0,0.0,1.0,0.9487179487179487,0.0

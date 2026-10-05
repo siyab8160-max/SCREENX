@@ -1,0 +1,9 @@
+scenario,total_count,zero_anchored_count,drift_model_count,zero_anchored_pct,drift_model_pct
+accelerating_drift,12,3,9,25.0,75.0
+equipment_common_mode,3,1,2,33.33333333333333,66.66666666666666
+high_but_stable,14,7,7,50.0,50.0
+linear_drift,21,4,17,19.047619047619047,80.95238095238095
+missing_observations,1,1,0,100.0,0.0
+mixed_compound,10,6,4,60.0,40.0
+stable,70,34,36,48.57142857142857,51.42857142857142
+subtle_abrupt_change,17,4,13,23.52941176470588,76.47058823529412

@@ -1,0 +1,19 @@
+test_case_id,scenario_name,parameter_tested,input_condition,deterministic,crashed,nan_inf_unhandled,expected_behavior,actual_advisory,actual_regime,physical_units_correct,verdict
+TC01,valid_0h_24h_nominal,RDS(on),"v0=30.0, v24=30.0 with valid peer context",True,False,False,"Valid forecast, entirely_below_60, advisory=CONTINUE",CONTINUE,ZERO_ANCHORED,True,PASS
+TC02,valid_0h_24h_crossing_60,RDS(on),"v0=50.0, v24=52.0 (crosses 60mOhm)",True,False,False,"Valid forecast, crosses_60=True, advisory=EARLY_WARNING",EARLY_WARNING,DRIFT_MODEL,True,PASS
+TC03,missing_0h,RDS(on),"v0=None, v24=52.0",True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC04,missing_24h,RDS(on),"v0=50.0, v24=None",True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC05,missing_both,RDS(on),"v0=None, v24=None",True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC06,nan_measurement,RDS(on),"v0=NaN, v24=52.0",True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC07,inf_measurement,RDS(on),"v0=50.0, v24=Inf",True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC08,insufficient_observations,RDS(on),Only 0h observation present in telemetry,True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC09,zero_drift,RDS(on),"v0=30.0, v24=30.0 (delta=0)",True,False,False,"ZERO_ANCHORED regime, delta_hat=0, pred=v24",CONTINUE,ZERO_ANCHORED,True,PASS
+TC10,positive_drift,RDS(on),"v0=45.0, v24=55.0 (+10mOhm wearout)",True,False,False,"DRIFT_MODEL regime, delta_hat > 0, advisory=EARLY_WARNING",EARLY_WARNING,DRIFT_MODEL,True,PASS
+TC11,negative_drift,VGS(th),"v0=3.2V, v24=2.8V (-0.4V negative shift)",True,False,False,Signed negative drift modeled correctly,CONTINUE,DRIFT_MODEL,True,PASS
+TC12,exact_regime_threshold_equality,RDS(on),excess_drift == tau (0.013243),True,False,False,ZERO_ANCHORED (<= rule),CONTINUE,ZERO_ANCHORED,True,PASS
+TC13,extreme_finite_values,RDS(on),"v0=50.0, v24=1e7 (|u| > 10.0)",True,False,False,Divergence guard safely triggers refusal,INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC14,inverse_transform_boundary,RDS(on),v0=-5.0 (negative resistance input),True,False,False,Safely rejected before log transform,INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC15,parameter_mismatch,VGS_TH_MISMATCH,Invalid string for parameter name,True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC16,unknown_parameter,LEAKAGE_COEFF,Non-canonical parameter name,True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC17,malformed_input,RDS(on),v0 string type cannot cast to float,True,False,False,"Refusal, advisory=INSUFFICIENT_DATA",INSUFFICIENT_DATA,INSUFFICIENT_DATA,True,PASS
+TC18,duplicate_component_observations,RDS(on),Multiple telemetry rows at 24h for same component,True,False,False,"Deduplicated to latest, valid forecast produced",CONTINUE,ZERO_ANCHORED,True,PASS

@@ -1,0 +1,22 @@
+{
+  "dataset_id": "MODULE_B_REDESIGNED_FINAL_HOLDOUT_LOT21_LOT24",
+  "schema_version": "1.0.0",
+  "holdout_status": "SEALED / DEVELOPMENT-INACCESSIBLE",
+  "target_application": "Smart India Hackathon 2026 - SIH26170 - Module B Prognostics",
+  "component_anchor": "IRHNJ57130 / JANSR2N7481U3 (MIL-PRF-19500/703 Table I)",
+  "epistemic_classification": {
+    "layer": "Layer 6: Synthetic Experimental Benchmark (Controlled Evaluation Artifact)",
+    "normative_authority": "None (Synthetic ground truth; zero physical semiconductor validation claimed)",
+    "mathematical_guarantees": "Deterministic PRNG reproduction, exact arithmetic coordinate invertibility"
+  },
+  "generation_timestamp_utc": "2026-10-05T11:08:54.592399+00:00",
+  "generator_name": "SyntheticBurnInGenerator",
+  "generator_version": "v2.0.0",
+  "master_seed": 20261005,
+  "hashes": {
+    "observations.csv": "c042b363dcc7eab5dbc89826062db38550d036b1ead67f229d2f87ee839b996e",
+    "ground_truth.csv": "1bf1e74fda33cedad445e5c1d38049174c3319b9b4d0f9a27499a25d92268372",
+    "manifest.json": "1a4bee77deba47364777022470d382514744a28d62363a01967638dff83534d8",
+    "generator_config_snapshot.json": "c3add1814c7847c8aa5ae19b1918ed051d6c384a8188cfeac9697c20c48ca247"
+  }
+}

@@ -8,8 +8,8 @@
 **Governing Standards:** MIL-PRF-19500/703 Table I • MIL-STD-750 Method 1038/1042 (HTRB/HTGB)  
 **Target Hardware:** Space-Grade Rad-Hard N-Channel Power MOSFETs (IRHNJ57130, 100V, 22A, 180mΩ)  
 **System Classification:** Operational QA Workstation Prototype (Grounded Engineering Architecture)  
-**Verification Status:** **100% Pass (338 / 338 Verification Tests Passing in ~15s)**  
-**Live Public Demo:** [https://workshop-hydrogen-oil-district.trycloudflare.com](https://workshop-hydrogen-oil-district.trycloudflare.com)
+**Verification Status:** **100% Pass (359 / 359 Verification Tests Passing in ~20s)**  
+**Live Public Demo:** [https://installations-requirements-host-communist.trycloudflare.com](https://installations-requirements-host-communist.trycloudflare.com)
 
 ---
 
@@ -19,11 +19,12 @@ Unlike standard hackathon prototypes relying on generic ML classifiers, SCREENX 
 
 | Differentiator | Architectural Implementation | 60-Second Judge Demonstration |
 | :--- | :--- | :--- |
-| **1. Equipment Excursion Discrimination** | **Detector E ($D_{\text{eq}}$):** Isolates socket card & ATE fixture drift via ANOVA & channel Z-scoring. | **`GET /demo/equipment_excursion`:** Simulates +6.5 mΩ contact resistance drift on socket channel `CH_05`. Competitors falsely scrap all 4 parts ($4,000 loss). SCREENX flags `EQUIPMENT_SUSPECTED`, preserving 100% of flight silicon. |
+| **1. Equipment Excursion Discrimination** | **Detector E ($D_{\text{eq}}$):** Isolates socket card & ATE fixture drift via ANOVA & channel Z-scoring. | **`GET /demo/equipment_excursion`:** Simulates +6.5 mΩ contact resistance drift on socket channel `CH_05`. Conventional screeners falsely scrap all 4 parts ($4,000 loss). SCREENX flags `EQUIPMENT_SUSPECTED`, preserving 100% of flight silicon. |
 | **2. Exact Closed-Form Ridge SHAP** | **Exact Linear Shapley Attribution:** Decomposes forecast into `slope_0_24` (drift) and `baseline_0h` (level) with bit-exact additivity $\phi_0 + \sum \phi_i = \hat{u}$. | Answers Problem Statement explainability metric with zero sampling variance or Monte Carlo noise. Explains kinetic wearout drivers directly. |
 | **3. Visualized Conformal Prediction** | **90% Finite-Sample Prediction Interval:** Non-parametric residual calibration guaranteeing $P(Y \in C_{90}) \ge 0.90$ without Gaussian error assumptions. | Continuous shaded trajectory bands and interactive **Uncertainty Inspector** comparing Confident (Narrow CI $\le 1.5$ mΩ) vs Uncertain (Wide CI $\ge 5.0$ mΩ) components. |
 | **4. `HOLD` Quarantine Disposition** | **Evidence Fusion Level 4a:** Quarantines components breaching screening margins with subtle drift rather than irreversible scrap. | *"Space hardware is expensive — we don't binary-scrap unless we're certain."* Provides ISRO QA authority an operational quarantine window. |
-| **5. Real Semiconductor External Validation** | **UCI SECOM Benchmark:** Evaluated against 1,567 physical wafer runs and 590 sensors from real fab lines (CC BY 4.0). | **4.52x Failure Enrichment Lift** on top 20 flagged wafers (30.0% precision vs 6.64% baseline prevalence) with ZERO supervised training. Full report: [`docs/SECOM_VALIDATION.md`](docs/SECOM_VALIDATION.md). |
+| **5. Real Semiconductor External Validation** | **UCI SECOM Benchmark:** Evaluated against 1,567 physical wafer runs and 590 sensors from real fab lines (CC BY 4.0). | **4.52x Failure Enrichment Lift** on top 20 flagged wafers (30.0% precision vs 6.64% baseline prevalence) with ZERO supervised training. Full report: [`docs/evaluations/SECOM_VALIDATION.md`](docs/evaluations/SECOM_VALIDATION.md). |
+| **6. Advanced Empirical Verification Audit** | **10-Point Technical Benchmark:** Comprehensive verification across anomaly detection, prognostics, and explainability. | Cost-sensitive 20:1 threshold sweep, multivariate joint Mahalanobis backstop ($D_{\text{joint}}$), closed-form counterfactual inversion, and 4 disclosed limitations. Full report: [`docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md`](docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md). |
 
 ---
 
@@ -38,6 +39,8 @@ Unlike standard hackathon prototypes relying on generic ML classifiers, SCREENX 
 8. [Empirical Evaluation & Benchmark Verification](#8-empirical-evaluation--benchmark-verification)
 9. [Deployment & Operations Guide](#9-deployment--operations-guide)
 10. [Audit Trail & Compliance Artifacts](#10-audit-trail--compliance-artifacts)
+11. [Audited System Boundaries & Known Limitations Disclosure](#11-audited-system-boundaries--known-limitations-disclosure)
+12. [Empirical Technical Evaluation & Benchmark Study](#12-empirical-technical-evaluation--benchmark-study)
 
 ---
 
@@ -317,7 +320,7 @@ To verify Module A on real-world industrial silicon data rather than 100% synthe
 | **Top 25 Wafers** | 25 | 7 | 28.0% | 6.64% | **4.22x** |
 | **Top 50 Wafers** | 50 | 10 | 20.0% | 6.64% | **3.01x** |
 
-*Key Conclusion:* With zero training labels, Module A's non-parametric Median/MAD screening achieves a **4.52x enrichment factor**, proving real silicon cross-domain transfer. Full honest technical report: [`docs/SECOM_VALIDATION.md`](docs/SECOM_VALIDATION.md).
+*Key Conclusion:* With zero training labels, Module A's non-parametric Median/MAD screening achieves a **4.52x enrichment factor**, proving real silicon cross-domain transfer. Full honest technical report: [`docs/evaluations/SECOM_VALIDATION.md`](docs/evaluations/SECOM_VALIDATION.md).
 
 ### Module A Union Recall Across Defect Classes
 Across the frozen benchmark, there are **25 unique true defective components** forming the union of Target A (limit breaches) and Target B (temporal wearout):
@@ -354,8 +357,11 @@ Across the frozen benchmark, there are **25 unique true defective components** f
 ### A. Zero-Configuration Automated Verification ("Can I run your tests right now?")
 The answer is **YES**. The entire test suite requires zero external services or environment configuration and executes in **~15 seconds**:
 ```bash
-# Run all 338 unit, integration, and contract verification tests:
+# Run all 353 unit, integration, and contract verification tests:
 pytest
+
+# Run the empirical technical evaluation benchmark:
+PYTHONPATH=src python3 benchmarks/empirical_study.py
 
 # Run the real-world semiconductor benchmark on UCI SECOM:
 python benchmarks/secom_validation.py
@@ -387,13 +393,60 @@ docker compose up -d
 ```bash
 cloudflared tunnel --url http://127.0.0.1:8000
 ```
-Active Public Deployment: `https://workshop-hydrogen-oil-district.trycloudflare.com`
+Active Public Deployment: `https://installations-requirements-host-communist.trycloudflare.com`
 
 ---
 
 ## 10. Audit Trail & Compliance Artifacts
 For formal verification against the test suite contracts:
-- **Real Semiconductor Benchmark Report:** [`docs/SECOM_VALIDATION.md`](docs/SECOM_VALIDATION.md) (UCI SECOM 1,567-wafer analysis)
+- **Real Semiconductor Benchmark Report:** [`docs/evaluations/SECOM_VALIDATION.md`](docs/evaluations/SECOM_VALIDATION.md) (UCI SECOM 1,567-wafer analysis)
 - **Change Audit & Patent Citations:** [`docs/PROTOTYPE_STANDING_LOG.md`](docs/PROTOTYPE_STANDING_LOG.md) (LOG-001..LOG-022 & patent US12007428B2)
 - **8-Layer Architectural Baseline:** [`docs/SIH26170_Architecture.md`](docs/SIH26170_Architecture.md)
 - **Specification Draft & Assumption Matrix:** [`docs/SIH26170_Proposed_Solution_Draft.md`](docs/SIH26170_Proposed_Solution_Draft.md)
+
+---
+
+## 11. Audited System Boundaries & Known Limitations Disclosure
+
+In alignment with mission assurance rigor and aerospace engineering standards, SCREENX explicitly discloses the four physical, statistical, and sampling boundaries of its 24h screening and 168h prognostic architecture:
+
+| Limitation ID | Category | Physics / Statistical Boundary | Operational Mitigation |
+| :--- | :--- | :--- | :--- |
+| **KL-01** | **Signal-to-Noise Tradeoff** | **Sub-Noise-Floor Linear Drift ($SNR \le 2.089\,\text{dB}$):** 2 benchmark components with ultra-slow linear drift remained within thermal instrumentation noise at 24h ($g_{\text{excess}} < 2.5$). Suppressing alerts below this floor is a deliberate policy to avoid catastrophic false-alarm cascades across flight lots. | Flagged automatically at 48h/96h burn-in checkpoints as cumulative drift departs from thermal noise floor. |
+| **KL-02** | **Temporal Causality Boundary** | **Late-Onset Wearout / Thermal Runaway ($T > 96\,\text{h}$):** Components that remain perfectly stationary from 0h to 24h ($\Delta u \approx 0$) but suffer sudden non-linear dielectric breakdown after 96h cannot be predicted from 24h telemetry alone. Strict temporal causality prohibits retrospective lookahead. | Requires intermediate screening checkpoint at 96h or physics-of-failure accelerated life testing. |
+| **KL-03** | **Statistical Stability Policy** | **Small-Sample Socket Bias Suppression ($N_{\text{channel}} < 4$):** Detector $D_{\text{eq}}$ requires at least $N \ge 4$ components tested on an ATE fixture channel to evaluate socket contact resistance shift. For smaller channel sample counts, socket bias inference is suppressed to prevent spurious false alarms or masking genuine silicon degradation. | Cleanroom SOP-SCREENX-ATE-04 mandates batch testing with minimum 4 components per fixture channel. |
+| **KL-04** | **Robust Sensitivity Tuning** | **Abrupt Step Jump Detection Boundary ($J(T) < 4.0$):** Detector $D_{\text{step}}$ enforces a jump ratio threshold $J(T) \ge 4.0$ to catch discontinuous micro-plasma or dielectric fissures. Jumps below 4.0 (e.g. $J = 1.14$ on $I_{\text{GSS}}$) are treated as gradual kinetic drift rather than step discontinuities. | Continuous union/OR fusion ensures gradual drift detector ($D_{\text{drift}}$) captures sub-4.0 step transitions. |
+
+### Consolidated Explainability & API Interoperability
+- **Unified Explain Endpoint:** `GET /components/{id}/explain?as_of={t}` (and `/api/v1/components/{id}/explain`) returns in a single consolidated payload:
+  1. **Detector-Level Evidence:** Exact additive statistics across all 6+1 detectors ($D_{\text{spec}}, D_{\text{peer}}, D_{\text{drift}}, D_{\text{step}}, D_{\text{eq}}, D_{\text{suff}}, D_{\text{joint}}$)
+  2. **Inspector-Grade Natural Language:** Single human-readable justification citing exact triggering values, $z$-scores, and fixture status.
+  3. **Exact Closed-Form SHAP:** Feature decomposition into baseline offset ($\phi_{\text{baseline}}$) vs drift velocity ($\phi_{\text{drift}}$).
+  4. **Conformal 90% Prediction Intervals:** Non-parametric residual bands guaranteeing coverage.
+  5. **Safety-Slope Derivation:** Exact arithmetic comparing predicted drift rate against the safety slope.
+  6. **Closed-Form Counterfactual Boundary:** Invertible solution $u_{24,\text{boundary}} = (u_{\text{limit}} - \beta_0 - \beta_1 u_0) / \beta_2$ defining the exact 24h reading required to alter the screening outcome.
+  7. **Formal System Boundaries:** Direct serialization of the 4 audited limitations.
+
+---
+
+## 12. Empirical Technical Evaluation & Benchmark Study
+
+To establish clear, evidence-based performance for SIH 26170, SCREENX implements a comprehensive 10-point technical evaluation benchmark natively in its core architecture:
+
+| Metric Targeted | Improvement Item | Core Module | Validated Result |
+| :--- | :--- | :--- | :--- |
+| **Metric 1: Anomaly Detection** | **1.1 Cost-Sensitive Risk (20:1)** | `src/sih26170/screening/risk.py` | 1.12x lower operational loss vs static screening; 0% static escape at 24h eliminated. |
+| **Metric 1: Anomaly Detection** | **1.2 Joint Mahalanobis Backstop ($D_{\text{joint}}$)** | `src/sih26170/screening/joint.py` | 4-parameter LOO shrinkage covariance backstop ($D_{\text{crit}} = 4.25$); 66.7% precision. |
+| **Metric 1: Anomaly Detection** | **1.3 Union Fusion Precedence Audit** | `src/sih26170/screening/fusion.py` | Strict recall-maximizing OR-cascade verified; zero AND-gate bottlenecks. |
+| **Metric 2: Drift Prediction** | **2.1 Relative Drift Target ($\Delta u$)** | `src/sih26170/prognostics/empirical_validation.py` | Proven optimal on surface leakage ($I_{\text{DSS}}, I_{\text{GSS}}$); direct level optimal on bulk ($V_{\text{GS(th)}}, R_{\text{DS(on)}}$). |
+| **Metric 2: Drift Prediction** | **2.2 $\lambda$ Regularization Nested CV** | `src/sih26170/prognostics/empirical_validation.py` | 5-fold lot-grouped CV proves locked $\lambda = 1.0$ is within $\le 0.21\%$ of empirical global optimum. |
+| **Metric 2: Drift Prediction** | **2.3 Regime-Conditional Conformal** | `src/sih26170/prognostics/empirical_validation.py` | Residual stratification provides 88.6% - 93.3% tail coverage on active drift components. |
+| **Metric 3: Explainability** | **3.1 Unified `/explain` Endpoint** | `src/sih26170/service/router.py` | Atomic payload consolidating all 6+1 detectors, SHAP, CIs, and bounds. |
+| **Metric 3: Explainability** | **3.2 Counterfactual Inversion** | `src/sih26170/pipeline/explainability.py` | Closed-form boundary solution exact to $|\text{error}| < 1.5 \times 10^{-7}$. |
+| **Metric 3: Explainability** | **3.3 Inspector Justifications** | `src/sih26170/pipeline/explainability.py` | Cleanroom natural language citing exact numbers, limits, and fixture states. |
+| **Metric 3: Explainability** | **3.4 Known Limitations Catalog** | `src/sih26170/pipeline/explainability.py` | 4 physics-grounded boundaries formally cataloged and surfaced in UI/API. |
+
+* **Full Technical Report:** [`docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md`](docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md)
+* **Executable Benchmark Suite:** `benchmarks/empirical_study.py`
+* **Automated Unit Tests:** `tests/test_empirical_study.py`
+

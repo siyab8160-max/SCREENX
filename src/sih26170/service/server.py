@@ -41,11 +41,12 @@ class WorkstationRequestHandler(SimpleHTTPRequestHandler):
         parsed = urlparse(self.path)
         path = parsed.path.rstrip("/")
         if (
-            path in ("/health", "/model_lineage", "/lots")
+            path in ("/health", "/model_lineage", "/lots", "/known_limitations")
             or path.startswith("/lots/")
             or path.startswith("/components/")
             or path.startswith("/demo/")
             or path.startswith("/benchmarks/")
+            or path.startswith("/api/")
         ):
             self.send_response(200)
             self.send_header("Content-Type", "application/json; charset=utf-8")
@@ -59,11 +60,12 @@ class WorkstationRequestHandler(SimpleHTTPRequestHandler):
 
         # Check if this is an API endpoint handled by ServiceRouter
         is_api = (
-            path in ("/health", "/model_lineage", "/lots")
+            path in ("/health", "/model_lineage", "/lots", "/known_limitations")
             or path.startswith("/lots/")
             or path.startswith("/components/")
             or path.startswith("/demo/")
             or path.startswith("/benchmarks/")
+            or path.startswith("/api/")
         )
 
         if is_api:

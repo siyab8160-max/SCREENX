@@ -53,6 +53,12 @@ class ServiceRouter:
         path = parsed.path.rstrip("/")
         query = parse_qs(parsed.query)
 
+        # Normalize /api/v1 prefix if present for API interoperability
+        if path.startswith("/api/v1"):
+            path = path[7:]
+            if not path:
+                path = "/"
+
         # Route: GET /health
         if path == "/health" or path == "":
             return 200, {
@@ -63,6 +69,16 @@ class ServiceRouter:
                 "safety_slope": "OPEN_EVIDENCE_GAP",
                 "predictive_rejection": "NOT_AUTHORIZED",
                 "physical_validation": "NOT_ESTABLISHED",
+            }
+
+        # Route: GET /known_limitations
+        if path == "/known_limitations":
+            from sih26170.pipeline.explainability import get_known_limitations_disclosure
+            return 200, {
+                "system": "SIH26170_SCREENX",
+                "status": "DISCLOSED",
+                "total_limitations": len(get_known_limitations_disclosure()),
+                "known_limitations": get_known_limitations_disclosure(),
             }
 
         # Route: GET /model_lineage
@@ -102,6 +118,107 @@ class ServiceRouter:
                 return 200, {"lot_id": lot_id, "total_components": len(comps), "components": comps}
             except KeyError as e:
                 return 404, {"error": str(e)}
+
+        # Route: GET /lots/{lot_id}/equipment_diagnostics
+        if len(parts) == 3 and parts[0] == "lots" and parts[2] == "equipment_diagnostics":
+            lot_id = parts[1]
+            as_of_list = query.get("as_of")
+            as_of_hours = 24
+            if as_of_list:
+                try:
+                    as_of_hours = int(as_of_list[0])
+                except ValueError:
+                    as_of_hours = 24
+
+            from sih26170.screening.equipment import (
+                evaluate_fixture_channel_bias,
+                evaluate_chamber_excursion,
+                CHANNEL_BIAS_Z_THRESHOLD,
+            )
+
+            if lot_id == "LOT_DEMO_EXCURSION":
+                from sih26170.synthetic.equipment_excursion_demo import generate_equipment_drift_demo_lot
+                df = generate_equipment_drift_demo_lot()
+            else:
+                try:
+                    df = self.provider.get_lot_telemetry(lot_id, as_of_hours)
+                except Exception as e:
+                    return 404, {"error": f"Lot '{lot_id}' not found or telemetry unavailable: {str(e)}"}
+
+            curr_checkpoint_df = df[df["elapsed_hours"] == as_of_hours]
+            history_df = df[df["elapsed_hours"] <= as_of_hours]
+
+            # 1. Chamber excursion evaluation for primary parameter RDS(on)
+            chamber_ev = evaluate_chamber_excursion("RDS(on)", history_df, as_of_hours)
+
+            # 2. Channel bias evaluation across available channels in the lot
+            channels_list = []
+            has_suspect_channels = False
+            suspect_channels = []
+            affected_components = []
+
+            available_channels = sorted(curr_checkpoint_df["channel_id"].dropna().unique().tolist()) if "channel_id" in curr_checkpoint_df.columns else []
+
+            for ch_id in available_channels:
+                ch_df = curr_checkpoint_df[curr_checkpoint_df["channel_id"] == ch_id]
+                ch_comps = sorted(ch_df["component_id"].unique().tolist())
+                ev = evaluate_fixture_channel_bias("RDS(on)", curr_checkpoint_df, ch_id)
+                status = "DRIFT_SUSPECTED" if ev.suspected else ("SUPPRESSED" if ev.suppressed else "NOMINAL")
+                action = "QUARANTINE_SOCKET_FIXTURE" if ev.suspected else ("SAMPLE_INSUFFICIENT" if ev.suppressed else "ACCEPT_FOR_FLIGHT")
+
+                if ev.suspected:
+                    has_suspect_channels = True
+                    suspect_channels.append(ch_id)
+                    affected_components.extend(ch_comps)
+
+                channels_list.append({
+                    "channel_id": ch_id,
+                    "n_components": len(ch_comps),
+                    "components": ch_comps,
+                    "parameter": "RDS(on)",
+                    "channel_offset_mohm": round(ev.channel_offset, 4) if ev.channel_offset is not None else 0.0,
+                    "z_score": round(ev.z_score, 2) if ev.z_score is not None else 0.0,
+                    "critical_threshold": CHANNEL_BIAS_Z_THRESHOLD,
+                    "suppressed": ev.suppressed,
+                    "suspected": ev.suspected,
+                    "status": status,
+                    "reason_code": ev.reason_code,
+                    "prescribed_action": action,
+                })
+
+            if has_suspect_channels:
+                sop = {
+                    "fixture_status": "EXCURSION_DETECTED",
+                    "fixture_action": f"Quarantine socket card ({', '.join(suspect_channels)}). Issue maintenance ticket for pogo pin cleaning & Kelvin 4-wire resistance calibration.",
+                    "component_action": f"Mark {len(affected_components)} components as EQUIPMENT_SUSPECTED. Route to non-destructive re-test on alternate socket. Do NOT condemn to scrap.",
+                    "lot_action": "Remaining sockets exhibit nominal contact kinetics and are cleared for flight screening.",
+                    "capital_preserved_usd": len(affected_components) * 1000,
+                }
+            else:
+                sop = {
+                    "fixture_status": "NOMINAL",
+                    "fixture_action": "All fixture socket channels within statistical limits (|Z| < 3.42). No fixture maintenance required.",
+                    "component_action": "All observed component kinetics reflect intrinsic semiconductor behavior. Proceed with flight screening.",
+                    "lot_action": "Lot cleared under standard MIL-PRF-19500 / ISRO qualification protocols.",
+                    "capital_preserved_usd": 0,
+                }
+
+            return 200, {
+                "lot_id": lot_id,
+                "as_of_hours": as_of_hours,
+                "total_channels": len(available_channels),
+                "has_suspect_channels": has_suspect_channels,
+                "suspect_channels": suspect_channels,
+                "affected_components": affected_components,
+                "chamber_evaluation": {
+                    "chamber_suspected": chamber_ev.suspected,
+                    "lot_median_shift": chamber_ev.lot_median_shift,
+                    "fraction_shifting": chamber_ev.fraction_shifting,
+                    "reason_code": chamber_ev.reason_code,
+                },
+                "channels": channels_list,
+                "qa_corrective_protocol": sop,
+            }
 
         # Route: Component Endpoints
         # Pattern: /components/{component_id}[/{sub_resource}]
@@ -182,6 +299,15 @@ class ServiceRouter:
             # Dispatch sub-resource view
             if sub_resource == "pipeline":
                 resp_data = pipeline_result.to_dict()
+                from sih26170.pipeline.explainability import build_unified_component_explanation
+                unified_exp = build_unified_component_explanation(pipeline_result)
+                resp_data["unified_explanation"] = unified_exp
+                resp_data["inspector_justification"] = unified_exp["inspector_justification"]
+                resp_data["counterfactuals"] = {
+                    p: p_data["counterfactual"] for p, p_data in unified_exp["prognostics"].items()
+                }
+                resp_data["known_limitations"] = unified_exp["known_limitations"]
+
                 if component_id.startswith("LOT_DEMO_EXCURSION"):
                     from sih26170.synthetic.equipment_excursion_demo import generate_equipment_drift_demo_lot
                     df = generate_equipment_drift_demo_lot()
@@ -198,6 +324,9 @@ class ServiceRouter:
                     except Exception:
                         resp_data["observed_telemetry"] = []
                 return 200, resp_data
+            elif sub_resource == "explain":
+                from sih26170.pipeline.explainability import build_unified_component_explanation
+                return 200, build_unified_component_explanation(pipeline_result)
             elif sub_resource == "screening":
                 return 200, {
                     "component_id": component_id,

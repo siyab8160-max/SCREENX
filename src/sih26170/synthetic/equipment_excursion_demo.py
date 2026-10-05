@@ -1,7 +1,7 @@
 """Dedicated Demonstration Scenario: ATE Socket Channel Fixture Drift vs. Naive Scrap.
 
 The Equipment Excursion Detector is SCREENX's primary architectural differentiator:
-No other competitor separates fixture channel / chamber excursions from silicon degradation.
+Separates fixture channel / chamber excursions from genuine silicon degradation.
 
 Scenario Architecture:
 - Test lot: LOT_DEMO_EXCURSION (16 space-grade IRHNJ57130 Rad-Hard MOSFETs)
@@ -9,7 +9,7 @@ Scenario Architecture:
 - Instrument contact resistance drift elevates socket channel CH_05 by +6.5 mOhm on RDS(on)
 
 Comparison:
-- Naive Screener (Competitor baseline): Ignores fixture channel metadata. Evaluates
+- Conventional Screener (Standard baseline): Ignores fixture channel metadata. Evaluates
   each component against lot distribution. Flags all 4 components on CH_05 as severe
   outliers (|Z| > 4.0 sigma) and issues an irreversible REJECT, destroying $4,000 of flight silicon.
 - SCREENX (Multi-Detector Evidence Fusion): Detector E evaluates robust median residuals
@@ -22,7 +22,7 @@ Comparison:
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Tuple, cast
 import numpy as np
 import pandas as pd
 
@@ -100,6 +100,11 @@ def run_equipment_drift_comparison(as_of_hours: int = 24) -> Dict[str, Any]:
     """Execute head-to-head comparison between SCREENX and a naive screener."""
     df = generate_equipment_drift_demo_lot()
 
+    valid_checkpoints = sorted(df["elapsed_hours"].unique().tolist())
+    if as_of_hours not in valid_checkpoints:
+        past_checkpoints = [t for t in valid_checkpoints if t <= as_of_hours]
+        as_of_hours = past_checkpoints[-1] if past_checkpoints else valid_checkpoints[0]
+
     screenx_dispositions: Dict[str, Dict[str, Any]] = {}
     naive_dispositions: Dict[str, Dict[str, Any]] = {}
 
@@ -110,8 +115,20 @@ def run_equipment_drift_comparison(as_of_hours: int = 24) -> Dict[str, Any]:
     for cid in components:
         res = screen_component(df, cid, as_of_hours=as_of_hours)
         p_res = res.parameter_results.get("RDS(on)")
-        eq_status = p_res.equipment_evidence.status.value if p_res else "NOMINAL"
-        z_score = p_res.equipment_evidence.ate_evidence.z_score if p_res else None
+        eq_status = (
+            p_res.equipment_evidence.status.value
+            if (p_res and p_res.equipment_evidence and p_res.equipment_evidence.status)
+            else "NOMINAL"
+        )
+        z_score = (
+            p_res.equipment_evidence.ate_evidence.z_score
+            if (
+                p_res
+                and p_res.equipment_evidence
+                and p_res.equipment_evidence.ate_evidence
+            )
+            else None
+        )
 
         screenx_dispositions[cid] = {
             "component_id": cid,
@@ -130,16 +147,30 @@ def run_equipment_drift_comparison(as_of_hours: int = 24) -> Dict[str, Any]:
 
     # 2. Naive Screener Evaluation (No fixture awareness — standard outlier check)
     # Computes standard peer z-score on RDS(on) without grouping by channel
-    rds_24 = df[(df["elapsed_hours"] == as_of_hours) & (df["parameter_name"] == "RDS(on)")]
-    vals = rds_24["value"].values
-    lot_med = float(np.median(vals))
-    lot_mad = float(np.median(np.abs(vals - lot_med)))
-    scale = max(1.4826 * lot_mad, 0.01)
+    rds_curr = cast(pd.DataFrame, df[(df["elapsed_hours"] == as_of_hours) & (df["parameter_name"] == "RDS(on)")])
+    comp_val_map: Dict[str, float] = dict(
+        zip(
+            rds_curr["component_id"].astype(str).tolist(),
+            [float(v) for v in rds_curr["value"].tolist()],
+        )
+    )
+    vals = np.array(list(comp_val_map.values()), dtype=np.float64)
+    if len(vals) > 0:
+        lot_med = float(np.median(vals))
+        lot_mad = float(np.median(np.abs(vals - lot_med)))
+        scale = max(1.4826 * lot_mad, 0.01)
+    else:
+        lot_med, scale = 0.0, 1.0
 
     for cid in components:
-        comp_v = float(rds_24[rds_24["component_id"] == cid]["value"].iloc[0])
-        z = (comp_v - lot_med) / scale
-        is_reject = abs(z) >= 3.0
+        if cid in comp_val_map:
+            comp_v = comp_val_map[cid]
+            z = (comp_v - lot_med) / scale
+            is_reject = abs(z) >= 3.0
+        else:
+            comp_v = 0.0
+            z = 0.0
+            is_reject = False
 
         naive_dispositions[cid] = {
             "component_id": cid,

@@ -17,6 +17,7 @@ from __future__ import annotations
 from typing import Dict, List, Optional, Tuple
 import numpy as np
 
+from sih26170.screening.calibration import calibrate_temporal_drift_score
 from sih26170.screening.schema import (
     TemporalDriftStatus,
     TemporalEvidence,
@@ -29,6 +30,9 @@ from sih26170.screening.transforms import (
 # Thresholds for temporal drift (Layer F Benchmark/Design Parameters, Class D heuristics)
 SUBTLE_DRIFT_G_THRESHOLD: float = 2.5
 ACCELERATING_DRIFT_G_THRESHOLD: float = 3.0
+PERSISTENT_DRIFT_CUSUM_THRESHOLD: float = 2.0
+CUSUM_SLACK_K: float = 0.25
+
 
 
 def evaluate_temporal_drift(
@@ -52,7 +56,7 @@ def evaluate_temporal_drift(
         target_component_id: Optional target component ID for strict leave-one-out exclusion
 
     Returns:
-        TemporalEvidence containing slope, normalized drift, g_lot, g_excess, acceleration, and status.
+        TemporalEvidence containing slope, normalized drift, g_lot, g_excess, CUSUM, and status.
     """
     # 1. Enforce strict as-of restriction: keep only t <= as_of_hours
     as_of_history = sorted(
@@ -80,6 +84,9 @@ def evaluate_temporal_drift(
             g_lot=0.0,
             g_excess=0.0,
             lot_reference_note=None,
+            cusum_statistic=0.0,
+            persistent_drift=False,
+            calibrated_score=0.0,
         )
 
     # 3. Transform measurements to parameter representation space
@@ -106,6 +113,9 @@ def evaluate_temporal_drift(
             g_lot=None,
             g_excess=None,
             lot_reference_note=None,
+            cusum_statistic=None,
+            persistent_drift=False,
+            calibrated_score=None,
         )
 
     floor = get_noise_floor(parameter)
@@ -117,10 +127,15 @@ def evaluate_temporal_drift(
     lot_reference_note: Optional[str] = None
     loo_sigma_0 = baseline_lot_scale if (baseline_lot_scale is not None and baseline_lot_scale > 0) else floor
 
+    cusum_val = 0.0
+    cusum_pos = 0.0
+    cusum_neg = 0.0
+
     if lot_peer_history is not None:
         # Filter peers excluding target component
         peer_shifts: List[float] = []
         peer_t0_vals: List[float] = []
+        peer_shifts_by_t: Dict[int, List[float]] = {}
 
         for peer_id, peer_hist in lot_peer_history.items():
             if target_component_id is not None and peer_id == target_component_id:
@@ -132,6 +147,10 @@ def evaluate_temporal_drift(
                 try:
                     u_0_p = transform_parameter(parameter, p_as_of[0])
                     peer_t0_vals.append(u_0_p)
+                    for t_step, v_step in p_as_of.items():
+                        if t_step > 0:
+                            u_step_p = transform_parameter(parameter, v_step)
+                            peer_shifts_by_t.setdefault(t_step, []).append(u_step_p - u_0_p)
                 except ValueError:
                     pass
 
@@ -156,6 +175,30 @@ def evaluate_temporal_drift(
             g_lot = median_lot_shift / max(loo_sigma_0, floor)
         else:
             lot_reference_note = "LOT_REFERENCE_UNAVAILABLE_SMALL_LOT"
+
+        # Sequential CUSUM accumulation across checkpoints
+        u_0_target = transformed_points[0][1]
+        for t_k, u_k in transformed_points[1:]:
+            delta_k = u_k - u_0_target
+            peer_t_shifts = peer_shifts_by_t.get(t_k, [])
+            if len(peer_t_shifts) >= 4:
+                med_lot_k = float(np.median(peer_t_shifts))
+                excess_k = (delta_k - med_lot_k) / max(loo_sigma_0, floor)
+            else:
+                excess_k = delta_k / max(loo_sigma_0, floor)
+
+            cusum_pos = max(0.0, cusum_pos + (excess_k - CUSUM_SLACK_K))
+            cusum_neg = max(0.0, cusum_neg + (-excess_k - CUSUM_SLACK_K))
+            cusum_val = max(cusum_pos, cusum_neg)
+    else:
+        # Lot peer history not provided: accumulate individual departures
+        u_0_target = transformed_points[0][1]
+        for t_k, u_k in transformed_points[1:]:
+            delta_k = u_k - u_0_target
+            excess_k = delta_k / max(loo_sigma_0, floor)
+            cusum_pos = max(0.0, cusum_pos + (excess_k - CUSUM_SLACK_K))
+            cusum_neg = max(0.0, cusum_neg + (-excess_k - CUSUM_SLACK_K))
+            cusum_val = max(cusum_pos, cusum_neg)
 
     # 5. Normalized drift g(T) = (u(T) - u(0)) / sigma_0
     u_0 = transformed_points[0][1]
@@ -194,12 +237,20 @@ def evaluate_temporal_drift(
             kappa = float(s_recent - s_prior)
 
     # 9. Classify kinetic status autonomously (preserving wearout signals)
+    persistent_drift_flag = False
+    # At 24h (n_pts == 2), 2-point CUSUM is not treated as new information per §4
+    if n_pts >= 3 and cusum_val >= PERSISTENT_DRIFT_CUSUM_THRESHOLD:
+        persistent_drift_flag = True
+
     if abs(g_T) >= ACCELERATING_DRIFT_G_THRESHOLD and kappa is not None and (kappa > 1e-5 and slope > 0):
         status = TemporalDriftStatus.ACCELERATING_DRIFT
         reason_code = "ACCELERATING_TEMPORAL_DRIFT"
     elif abs(g_T) >= SUBTLE_DRIFT_G_THRESHOLD:
         status = TemporalDriftStatus.SUBTLE_DRIFT
         reason_code = "SUBTLE_TEMPORAL_DRIFT"
+    elif persistent_drift_flag:
+        status = TemporalDriftStatus.PERSISTENT_DRIFT
+        reason_code = "PERSISTENT_TEMPORAL_DRIFT"
     elif confounded_by_equipment:
         # Stationary relative to baseline, but equipment disturbance is present
         status = TemporalDriftStatus.TEMPORALLY_CONFOUNDED_BY_EQUIPMENT
@@ -207,6 +258,8 @@ def evaluate_temporal_drift(
     else:
         status = TemporalDriftStatus.STATIONARY
         reason_code = "TEMPORALLY_STATIONARY"
+
+    cal_score = calibrate_temporal_drift_score(g_T, cusum_val)
 
     return TemporalEvidence(
         parameter=parameter,
@@ -222,4 +275,8 @@ def evaluate_temporal_drift(
         g_lot=float(g_lot) if g_lot is not None else None,
         g_excess=float(g_excess) if g_excess is not None else None,
         lot_reference_note=lot_reference_note,
+        cusum_statistic=float(round(cusum_val, 4)),
+        persistent_drift=persistent_drift_flag,
+        calibrated_score=cal_score,
     )
+

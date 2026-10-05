@@ -1,0 +1,36 @@
+parameter,threshold_name,threshold_value,comparison,model,N,actual_positives,TP,FP,TN,FN,precision,recall,specificity,f1
+RDS(on),screening_margin_60mOhm,60.0,gt,Current Ridge,37,13,1,0,24,12,1.0,0.07692307692307693,1.0,0.14285714285714288
+RDS(on),screening_margin_60mOhm,60.0,gt,Residual Ridge,37,13,5,8,16,8,0.38461538461538464,0.38461538461538464,0.6666666666666666,0.38461538461538464
+RDS(on),screening_margin_60mOhm,60.0,gt,Zero-Anchored Residual Ridge,37,13,4,6,18,9,0.4,0.3076923076923077,0.75,0.34782608695652173
+RDS(on),screening_margin_60mOhm,60.0,gt,Residual HistGBM,37,13,7,8,16,6,0.4666666666666667,0.5384615384615384,0.6666666666666666,0.5
+RDS(on),screening_margin_60mOhm,60.0,gt,Zero-Anchored Residual HistGBM,37,13,6,7,17,7,0.46153846153846156,0.46153846153846156,0.7083333333333334,0.46153846153846156
+RDS(on),spec_ceiling_65mOhm,65.0,gt,Current Ridge,37,10,0,0,27,10,0.0,0.0,1.0,0.0
+RDS(on),spec_ceiling_65mOhm,65.0,gt,Residual Ridge,37,10,0,3,24,10,0.0,0.0,0.8888888888888888,0.0
+RDS(on),spec_ceiling_65mOhm,65.0,gt,Zero-Anchored Residual Ridge,37,10,0,2,25,10,0.0,0.0,0.9259259259259259,0.0
+RDS(on),spec_ceiling_65mOhm,65.0,gt,Residual HistGBM,37,10,2,2,25,8,0.5,0.2,0.9259259259259259,0.28571428571428575
+RDS(on),spec_ceiling_65mOhm,65.0,gt,Zero-Anchored Residual HistGBM,37,10,1,1,26,9,0.5,0.1,0.9629629629629629,0.16666666666666669
+IDSS,spec_ceiling_10uA,10.0,gt,Current Ridge,37,0,0,0,37,0,0.0,1.0,1.0,0.0
+IDSS,spec_ceiling_10uA,10.0,gt,Residual Ridge,37,0,0,0,37,0,0.0,1.0,1.0,0.0
+IDSS,spec_ceiling_10uA,10.0,gt,Zero-Anchored Residual Ridge,37,0,0,0,37,0,0.0,1.0,1.0,0.0
+IDSS,spec_ceiling_10uA,10.0,gt,Residual HistGBM,37,0,0,0,37,0,0.0,1.0,1.0,0.0
+IDSS,spec_ceiling_10uA,10.0,gt,Zero-Anchored Residual HistGBM,37,0,0,0,37,0,0.0,1.0,1.0,0.0
+VGS(th),spec_upper_4V,4.0,gt,Current Ridge,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_upper_4V,4.0,gt,Residual Ridge,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_upper_4V,4.0,gt,Zero-Anchored Residual Ridge,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_upper_4V,4.0,gt,Residual HistGBM,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_upper_4V,4.0,gt,Zero-Anchored Residual HistGBM,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_lower_2V,2.0,lt,Current Ridge,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_lower_2V,2.0,lt,Residual Ridge,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_lower_2V,2.0,lt,Zero-Anchored Residual Ridge,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_lower_2V,2.0,lt,Residual HistGBM,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+VGS(th),spec_lower_2V,2.0,lt,Zero-Anchored Residual HistGBM,35,0,0,0,35,0,0.0,1.0,1.0,0.0
+IGSS,spec_upper_100nA,100.0,gt,Current Ridge,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_upper_100nA,100.0,gt,Residual Ridge,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_upper_100nA,100.0,gt,Zero-Anchored Residual Ridge,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_upper_100nA,100.0,gt,Residual HistGBM,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_upper_100nA,100.0,gt,Zero-Anchored Residual HistGBM,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_lower_neg100nA,-100.0,lt,Current Ridge,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_lower_neg100nA,-100.0,lt,Residual Ridge,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_lower_neg100nA,-100.0,lt,Zero-Anchored Residual Ridge,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_lower_neg100nA,-100.0,lt,Residual HistGBM,39,0,0,0,39,0,0.0,1.0,1.0,0.0
+IGSS,spec_lower_neg100nA,-100.0,lt,Zero-Anchored Residual HistGBM,39,0,0,0,39,0,0.0,1.0,1.0,0.0

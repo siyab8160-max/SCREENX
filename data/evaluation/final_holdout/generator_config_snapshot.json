@@ -1,0 +1,73 @@
+{
+  "checkpoints_hours": [
+    0,
+    24,
+    96,
+    168
+  ],
+  "components_per_lot": 20,
+  "generation_mode": "stress",
+  "generator_name": "SyntheticBurnInGenerator",
+  "generator_version": "v2.0.0",
+  "governing_standard": "MIL-PRF-19500/703 Table I",
+  "lots": [
+    "LOT21",
+    "LOT22",
+    "LOT23",
+    "LOT24"
+  ],
+  "parameters": {
+    "IDSS": {
+      "delta_drift": 1.5,
+      "nominal_phys": 0.5,
+      "sigma_device": 0.2,
+      "sigma_lot": 0.15,
+      "sigma_meas": 0.08,
+      "test_condition": "VDS=80V, VGS=0V",
+      "unit": "uA"
+    },
+    "IGSS": {
+      "delta_drift": 2.0,
+      "nominal_phys": 2.0,
+      "sigma_device": 0.25,
+      "sigma_lot": 0.2,
+      "sigma_meas": 0.25,
+      "test_condition": "VGS=20V, VDS=0V",
+      "unit": "nA"
+    },
+    "RDS(on)": {
+      "delta_drift": 0.35,
+      "nominal_phys": 48.0,
+      "sigma_device": 0.08,
+      "sigma_lot": 0.06,
+      "sigma_meas": 0.0125,
+      "test_condition": "VGS=12V, ID=22A",
+      "unit": "mOhm"
+    },
+    "VGS(th)": {
+      "delta_drift": 0.5,
+      "nominal_phys": 3.0,
+      "sigma_device": 0.1,
+      "sigma_lot": 0.08,
+      "sigma_meas": 0.02,
+      "test_condition": "VDS=VGS, ID=1mA",
+      "unit": "V"
+    }
+  },
+  "scenario_probabilities": {
+    "accelerating_drift": 0.12,
+    "equipment_common_mode": 0.04,
+    "high_but_stable": 0.1,
+    "insufficient_data": 0.06,
+    "linear_drift": 0.1,
+    "missing_observations": 0.04,
+    "mixed_compound": 0.06,
+    "stable": 0.4,
+    "subtle_abrupt_change": 0.08
+  },
+  "seed": 20261005,
+  "target_device": "IRHNJ57130 / JANSR2N7481U3",
+  "temperature_C": 125.0,
+  "total_components": 80,
+  "total_series": 320
+}

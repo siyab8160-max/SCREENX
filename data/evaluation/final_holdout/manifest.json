@@ -1,0 +1,80 @@
+{
+  "holdout_status": "SEALED / DEVELOPMENT-INACCESSIBLE",
+  "purpose": "Final evaluation of the redesigned Module B",
+  "lots": [
+    "LOT21",
+    "LOT22",
+    "LOT23",
+    "LOT24"
+  ],
+  "component_count": 80,
+  "series_count": 320,
+  "generator": "SyntheticBurnInGenerator",
+  "generator_version": "v2.0.0",
+  "generation_mode": "stress",
+  "seed": 20261005,
+  "checkpoints_hours": [
+    0,
+    24,
+    96,
+    168
+  ],
+  "parameters": [
+    "IDSS",
+    "VGS(th)",
+    "RDS(on)",
+    "IGSS"
+  ],
+  "observation_hash": "c042b363dcc7eab5dbc89826062db38550d036b1ead67f229d2f87ee839b996e",
+  "ground_truth_hash": "1bf1e74fda33cedad445e5c1d38049174c3319b9b4d0f9a27499a25d92268372",
+  "configuration_hash": "c3add1814c7847c8aa5ae19b1918ed051d6c384a8188cfeac9697c20c48ca247",
+  "created": "2026-10-05T11:08:54.592399+00:00",
+  "development_data_lots": [
+    "LOT01",
+    "LOT02",
+    "LOT03",
+    "LOT04",
+    "LOT05",
+    "LOT06",
+    "LOT07",
+    "LOT08",
+    "LOT09",
+    "LOT10"
+  ],
+  "previously_used_lots": [
+    "LOT11",
+    "LOT12",
+    "LOT13",
+    "LOT14",
+    "LOT15",
+    "LOT16",
+    "LOT17",
+    "LOT18",
+    "LOT19",
+    "LOT20"
+  ],
+  "disjointness": {
+    "holdout_lots_intersect_historical_lots": [],
+    "holdout_components_intersect_historical_components": [],
+    "lot_disjointness_verified": true,
+    "component_disjointness_verified": true
+  },
+  "scenario_counts": {
+    "stable": 126,
+    "high_but_stable": 45,
+    "linear_drift": 28,
+    "accelerating_drift": 40,
+    "subtle_abrupt_change": 17,
+    "equipment_common_mode": 16,
+    "missing_observations": 11,
+    "insufficient_data": 19,
+    "mixed_compound": 18
+  },
+  "missing_checkpoint_counts": {
+    "0": 20,
+    "24": 19,
+    "96": 3,
+    "168": 0
+  },
+  "governance_rule": "STRICT SEAL: This cohort must never be used for model training, feature selection, hyperparameter tuning, uncertainty calibration, threshold selection, or exploratory analysis. Single-pass final evaluation authorized only after complete freeze of redesigned Module B."
+}

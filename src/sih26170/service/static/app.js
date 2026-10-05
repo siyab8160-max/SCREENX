@@ -421,9 +421,11 @@ function renderTrayGrid(comps) {
     let stateLabel = fs;
     if (fs === 'PASS') { statusClass = 'status-pass'; stateLabel = 'PASS'; }
     else if (fs === 'ALERT') { statusClass = 'status-alert'; stateLabel = 'ALERT'; }
+    else if (fs === 'HOLD') { statusClass = 'status-hold'; stateLabel = 'HOLD'; }
     else if (fs === 'FAIL') { statusClass = 'status-fail'; stateLabel = 'FAIL'; }
     else if (fs === 'EQUIPMENT_SUSPECTED') { statusClass = 'status-equipment'; stateLabel = 'EQ'; }
-    else { statusClass = ''; stateLabel = '—'; }
+    else if (fs === 'INSUFFICIENT_DATA') { statusClass = 'status-insufficient'; stateLabel = 'INSUF'; }
+    else { statusClass = ''; stateLabel = fs !== 'UNKNOWN' ? fs : '—'; }
 
     const isActive = cid === state.selectedComponentId;
     const activeClass = isActive ? ' active' : '';
@@ -490,8 +492,17 @@ function renderScreeningWorkspace(data) {
     const pr = paramResults[p] || {};
     if (pr.parameter_state === 'ALERT') hasAlert = true;
   });
-  document.getElementById('sum-dynamic-evidence').textContent = hasAlert ? 'DYNAMIC ALERT' : 'NOMINAL';
-  document.getElementById('sum-dynamic-sub').textContent = hasAlert ? 'Kinetic drift or peer deviation detected' : 'Peer, drift, step nominal';
+  const isJointAlert = screening.joint_evidence?.suspected || finalState === 'HOLD';
+  if (isJointAlert) {
+    document.getElementById('sum-dynamic-evidence').textContent = 'JOINT BACKSTOP (HOLD)';
+    const dMahal = screening.joint_evidence?.mahalanobis_distance;
+    document.getElementById('sum-dynamic-sub').textContent = dMahal != null
+      ? `Multivariate D_joint (${dMahal.toFixed(2)}σ) triggered backstop`
+      : 'Multivariate anomaly triggered backstop hold';
+  } else {
+    document.getElementById('sum-dynamic-evidence').textContent = hasAlert ? 'DYNAMIC ALERT' : 'NOMINAL';
+    document.getElementById('sum-dynamic-sub').textContent = hasAlert ? 'Kinetic drift or peer deviation detected' : 'Peer, drift, step nominal';
+  }
 
   // Data Sufficiency
   const suffEvidence = paramResults['IDSS']?.sufficiency_evidence || {};
@@ -603,11 +614,11 @@ function renderSvgTrajectoryChart() {
 
     // Dimensions for stacked layout
     const W = 880;
-    const H = 140;
-    const padL = 70;
-    const padR = 40;
+    const H = 145;
+    const padL = 72;
+    const padR = 88;
     const padT = 20;
-    const padB = 30;
+    const padB = 28;
     const plotW = W - padL - padR;
     const plotH = H - padT - padB;
 
@@ -635,7 +646,7 @@ function renderSvgTrajectoryChart() {
 
     let svg = `<svg viewBox="0 0 ${W} ${H}" width="100%" height="${H}" xmlns="http://www.w3.org/2000/svg" style="font-family: var(--font-mono); font-size: 10px;">`;
 
-    // Canvas Background — Dark theme
+    // Canvas Background
     svg += `<rect x="${padL}" y="${padT}" width="${plotW}" height="${plotH}" fill="#FFFFFF" stroke="#E2E8F0" stroke-width="1" />`;
 
     // Future Causal Shading (t > asOf)
@@ -643,7 +654,9 @@ function renderSvgTrajectoryChart() {
       const xAsOf = mapX(asOf);
       const futureW = padL + plotW - xAsOf;
       svg += `<rect x="${xAsOf}" y="${padT}" width="${futureW}" height="${plotH}" fill="#F8FAFC" />`;
-      svg += `<text x="${xAsOf + futureW / 2}" y="${padT + 14}" fill="#475569" text-anchor="middle" font-size="9" letter-spacing="0.04em">FUTURE (t &gt; ${asOf}h)</text>`;
+      if (futureW >= 75) {
+        svg += `<text x="${xAsOf + futureW / 2}" y="${padT + 13}" fill="#64748B" text-anchor="middle" font-size="8.5" font-weight="600" letter-spacing="0.04em" style="paint-order: stroke fill; stroke: #FFFFFF; stroke-width: 2px;">FUTURE (t &gt; ${asOf}h)</text>`;
+      }
     }
 
     // Grid Lines & Ticks (0, 24, 48, 72, 96, 120, 144, 168)
@@ -661,19 +674,19 @@ function renderSvgTrajectoryChart() {
       svg += `<text x="${padL - 8}" y="${y + 3}" fill="#64748B" text-anchor="end">${formatParamValue(param, val, 2)}</text>`;
     }
 
-    // Spec Limit Lines
+    // Spec Limit Lines — Positioned on the LEFT side to prevent overlaying FUTURE shading or 168h forecast
     if (spec.limit_high !== null && spec.limit_high !== undefined) {
       const ySpec = mapY(spec.limit_high);
       if (ySpec >= padT && ySpec <= padT + plotH) {
         svg += `<line x1="${padL}" y1="${ySpec}" x2="${padL + plotW}" y2="${ySpec}" stroke="#DC2626" stroke-dasharray="4,3" stroke-width="1.2" />`;
-        svg += `<text x="${padL + plotW - 6}" y="${ySpec - 3}" fill="#DC2626" text-anchor="end" font-weight="700" font-size="9">LIMIT: ${formatNumber(spec.limit_high)} ${unit}</text>`;
+        svg += `<text x="${padL + 8}" y="${ySpec - 4}" fill="#DC2626" text-anchor="start" font-weight="700" font-size="8.5" style="paint-order: stroke fill; stroke: #FFFFFF; stroke-width: 2.5px; stroke-linejoin: round;">LIMIT: ${formatNumber(spec.limit_high)} ${unit}</text>`;
       }
     }
     if (spec.limit_low !== null && spec.limit_low !== undefined) {
       const ySpec = mapY(spec.limit_low);
       if (ySpec >= padT && ySpec <= padT + plotH) {
         svg += `<line x1="${padL}" y1="${ySpec}" x2="${padL + plotW}" y2="${ySpec}" stroke="#DC2626" stroke-dasharray="4,3" stroke-width="1.2" />`;
-        svg += `<text x="${padL + plotW - 6}" y="${ySpec + 10}" fill="#DC2626" text-anchor="end" font-weight="700" font-size="9">LOWER: ${formatNumber(spec.limit_low)} ${unit}</text>`;
+        svg += `<text x="${padL + 8}" y="${ySpec + 12}" fill="#DC2626" text-anchor="start" font-weight="700" font-size="8.5" style="paint-order: stroke fill; stroke: #FFFFFF; stroke-width: 2.5px; stroke-linejoin: round;">LOWER: ${formatNumber(spec.limit_low)} ${unit}</text>`;
       }
     }
 
@@ -712,6 +725,7 @@ function renderSvgTrajectoryChart() {
         const lastObs = observedTelemetry[observedTelemetry.length - 1];
         const xStart = mapX(lastObs.elapsed_hours);
         const yStart = mapY(lastObs.value);
+        const bandWidth = xFc - xStart;
 
         // Continuous Shaded 90% Conformal Prediction Band (Uncertainty Envelope)
         if (piLow !== null && piHigh !== null) {
@@ -719,9 +733,14 @@ function renderSvgTrajectoryChart() {
           const yHigh = mapY(piHigh);
           const envelopePoints = `${xStart},${yStart} ${xFc},${yHigh} ${xFc},${yLow}`;
           svg += `<polygon points="${envelopePoints}" fill="rgba(217, 119, 6, 0.15)" stroke="rgba(217, 119, 6, 0.45)" stroke-dasharray="3,2" stroke-width="1" />`;
-          const textX = xStart + (xFc - xStart) * 0.55;
-          const textY = (yStart + (yLow + yHigh) / 2) / 2 - 3;
-          svg += `<text x="${textX}" y="${textY}" fill="#B45309" text-anchor="middle" font-size="8.5" font-weight="700" letter-spacing="0.04em">90% CONFORMAL CI BAND</text>`;
+          
+          // Only render text inside the band when there is ample horizontal space so it NEVER overlaps with lines or points
+          if (bandWidth >= 220) {
+            const textX = xStart + bandWidth * 0.45;
+            const textY = Math.min(yStart, Math.min(yLow, yHigh)) - 4;
+            const clampedY = Math.max(padT + 12, textY);
+            svg += `<text x="${textX}" y="${clampedY}" fill="#B45309" text-anchor="middle" font-size="8" font-weight="700" letter-spacing="0.04em" style="paint-order: stroke fill; stroke: #FFFFFF; stroke-width: 2.5px; stroke-linejoin: round;">90% CONFORMAL CI BAND</text>`;
+          }
         }
 
         // Central Forecast Trajectory Line
@@ -733,14 +752,18 @@ function renderSvgTrajectoryChart() {
         const yLow = mapY(piLow);
         const yHigh = mapY(piHigh);
         svg += `<line x1="${xFc}" y1="${yLow}" x2="${xFc}" y2="${yHigh}" stroke="#D97706" stroke-width="1.8" />`;
-        svg += `<line x1="${xFc - 5}" y1="${yLow}" x2="${xFc + 5}" y2="${yLow}" stroke="#D97706" stroke-width="1.8" />`;
-        svg += `<line x1="${xFc - 5}" y1="${yHigh}" x2="${xFc + 5}" y2="${yHigh}" stroke="#D97706" stroke-width="1.8" />`;
+        svg += `<line x1="${xFc - 4}" y1="${yLow}" x2="${xFc + 4}" y2="${yLow}" stroke="#D97706" stroke-width="1.8" />`;
+        svg += `<line x1="${xFc - 4}" y1="${yHigh}" x2="${xFc + 4}" y2="${yHigh}" stroke="#D97706" stroke-width="1.8" />`;
       }
 
       // 168h Forecast Diamond
       const s = 4.5;
       svg += `<polygon points="${xFc},${yFc - s} ${xFc + s},${yFc} ${xFc},${yFc + s} ${xFc - s},${yFc}" fill="#D97706" stroke="#FFFFFF" stroke-width="1" />`;
-      svg += `<text x="${xFc - 8}" y="${yFc - 4}" fill="#B45309" text-anchor="end" font-weight="700">168h: ${formatParamValue(param, forecast.predicted_value)}</text>`;
+      
+      // Position 168h Forecast Value Label CLEANLY in the dedicated right margin (outside plot canvas)
+      // This completely prevents text overlay with the conformal band, whiskers, or trajectory
+      const labelY = Math.max(padT + 10, Math.min(padT + plotH - 3, yFc + 3.5));
+      svg += `<text x="${xFc + 8}" y="${labelY}" fill="#B45309" text-anchor="start" font-weight="700" font-size="8.5" style="paint-order: stroke fill; stroke: #FFFFFF; stroke-width: 2.5px; stroke-linejoin: round;">168h: ${formatParamValue(param, forecast.predicted_value)}</text>`;
     }
 
     // Y Axis Label
@@ -875,7 +898,7 @@ function renderDetectorEvidenceTable(data) {
 }
 
 // -----------------------------------------------------------------------------
-// SECTION E: SCREENING EXPLAINABILITY
+// SECTION E: SCREENING EXPLAINABILITY & AUDIT JUSTIFICATION
 // -----------------------------------------------------------------------------
 function renderScreeningExplainability(data) {
   const exp = data.explainability || {};
@@ -893,6 +916,120 @@ function renderScreeningExplainability(data) {
   }
 
   document.getElementById('exp-limitation').textContent = `Strict temporal causal boundary enforced at t = ${data.as_of_hours}h. Future observations are quarantined and unavailable to the screening rules engine.`;
+
+  // 1. Inspector-Grade Plain-Language Justification Banner (Item 3.3)
+  const bannerEl = document.getElementById('inspector-justification-banner');
+  const justTextEl = document.getElementById('inspector-justification-text');
+  const auditRefEl = document.getElementById('justification-audit-ref');
+  
+  const justification = data.inspector_justification || data.unified_explanation?.inspector_justification ||
+    `${data.component_id} evaluated under standard cleanroom screening protocol.`;
+  
+  if (justTextEl) justTextEl.textContent = justification;
+  if (auditRefEl && data.canonical_result_hash) {
+    auditRefEl.textContent = `AUDIT HASH: ${data.canonical_result_hash.substring(0, 16)}... • T=${data.as_of_hours}h`;
+  }
+
+  if (bannerEl) {
+    bannerEl.className = 'inspector-justification-banner';
+    const state = (data.final_screening_state || data.screening?.final_state || 'PASS').toUpperCase();
+    if (state === 'FAIL') {
+      bannerEl.classList.add('state-fail');
+    } else if (state === 'EQUIPMENT_SUSPECTED') {
+      bannerEl.classList.add('state-equipment');
+    } else if (state === 'HOLD' || state === 'ALERT') {
+      bannerEl.classList.add('state-hold');
+    } else {
+      bannerEl.classList.add('state-pass');
+    }
+  }
+
+  // 2. Closed-Form Counterfactual Boundary Table (Item 3.2)
+  renderCounterfactualTable(data);
+
+  // 3. Known Limitations Disclosure (Item 3.4)
+  renderKnownLimitations(data);
+}
+
+function renderCounterfactualTable(data) {
+  const tbody = document.getElementById('counterfactual-tbody');
+  if (!tbody) return;
+
+  const cfs = data.counterfactuals || data.unified_explanation?.prognostics || {};
+  const forecasts = data.prognostics || data.prognostic_forecasts || {};
+  const screening = data.screening?.parameter_results || {};
+
+  const rows = ORDERED_PARAMETERS.map(param => {
+    const fc = forecasts[param] || {};
+    const pres = screening[param] || {};
+    const cf = cfs[param]?.counterfactual || cfs[param] || {};
+    const unit = fc.unit || pres.unit || '';
+
+    const v24 = fc.metadata?.v24 ?? pres.observed_value ?? '—';
+    const pred168 = fc.predicted_value !== undefined && fc.predicted_value !== null ? Number(fc.predicted_value).toFixed(2) : '—';
+    const targetLim = cf.target_limit !== undefined ? Number(cf.target_limit).toFixed(2) : (pres.spec_evidence?.limit_high ?? pres.spec_evidence?.limit_low ?? '—');
+    const boundVal = cf.boundary_24h_value !== undefined ? Number(cf.boundary_24h_value).toFixed(2) : '—';
+    const delta = cf.delta_from_observed !== undefined ? Number(cf.delta_from_observed) : null;
+    
+    let deltaHtml = '—';
+    if (delta !== null) {
+      const sign = delta > 0 ? '+' : '';
+      const badgeClass = cf.is_breaching ? 'cf-breach-badge' : 'cf-pass-badge';
+      deltaHtml = `<span class="${badgeClass} text-mono">${sign}${delta.toFixed(2)} ${unit}</span>`;
+    }
+
+    const statement = cf.statement || `${param} adheres to closed-form Ridge boundary conditions.`;
+    const v24Str = typeof v24 === 'number' ? v24.toFixed(2) : v24;
+
+    return `
+      <tr>
+        <td class="text-mono" style="font-weight: 700;">${param}</td>
+        <td class="text-mono">${v24Str} ${unit}</td>
+        <td class="text-mono">${pred168} ${unit}</td>
+        <td class="text-mono">${targetLim} ${unit}</td>
+        <td class="text-mono" style="font-weight: 600;">${boundVal} ${unit}</td>
+        <td>${deltaHtml}</td>
+        <td style="font-size: 11px; line-height: 1.45; color: var(--text-secondary);">${statement}</td>
+      </tr>
+    `;
+  }).join('');
+
+  tbody.innerHTML = rows;
+}
+
+function renderKnownLimitations(data) {
+  const grid = document.getElementById('limitations-grid');
+  if (!grid) return;
+
+  const limitations = data.known_limitations || data.unified_explanation?.known_limitations || [];
+  if (!limitations || limitations.length === 0) {
+    fetch('/known_limitations')
+      .then(res => res.json())
+      .then(json => {
+        if (json.known_limitations) {
+          renderLimitationsCards(grid, json.known_limitations);
+        }
+      })
+      .catch(() => {});
+    return;
+  }
+
+  renderLimitationsCards(grid, limitations);
+}
+
+function renderLimitationsCards(container, items) {
+  container.innerHTML = items.map(item => `
+    <div class="limitation-card">
+      <div class="limitation-card-head">
+        <span class="limitation-id-title">${item.id}: ${item.title}</span>
+        <span class="limitation-cat-badge">${item.category}</span>
+      </div>
+      <p class="limitation-desc">${item.description}</p>
+      <div class="limitation-mitigation">
+        <strong>MITIGATION:</strong> ${item.operational_mitigation}
+      </div>
+    </div>
+  `).join('');
 }
 
 // -----------------------------------------------------------------------------
@@ -1322,18 +1459,46 @@ function setupConformalInspectorSimulation() {
 }
 
 // -----------------------------------------------------------------------------
-// 60-SECOND EQUIPMENT EXCURSION DEMO CONTROLLER
+// ATE FIXTURE & SOCKET CALIBRATION DIAGNOSTICS CONTROLLER (QA SUITE)
 // -----------------------------------------------------------------------------
 function setupEquipmentExcursionDemo() {
   const launchBtn = document.getElementById('btn-launch-eq-demo');
   const modal = document.getElementById('modal-equipment-excursion');
   const closeBtn = document.getElementById('btn-close-eq-modal');
   const dismissBtn = document.getElementById('btn-dismiss-eq-modal');
+  const inspectBtn = document.getElementById('btn-inspect-eq-workstation');
+
+  const btnScopeCurrent = document.getElementById('btn-scope-current-lot');
+  const btnScopeDemo = document.getElementById('btn-scope-demo-excursion');
+  const currentLotLabel = document.getElementById('diag-current-lot-label');
+  const asofBadge = document.getElementById('diag-asof-badge');
+  const footerLotTag = document.getElementById('diag-footer-lot-tag');
+
   const pitchBox = document.getElementById('demo-pitch-box');
+  const channelsTbody = document.getElementById('diag-channels-tbody');
+
   const naiveStat = document.getElementById('demo-naive-stat');
+  const naivePill = document.getElementById('demo-naive-pill');
+  const naiveDesc = document.getElementById('demo-naive-desc');
+  const naiveCause = document.getElementById('demo-naive-cause');
+  const naiveDisp = document.getElementById('demo-naive-disp');
+  const naiveRisk = document.getElementById('demo-naive-risk');
+
   const screenxStat = document.getElementById('demo-screenx-stat');
+  const screenxPill = document.getElementById('demo-screenx-pill');
+  const screenxDesc = document.getElementById('demo-screenx-desc');
+  const screenxCause = document.getElementById('demo-screenx-cause');
+  const screenxDisp = document.getElementById('demo-screenx-disp');
+  const screenxOutcome = document.getElementById('demo-screenx-outcome');
+
+  const sopFixtureText = document.getElementById('sop-fixture-text');
+  const sopComponentText = document.getElementById('sop-component-text');
+  const sopAuditText = document.getElementById('sop-audit-text');
+  const sopStatusBadge = document.getElementById('sop-status-badge');
 
   if (!launchBtn || !modal) return;
+
+  let currentAuditLot = 'LOT_CAL_001';
 
   const closeModal = () => {
     modal.classList.add('hidden');
@@ -1345,36 +1510,226 @@ function setupEquipmentExcursionDemo() {
     if (e.target === modal) closeModal();
   });
 
-  launchBtn.addEventListener('click', async () => {
-    modal.classList.remove('hidden');
-    if (pitchBox) pitchBox.textContent = 'Executing real-time ATE socket excursion simulation on /demo/equipment_excursion...';
+  const renderDiagnostics = async (lotId) => {
+    currentAuditLot = lotId;
+    const asOf = state.selectedAsOf || 24;
+
+    if (currentLotLabel) {
+      currentLotLabel.textContent = lotId === 'LOT_DEMO_EXCURSION' ? (state.selectedLotId || 'LOT_CAL_001') : lotId;
+    }
+    if (asofBadge) asofBadge.textContent = `AS-OF: ${asOf}h`;
+    if (footerLotTag) footerLotTag.textContent = `ATE AUDIT: ${lotId} \u2022 AS-OF: ${asOf}h \u2022 DETERMINISTIC AUDIT READY`;
+
+    if (btnScopeCurrent && btnScopeDemo) {
+      if (lotId === 'LOT_DEMO_EXCURSION') {
+        btnScopeCurrent.classList.remove('active');
+        btnScopeDemo.classList.add('active');
+      } else {
+        btnScopeCurrent.classList.add('active');
+        btnScopeDemo.classList.remove('active');
+      }
+    }
+
+    if (pitchBox) {
+      pitchBox.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 8px; color: var(--text-muted); padding: 8px 0;">
+          <span class="status-dot online"></span>
+          <span class="text-mono" style="font-size: 11.5px;">Executing ATE fixture &amp; socket telemetry audit on /lots/${lotId}/equipment_diagnostics...</span>
+        </div>
+      `;
+    }
+    if (channelsTbody) {
+      channelsTbody.innerHTML = `
+        <tr>
+          <td colspan="7" style="text-align: center; color: var(--text-muted); padding: 14px;">
+            Loading channel telemetry matrix for ${lotId}...
+          </td>
+        </tr>
+      `;
+    }
 
     try {
-      const data = await apiGet('/demo/equipment_excursion?as_of=24');
+      const data = await apiGet(`/lots/${lotId}/equipment_diagnostics?as_of=${asOf}`);
+
+      // 1. Diagnostic Summary Banner
       if (pitchBox) {
+        const isExcursion = data.has_suspect_channels;
+        const statusText = isExcursion
+          ? `SYSTEMATIC FIXTURE DRIFT ISOLATED ON SOCKET ${data.suspect_channels.join(', ')}`
+          : 'ALL ATE FIXTURE SOCKET CHANNELS WITHIN CALIBRATED LIMITS';
+        const badgeState = isExcursion ? 'badge-fail' : 'badge-pass';
+
         pitchBox.innerHTML = `
-          <strong>60-SECOND JUDGE MOMENT: ATE FIXTURE CH_05 CONTACT RESISTANCE DRIFT</strong><br>
-          At 24h, test socket channel <strong>CH_05</strong> experienced systematic +6.500 m&Omega; contact resistance drift.<br>
-          <ul style="margin: 6px 0 6px 18px; padding: 0;">
-            <li><strong>Affected Flight MOSFETs:</strong> ${data.affected_components.join(', ')}</li>
-            <li><strong>Fixture Excursion Isolation:</strong> Detector E identified channel Z-score of systematic drift across socket channels.</li>
-            <li><strong>Operational Value:</strong> Saves <strong>$${(data.value_saved_usd || 4000).toLocaleString()} USD</strong> in flight hardware from irreversible scrap.</li>
-          </ul>
+          <div class="pitch-header-bar">
+            <div class="pitch-tag-group">
+              <span class="pitch-eyebrow">CHAMBER &amp; ATE FIXTURE HEALTH &bull; AS-OF ${data.as_of_hours}h</span>
+              <h3 class="pitch-heading">${statusText}</h3>
+            </div>
+            <div class="pitch-meta-badges">
+              <span class="badge ${badgeState} text-mono">${isExcursion ? 'EXCURSION DETECTED' : 'CHAMBER NOMINAL'}</span>
+              <span class="badge badge-qualifier text-mono">${data.total_channels} SOCKET CHANNELS</span>
+              <span class="badge badge-insufficient text-mono">|Z_crit| = 3.42&sigma;</span>
+            </div>
+          </div>
+
+          <p class="pitch-summary-text">
+            ${isExcursion
+              ? `Detector E cross-referenced standardized residuals across socket channels. Systematic contact resistance shift detected on socket <strong>${data.suspect_channels.join(', ')}</strong>. Uncompensated screeners would confound this artifact with intrinsic silicon defect kinetics.`
+              : `Chamber temperature uniformity and fixture socket contact resistances are nominal. Detector E verifies zero systematic channel offsets exceeding Bonferroni significance threshold (|Z| &ge; 3.42&sigma;).`}
+          </p>
+
+          <div class="pitch-kpi-grid">
+            <div class="pitch-kpi-card">
+              <span class="sum-lbl">SOCKET CHANNELS AUDITED</span>
+              <span class="pitch-kpi-val text-mono">${data.total_channels} Channels</span>
+              <span class="sum-sub">${data.channels ? data.channels.reduce((acc, c) => acc + c.n_components, 0) : 0} Total Active DUTs</span>
+            </div>
+            <div class="pitch-kpi-card">
+              <span class="sum-lbl">EXCURSION CHANNELS</span>
+              <span class="pitch-kpi-val text-mono ${isExcursion ? 'text-danger' : 'text-success'}">${data.suspect_channels.length} Suspect</span>
+              <span class="sum-sub">${isExcursion ? data.suspect_channels.join(', ') : 'Zero Offsets Detected'}</span>
+            </div>
+            <div class="pitch-kpi-card">
+              <span class="sum-lbl">CHAMBER UNIFORMITY</span>
+              <span class="pitch-kpi-val text-mono text-success">NOMINAL</span>
+              <span class="sum-sub">${data.chamber_evaluation.reason_code || 'Uniform Thermal Envelope'}</span>
+            </div>
+            <div class="pitch-kpi-card">
+              <span class="sum-lbl">FLIGHT HARDWARE PRESERVED</span>
+              <span class="pitch-kpi-val text-mono text-success">${isExcursion ? `${data.affected_components.length} Space MOSFETs` : '100% In-Spec'}</span>
+              <span class="sum-sub">${isExcursion ? 'Quarantined & Saved from Scrap' : 'Cleared for Flight Use'}</span>
+            </div>
+          </div>
         `;
       }
-      if (naiveStat) naiveStat.textContent = `${data.naive_reject_count || 4} REJECTS`;
-      if (screenxStat) screenxStat.textContent = `${data.screenx_eq_suspected_count || 4} PRESERVED`;
+
+      // 2. Channel Health Matrix Table
+      if (channelsTbody && data.channels) {
+        channelsTbody.innerHTML = data.channels.map(ch => {
+          const isSuspect = ch.suspected;
+          const statusBadge = isSuspect ? 'badge-fail' : (ch.suppressed ? 'badge-insufficient' : 'badge-pass');
+          const actionBadge = isSuspect ? 'badge-equipment' : 'badge-qualifier';
+          const offsetSign = ch.channel_offset_mohm > 0 ? '+' : '';
+          const zSign = ch.z_score > 0 ? '+' : '';
+
+          return `
+            <tr class="${isSuspect ? 'row-suspect' : ''}">
+              <td><strong>${ch.channel_id}</strong></td>
+              <td>${ch.n_components} DUTs</td>
+              <td>${ch.parameter}</td>
+              <td class="text-mono">${offsetSign}${ch.channel_offset_mohm.toFixed(4)} m&Omega;</td>
+              <td class="text-mono"><strong>${zSign}${ch.z_score.toFixed(2)}&sigma;</strong></td>
+              <td><span class="badge ${statusBadge}">${ch.status}</span></td>
+              <td><span class="badge ${actionBadge}">${ch.prescribed_action}</span></td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      // 3. Decoupled Engineering Root Cause Cards
+      if (data.has_suspect_channels) {
+        if (naiveStat) naiveStat.textContent = `${data.affected_components.length} FALSE REJECTS`;
+        if (naivePill) {
+          naivePill.textContent = 'HIGH FALSE SCRAP RISK';
+          naivePill.className = 'stat-pill-fail';
+        }
+        if (naiveDesc) {
+          naiveDesc.textContent = `Treats socket contact resistance on ${data.suspect_channels.join(', ')} as intrinsic silicon degradation. Flags all ${data.affected_components.length} healthy flight MOSFETs as extreme peer outliers (|Z| > 4.0\u03C3) and irreversibly condemns them to scrap.`;
+        }
+        if (naiveCause) naiveCause.textContent = 'CONFOUNDED (Fixture Bias Mistaken for Defect)';
+        if (naiveDisp) naiveDisp.textContent = 'PERMANENT_SCRAP (Flight Loss)';
+        if (naiveRisk) naiveRisk.textContent = `-$${(data.affected_components.length * 1000).toLocaleString()} USD Flight Silicon Scrap`;
+
+        if (screenxStat) screenxStat.textContent = `${data.affected_components.length} PRESERVED`;
+        if (screenxPill) {
+          screenxPill.textContent = '100% SILICON SAVED';
+          screenxPill.className = 'stat-pill-pass';
+        }
+        if (screenxDesc) {
+          screenxDesc.textContent = `Detector E isolates systematic socket channel resistance (Z_channel > 3.42\u03C3). Emits EQUIPMENT_SUSPECTED &mdash; quarantine socket card, retain good silicon for flight qualification.`;
+        }
+        if (screenxCause) screenxCause.textContent = `ISOLATED (Channel ${data.suspect_channels.join(', ')} Contact Drift)`;
+        if (screenxDisp) screenxDisp.textContent = 'EQUIPMENT_SUSPECTED (Quarantine Fixture)';
+        if (screenxOutcome) screenxOutcome.textContent = `+$${(data.affected_components.length * 1000).toLocaleString()} USD (100% Good Silicon Preserved)`;
+      } else {
+        if (naiveStat) naiveStat.textContent = 'NOMINAL (0 REJECTS)';
+        if (naivePill) {
+          naivePill.textContent = 'ZERO EXCURSIONS';
+          naivePill.className = 'stat-pill-pass';
+        }
+        if (naiveDesc) {
+          naiveDesc.textContent = 'No fixture contact offsets or chamber excursions detected. Conventional screening and multi-detector screening agree on baseline silicon integrity.';
+        }
+        if (naiveCause) naiveCause.textContent = 'NOMINAL (Uniform Test Environment)';
+        if (naiveDisp) naiveDisp.textContent = 'STANDARD SCREENING PROTOCOL';
+        if (naiveRisk) naiveRisk.textContent = 'Zero ATE Artifact Confounding';
+
+        if (screenxStat) screenxStat.textContent = 'NOMINAL (ALL IN-SPEC)';
+        if (screenxPill) {
+          screenxPill.textContent = '100% IN-SPEC';
+          screenxPill.className = 'stat-pill-pass';
+        }
+        if (screenxDesc) {
+          screenxDesc.textContent = 'Detector E confirms all test socket channels adhere strictly to statistical baseline (|Z| < 3.42\u03C3). No common-mode drift detected.';
+        }
+        if (screenxCause) screenxCause.textContent = 'VERIFIED (Zero Fixture Artifacts)';
+        if (screenxDisp) screenxDisp.textContent = 'NOMINAL_EQUIPMENT';
+        if (screenxOutcome) screenxOutcome.textContent = 'Proceed with Standard Flight Qualification';
+      }
+
+      // 4. QA Corrective Action Protocol (SOP)
+      const sop = data.qa_corrective_protocol;
+      if (sop) {
+        if (sopStatusBadge) {
+          sopStatusBadge.textContent = data.has_suspect_channels ? 'WORK ORDER REQUIRED' : 'CALIBRATION NOMINAL';
+          sopStatusBadge.className = data.has_suspect_channels ? 'badge badge-alert text-mono' : 'badge badge-pass text-mono';
+        }
+        if (sopFixtureText) sopFixtureText.textContent = sop.fixture_action;
+        if (sopComponentText) sopComponentText.textContent = sop.component_action;
+        if (sopAuditText) sopAuditText.textContent = `Log ${data.total_channels} channels and Z-scores in deterministic audit ledger with SHA-256 seal for ISRO mission compliance.`;
+      }
     } catch (err) {
-      console.error('Failed to load equipment excursion demo:', err);
-      if (pitchBox) pitchBox.textContent = 'Failed to load demo scenario. Error: ' + err.message;
+      console.error('Failed to load equipment diagnostics:', err);
+      if (pitchBox) {
+        pitchBox.innerHTML = `
+          <div style="display: flex; align-items: center; gap: 8px; color: var(--state-fail-text);">
+            <span class="badge badge-fail">ERROR</span>
+            <span class="text-mono" style="font-size: 11.5px;">Failed to load diagnostics for ${lotId}: ${err.message}</span>
+          </div>
+        `;
+      }
     }
+  };
+
+  launchBtn.addEventListener('click', async () => {
+    modal.classList.remove('hidden');
+    const lotToAudit = state.selectedLotId || 'LOT_CAL_001';
+    await renderDiagnostics(lotToAudit);
   });
 
-  const inspectBtn = document.getElementById('btn-inspect-eq-workstation');
+  if (btnScopeCurrent) {
+    btnScopeCurrent.addEventListener('click', async () => {
+      const lotToAudit = state.selectedLotId || 'LOT_CAL_001';
+      await renderDiagnostics(lotToAudit);
+    });
+  }
+
+  if (btnScopeDemo) {
+    btnScopeDemo.addEventListener('click', async () => {
+      await renderDiagnostics('LOT_DEMO_EXCURSION');
+    });
+  }
+
   if (inspectBtn) {
     inspectBtn.addEventListener('click', async () => {
       closeModal();
-      await activateExcursionScenario();
+      if (currentAuditLot === 'LOT_DEMO_EXCURSION') {
+        await activateExcursionScenario();
+      } else {
+        await loadLotComponents(currentAuditLot);
+        await loadComponentInvestigation(state.selectedComponentId, state.selectedAsOf);
+        switchWorkspace('screening');
+      }
     });
   }
 }

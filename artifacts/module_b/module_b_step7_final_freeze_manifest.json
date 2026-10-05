@@ -1,0 +1,118 @@
+{
+  "manifest_type": "FINAL_FREEZE_MANIFEST",
+  "governing_standard": "SIH 2026 Problem Statement SIH26170",
+  "phase": "Step 7 \u2014 Final Sealed Holdout Evaluation",
+  "timestamp_utc": "2026-10-05T20:06:00Z",
+  "code_version_identifiers": {
+    "repository": "SIH26170_UNIFIED",
+    "component_anchor": "IRHNJ57130 / JANSR2N7481U3 (MIL-PRF-19500/703 Table I)",
+    "generator_name": "SyntheticBurnInGenerator",
+    "generator_version": "v2.0.0",
+    "prognostic_forecaster": "ZeroAnchoredHybridPrognosticModel",
+    "drift_expert": "ResidualHistGBMModel",
+    "baseline_model": "Locked Production Ridge"
+  },
+  "model_configuration": {
+    "features": [
+      "u24",
+      "component_drift",
+      "lot_drift",
+      "excess_drift"
+    ],
+    "target": "delta_u = u168 - u24",
+    "reconstruction": "u168_hat = u24 + delta_hat",
+    "histgbm_hyperparameters": {
+      "max_depth": 3,
+      "max_iter": 50,
+      "learning_rate": 0.05,
+      "min_samples_leaf": 10,
+      "l2_regularization": 1.0,
+      "random_state": 20260918
+    },
+    "regime_decision_rule": "IF abs(excess_drift) <= tau_p THEN ZERO_ANCHORED (delta_hat=0) ELSE DRIFT_MODEL (HistGBM)"
+  },
+  "frozen_regime_thresholds": {
+    "IDSS": 0.0648496515277103,
+    "VGS(th)": 0.021568977823908864,
+    "RDS(on)": 0.013243167732299863,
+    "IGSS": 0.18743324021279184
+  },
+  "frozen_conformal_calibration_quantiles": {
+    "IDSS": {
+      "ZERO_ANCHORED": {
+        "q90": 1.7310065961056587,
+        "q95": 1.775533162799307
+      },
+      "DRIFT_MODEL": {
+        "q90": 1.426713739798579,
+        "q95": 1.5214188730997327
+      }
+    },
+    "VGS(th)": {
+      "ZERO_ANCHORED": {
+        "q90": 0.6755717616111105,
+        "q95": 0.7519662828698007
+      },
+      "DRIFT_MODEL": {
+        "q90": 0.44986358170275814,
+        "q95": 0.5394605929653896
+      }
+    },
+    "RDS(on)": {
+      "ZERO_ANCHORED": {
+        "q90": 0.4717169476722369,
+        "q95": 0.5697359556101429
+      },
+      "DRIFT_MODEL": {
+        "q90": 0.36643807212470775,
+        "q95": 0.37849102434517173
+      }
+    },
+    "IGSS": {
+      "ZERO_ANCHORED": {
+        "q90": 3.173402778732049,
+        "q95": 3.996544929849206
+      },
+      "DRIFT_MODEL": {
+        "q90": 1.938428807802817,
+        "q95": 2.180031899120612
+      }
+    }
+  },
+  "cohort_separation": {
+    "training_cohort": [
+      "LOT01",
+      "LOT02",
+      "LOT03",
+      "LOT04",
+      "LOT05",
+      "LOT06",
+      "LOT07",
+      "LOT08"
+    ],
+    "calibration_cohort": [
+      "LOT09",
+      "LOT10",
+      "LOT11",
+      "LOT12"
+    ],
+    "validation_cohort": [
+      "LOT13",
+      "LOT14"
+    ],
+    "final_holdout_cohort": [
+      "LOT21",
+      "LOT22",
+      "LOT23",
+      "LOT24"
+    ]
+  },
+  "final_holdout_checksums": {
+    "observations.csv": "c042b363dcc7eab5dbc89826062db38550d036b1ead67f229d2f87ee839b996e",
+    "ground_truth.csv": "1bf1e74fda33cedad445e5c1d38049174c3319b9b4d0f9a27499a25d92268372",
+    "manifest.json": "1a4bee77deba47364777022470d382514744a28d62363a01967638dff83534d8",
+    "generator_config_snapshot.json": "c3add1814c7847c8aa5ae19b1918ed051d6c384a8188cfeac9697c20c48ca247",
+    "provenance.json": "d50eba338784dbd61d795a8ff39eb181e7534bf1a7297679c9f93c3ca022929d"
+  },
+  "expected_tests_passing_before_access": 137
+}

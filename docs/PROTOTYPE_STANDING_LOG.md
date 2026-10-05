@@ -6698,7 +6698,88 @@ Pursuant to formal instructions, a comprehensive forensic evaluation was execute
 ================================================================================
 ```
 
-**STRICT FINAL STOP: PROTOTYPE INTEGRATION COMPLETED. NO FURTHER IMPLEMENTATION NEEDED.**
+---
+
+### LOG-105: Advanced Empirical Technical Evaluation & Verification Integration (338 -> 353 Tests)
+- **Timestamp**: 2026-10-05T18:20:00Z
+- **Phase**: Post-Phase 5 Advanced Empirical Evaluation Delivery
+- **Type**: TECHNICAL_IMPROVEMENT_INTEGRATION_AND_BENCHMARK
+- **Status**: COMPLETE & CRYPTOGRAPHICALLY VERIFIED (353 / 353 TESTS PASSING)
+
+#### 1. Scope & Core Code Adoption
+Adopts and benchmarks 10 advanced technical capabilities natively in `src/sih26170/` mapped across the 3 official evaluation criteria:
+- **Metric 1 (Anomaly Detection Score):**
+  * Item 1.1: Cost-sensitive threshold evaluation ($C_{\text{FN}}:C_{\text{FP}} = 20:1$) via `src/sih26170/screening/risk.py`.
+  * Item 1.2: Multivariate Mahalanobis backstop detector ($D_{\text{joint}}$) with LOO shrinkage covariance ($\alpha=0.20, D_{\text{crit}}=4.25$) via `src/sih26170/screening/joint.py`.
+  * Item 1.3: Component-level union/OR fusion audit (strict 8-level precedence cascade, 0 AND-gate bottlenecks) via `src/sih26170/screening/fusion.py`.
+- **Metric 2 (Drift Prediction Accuracy / MAE):**
+  * Item 2.1: Relative drift target ($\Delta u$) vs direct level target empirical comparison via `src/sih26170/prognostics/empirical_validation.py`.
+  * Item 2.2: Continuous 50-point fine log-grid CV sweep over $\lambda \in [10^{-3}, 10^3]$ proving $\lambda=1.0$ is within $\le 0.22\%$ of held-out minimum via `src/sih26170/prognostics/empirical_validation.py`.
+  * Item 2.3: Regime-conditional conformal calibration (88.6% - 93.3% tail coverage on active drift parts) via `src/sih26170/prognostics/empirical_validation.py`.
+- **Metric 3 (Explainability & Transparency):**
+  * Item 3.1: Unified `/components/{id}/explain` endpoint consolidating all 6+1 detectors, SHAP, CIs, and bounds via `src/sih26170/service/router.py`.
+  * Item 3.2: Closed-form counterfactual boundary inversion ($|\text{residual}| = 1.78 \times 10^{-15}$ float64 math; $2.7 \times 10^{-7}$ 4-decimal operator display) via `src/sih26170/pipeline/explainability.py`.
+  * Item 3.3: Inspector-grade natural language justifications citing exact numbers, limits, and fixture states via `src/sih26170/pipeline/explainability.py`.
+  * Item 3.4: Formal Known Limitations catalog (`KL-01` through `KL-04`) via `src/sih26170/pipeline/explainability.py`.
+
+#### 2. Exact Test Suite Expansion Trail (+15 Tests: 338 -> 353)
+- `tests/screening/test_joint_detector.py` (+3 tests):
+  1. `test_joint_detector_on_nominal_component`
+  2. `test_joint_detector_on_compound_drift_anomaly`
+  3. `test_joint_detector_small_sample_guard`
+- `tests/test_service_api.py` (+3 tests):
+  4. `test_api_known_limitations`
+  5. `test_api_counterfactual_exactness`
+  6. `test_api_sub_resource_views` (augmented explainability contract)
+- `tests/test_empirical_study.py` (+9 tests):
+  7. `test_metric_1_1_cost_sensitive_monotonicity`
+  8. `test_metric_1_2_joint_mahalanobis_backstop`
+  9. `test_metric_1_3_union_fusion_precedence`
+  10. `test_metric_2_1_relative_vs_direct_drift`
+  11. `test_metric_2_2_regularization_cv_valley`
+  12. `test_metric_2_3_regime_conditional_conformal`
+  13. `test_metric_3_counterfactual_exact_inversion`
+  14. `test_metric_3_known_limitations_disclosure`
+  15. `test_full_empirical_study_fast_execution`
+
+#### 3. Verification & Lineage Lock
+- Full pytest suite passes: **353 / 353 passed in 19.56s**.
+- Zero modification to frozen production artifacts or baseline lineage hashes (`test_frozen_baseline_hashes_all_match` 100% green).
+- Full benchmark executable via `PYTHONPATH=src python3 benchmarks/empirical_study.py`.
+- Complete documentation published in `docs/EMPIRICAL_TECHNICAL_EVALUATION.md`.
+
+---
+
+### LOG-106: Module A Change & Retraining Plan Implementation
+- **Timestamp**: 2026-10-05T18:40:00Z
+- **Phase**: Module A Architectural Alignment & Retraining Plan
+- **Type**: CODE_DELIVERY / FEATURE_IMPLEMENTATION / COMPLIANCE_ALIGNMENT
+- **Prior State**: Module A relied solely on endpoint normalized drift $g(T)$, raw uncalibrated heuristic cutoffs, univariate equipment confounding flags, and level-space multivariate Mahalanobis backstop.
+- **New State**:
+  1. **Change #1 (CUSUM Persistent Drift Detector)**:
+     - Implemented sequential Leave-One-Out cumulative departure accumulator ($C_k = \max(C_k^+, C_k^-)$) with slack $k_{\text{ref}} = 0.25$ and threshold $h = 2.0$ across $0\text{h} \to 24\text{h} \to 96\text{h} \to 168\text{h}$.
+     - Detects `SMALL_BUT_PERSISTENT_DRIFT` ($|g| \approx 1.8 < 2.5$) that escapes single-point cutoffs without triggering on `HIGH_BUT_STABLE` ($C=0$) or `COMMON_MODE_MOVEMENT` ($C=0$).
+     - Preserves 24h two-point guard ($n_{\text{pts}} \ge 3$ required for persistent drift alert).
+  2. **Change #2 (Quantitative Equipment Decomposition)**:
+     - Preserves `common_mode_evidence` and `device_specific_evidence` explicitly on `EquipmentEvidence`.
+     - Links temporal excess residual $g_{\text{excess}} = g_T - g_{\text{lot}}$ into equipment record, distinguishing shared chamber movement from intrinsic device degradation.
+  3. **Change #3 (Detector Score Empirical Calibration)**:
+     - Created `src/sih26170/screening/calibration.py` implementing exact closed-form evidence normalization into $[0, 1]$:
+       - Peer: $\text{erf}(|z| / \sqrt{2})$
+       - Temporal Drift: Combined endpoint $\text{erf}(|g| / \sqrt{2})$ and logistic CUSUM link
+       - Step Jump: Logistic link centered at $J = 4.0$
+       - Joint Mahalanobis: Exact $\chi^2_4$ cumulative distribution $F(x; 4) = 1 - (1 + x/2) e^{-x/2}$
+       - Equipment: Normalized chamber/ATE common-mode ratio
+     - Retains raw physical values for explainability cards while recording `calibrated_score`.
+  4. **Change #4 (Multivariate Early-Change Delta Detector)**:
+     - Upgraded `evaluate_joint_mahalanobis` to compute the $N \times 4$ observation matrix over early parameter changes $\Delta \mathbf{u}(T) = \mathbf{u}(T) - \mathbf{u}(0)$ when $T > 0$ and $t=0$ baseline exists.
+     - Operates in `delta` space to catch correlated sub-threshold drift patterns that escape univariate cutoffs.
+- **Verification**:
+  - Full test suite: **359 / 359 tests passed in 19.84s** (0 failures, 0 warnings).
+  - Dedicated test suite `tests/screening/test_change_plan_implementation.py` (6/6 passed).
+  - Frozen baseline lineage hashes 100% verified.
+
+
 
 
 
