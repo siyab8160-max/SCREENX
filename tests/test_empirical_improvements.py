@@ -1,6 +1,6 @@
 """Backward-compatible test runner for SCREENX Empirical Technical Evaluation.
 
-Maintains complete continuity with tests/test_competitor_improvements.py
+Maintains complete continuity with tests/test_empirical_improvements.py
 and delegates directly to the comprehensive evaluation suite in tests/test_empirical_study.py.
 """
 

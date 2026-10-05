@@ -15,8 +15,11 @@ Complies strictly with post-Phase-5 engineering integration specifications:
 from __future__ import annotations
 
 import json
+from concurrent.futures import ThreadPoolExecutor
 from typing import Any, Dict, Optional, Tuple
 from urllib.parse import parse_qs, urlparse
+
+import pandas as pd
 
 from sih26170.pipeline.demo import DemoScenarioLoader
 from sih26170.pipeline.schema import ModelLineageInfo
@@ -31,6 +34,27 @@ class ServiceRouter:
             provider = SyntheticTelemetryProvider()
         self.provider = provider
         self.demo_loader = DemoScenarioLoader(provider=self.provider)
+        self.uploaded_telemetry: Optional[pd.DataFrame] = None
+
+    def register_uploaded_telemetry(self, records: list[Dict[str, Any]]) -> Dict[str, Any]:
+        """Validate and retain a user-supplied telemetry dataset for inference only."""
+        required = {"component_id", "lot_id", "parameter_name", "elapsed_hours", "value", "unit"}
+        df = pd.DataFrame(records)
+        missing = sorted(required.difference(df.columns))
+        if df.empty or missing:
+            raise ValueError(f"Uploaded telemetry is missing required fields: {missing}")
+        for column in ("elapsed_hours", "value"):
+            df[column] = pd.to_numeric(df[column], errors="coerce")
+        if df[["elapsed_hours", "value"]].isna().any().any():
+            raise ValueError("Uploaded telemetry contains non-numeric elapsed_hours or value fields.")
+        from sih26170.pipeline.telemetry import assert_ground_truth_quarantine
+        assert_ground_truth_quarantine(df)
+        self.uploaded_telemetry = df.copy()
+        return {
+            "lots": sorted(df["lot_id"].astype(str).unique().tolist()),
+            "components": sorted(df["component_id"].astype(str).unique().tolist()),
+            "rows": len(df),
+        }
 
     def dispatch(
         self,
@@ -100,6 +124,9 @@ class ServiceRouter:
 
         # Route: GET /lots
         if path == "/lots":
+            if self.uploaded_telemetry is not None:
+                lots = sorted(self.uploaded_telemetry["lot_id"].astype(str).unique().tolist())
+                return 200, {"total_lots": len(lots), "lots": lots}
             lots = self.demo_loader.list_lots()
             # If explicit include_demo query param is present, prepend the excursion scenario lot
             if query.get("include_demo") and "LOT_DEMO_EXCURSION" not in lots:
@@ -110,6 +137,12 @@ class ServiceRouter:
         parts = [p for p in path.split("/") if p]
         if len(parts) == 3 and parts[0] == "lots" and parts[2] == "components":
             lot_id = parts[1]
+            if self.uploaded_telemetry is not None:
+                comps = sorted(self.uploaded_telemetry.loc[
+                    self.uploaded_telemetry["lot_id"].astype(str) == lot_id, "component_id"
+                ].astype(str).unique().tolist())
+                if comps:
+                    return 200, {"lot_id": lot_id, "total_components": len(comps), "components": comps}
             if lot_id == "LOT_DEMO_EXCURSION":
                 comps = [f"LOT_DEMO_EXCURSION_C{i:03d}" for i in range(1, 17)]
                 return 200, {"lot_id": lot_id, "total_components": len(comps), "components": comps}
@@ -120,6 +153,39 @@ class ServiceRouter:
                 return 404, {"error": str(e)}
 
         # Route: GET /lots/{lot_id}/equipment_diagnostics
+        if len(parts) == 3 and parts[0] == "lots" and parts[2] == "statuses":
+            as_of_list = query.get("as_of", ["24"])
+            try:
+                as_of_hours = int(as_of_list[0])
+            except ValueError:
+                return 400, {"error": "as_of must be an integer."}
+            lot_id = parts[1]
+            if self.uploaded_telemetry is not None:
+                df = self.uploaded_telemetry
+                lot_df = df[(df["lot_id"].astype(str) == lot_id) & (df["elapsed_hours"] <= as_of_hours)]
+                component_ids = sorted(lot_df["component_id"].astype(str).unique().tolist())
+
+                def uploaded_status(component_id: str) -> tuple[str, str]:
+                    from sih26170.pipeline.orchestrator import run_component_pipeline
+                    component_df = lot_df[lot_df["component_id"].astype(str) == component_id]
+                    result = run_component_pipeline(component_df, component_id, as_of_hours, lot_df)
+                    return component_id, result.screening_result.final_state.value
+                evaluator = uploaded_status
+            else:
+                try:
+                    component_ids = self.demo_loader.list_components(lot_id)
+                except KeyError as exc:
+                    return 404, {"error": str(exc)}
+
+                def demo_status(component_id: str) -> tuple[str, str]:
+                    result = self.demo_loader.run_scenario(component_id, as_of_hours)
+                    return component_id, result.screening_result.final_state.value
+                evaluator = demo_status
+
+            with ThreadPoolExecutor(max_workers=min(8, max(1, len(component_ids)))) as executor:
+                statuses = dict(executor.map(evaluator, component_ids))
+            return 200, {"lot_id": lot_id, "as_of_hours": as_of_hours, "statuses": statuses}
+
         if len(parts) == 3 and parts[0] == "lots" and parts[2] == "equipment_diagnostics":
             lot_id = parts[1]
             as_of_list = query.get("as_of")
@@ -228,7 +294,19 @@ class ServiceRouter:
 
             # 1. Bare /components/{component_id}: Metadata ONLY
             if sub_resource is None:
-                if component_id.startswith("LOT_DEMO_EXCURSION"):
+                if self.uploaded_telemetry is not None and component_id in set(self.uploaded_telemetry["component_id"].astype(str)):
+                    df = self.uploaded_telemetry
+                    component_df = df[df["component_id"].astype(str) == component_id]
+                    return 200, {
+                        "component_id": component_id,
+                        "lot_id": str(component_df["lot_id"].iloc[0]),
+                        "part_number": "USER_SUPPLIED",
+                        "source_type": "USER_UPLOADED",
+                        "available_checkpoints": sorted(component_df["elapsed_hours"].unique().tolist()),
+                        "monitored_parameters": sorted(component_df["parameter_name"].astype(str).unique().tolist()),
+                        "note": "Bare component endpoint returns metadata only.",
+                    }
+                elif component_id.startswith("LOT_DEMO_EXCURSION"):
                     return 200, {
                         "component_id": component_id,
                         "lot_id": "LOT_DEMO_EXCURSION",
@@ -272,7 +350,16 @@ class ServiceRouter:
                 return 400, {"error": f"Invalid 'as_of' value '{as_of_list[0]}'. Must be an integer."}
 
             try:
-                if component_id.startswith("LOT_DEMO_EXCURSION"):
+                if self.uploaded_telemetry is not None and component_id in set(self.uploaded_telemetry["component_id"].astype(str)):
+                    from sih26170.pipeline.orchestrator import run_component_pipeline
+                    df = self.uploaded_telemetry
+                    comp_df = df[(df["component_id"].astype(str) == component_id) & (df["elapsed_hours"] <= as_of_hours)]
+                    if comp_df.empty:
+                        return 404, {"error": f"Component '{component_id}' has no data at {as_of_hours}h."}
+                    lot_id = str(comp_df["lot_id"].iloc[0])
+                    lot_df = df[(df["lot_id"].astype(str) == lot_id) & (df["elapsed_hours"] <= as_of_hours)]
+                    pipeline_result = run_component_pipeline(comp_df, component_id, as_of_hours, lot_df)
+                elif component_id.startswith("LOT_DEMO_EXCURSION"):
                     from sih26170.synthetic.equipment_excursion_demo import generate_equipment_drift_demo_lot
                     from sih26170.pipeline.orchestrator import run_component_pipeline
                     df = generate_equipment_drift_demo_lot()
@@ -308,7 +395,13 @@ class ServiceRouter:
                 }
                 resp_data["known_limitations"] = unified_exp["known_limitations"]
 
-                if component_id.startswith("LOT_DEMO_EXCURSION"):
+                if self.uploaded_telemetry is not None and component_id in set(self.uploaded_telemetry["component_id"].astype(str)):
+                    df = self.uploaded_telemetry
+                    comp_df = df[(df["component_id"].astype(str) == component_id) & (df["elapsed_hours"] <= as_of_hours)]
+                    resp_data["observed_telemetry"] = comp_df[
+                        ["elapsed_hours", "parameter_name", "value", "unit"]
+                    ].to_dict(orient="records")
+                elif component_id.startswith("LOT_DEMO_EXCURSION"):
                     from sih26170.synthetic.equipment_excursion_demo import generate_equipment_drift_demo_lot
                     df = generate_equipment_drift_demo_lot()
                     comp_df = df[(df["component_id"] == component_id) & (df["elapsed_hours"] <= as_of_hours)]

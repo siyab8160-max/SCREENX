@@ -485,9 +485,9 @@ Decisions are never silently overwritten. When a decision changes or is refined,
 - **Phase**: Phase 2 Final Hardening
 - **Type**: DESIGN_DECISION / VERIFICATION
 - **Prior State**: A17 framed as "benchmark does not exist".
-- **New State**: The benchmark artifact and `benchmark_vs_competitors.py` exist and have been executed. Established strict reporting protocol:
+- **New State**: The benchmark artifact and `empirical_study.py` exist and have been executed. Established strict reporting protocol:
   - Benchmark numbers must NEVER be quoted from promotional prose or static text alone.
-  - Required reproducibility chain: benchmark artifact (`data/synthetic/`), script (`benchmark_vs_competitors.py`), configuration hash, master seed (`20260916`), dataset version (`v1-synthetic-20260916`), and execution metrics.
+  - Required reproducibility chain: benchmark artifact (`data/synthetic/`), script (`empirical_study.py`), configuration hash, master seed (`20260916`), dataset version (`v1-synthetic-20260916`), and execution metrics.
   - Figures may only be reported after the actual script is independently rerun and its output inspected.
   - Benchmark results must not be described as forecasts or predictions.
 - **Reason**: Prevents synthetic benchmark overclaiming and guarantees auditability of all reported comparative metrics.
@@ -498,15 +498,15 @@ Decisions are never silently overwritten. When a decision changes or is refined,
 
 ---
 
-### LOG-030: Competitive Positioning Update — ASTRA-IC Paradigm & Narrowed Hypotheses
+### LOG-030: Competitive Positioning Update — Dynamic PAT & Robust Outlier Detection Paradigm & Narrowed Hypotheses
 - **Timestamp**: 2026-09-17T08:10:00Z
 - **Phase**: Phase 2 Final Hardening
 - **Type**: DESIGN_DECISION / SPECIFICATION
-- **Prior State**: Competitor analysis contrasted our method against mean/std models (MAVERICK/AEGIS), claiming robust MAD as our primary differentiator.
+- **Prior State**: Comparative analysis contrasted our method against mean/std models (parametric Gaussian baselines), claiming robust MAD as our primary differentiator.
 - **New State**:
-  - Formally recognized **ASTRA-IC** as a primary relevant comparison point utilizing Dynamic PAT, median/MAD, and Modified Z-scores.
-  - Prohibited the claim *"competitors use mean/std while we use robust MAD"* as a universal differentiator.
-  - Explicitly distinguished MAVERICK/AEGIS (0% breakdown Gaussian limits) from ASTRA-IC (robust DPAT).
+  - Formally recognized robust DPAT as a primary relevant comparison approach using Dynamic PAT, median/MAD, and Modified Z-scores.
+  - Prohibited the claim *"public comparison projects use mean/std while we use robust MAD"* as a universal differentiator.
+  - Explicitly distinguished parametric Gaussian limits from robust DPAT.
   - Narrowed our technical differentiation to 7 specific architectural hypotheses:
     1. Leave-one-out lot reference (target exclusion)
     2. Explicit baseline-vs-temporal-deviation decomposition ($b_i$ vs $g_i(t)$)
@@ -604,7 +604,7 @@ Decisions are never silently overwritten. When a decision changes or is refined,
     $$z(t) = \frac{R_{\text{ds(on)}}(t)}{R_{\text{ds(on)}}(0)}$$
     for temporal degradation-shape analysis and forecasting/extrapolation validation.
   - The NASA MOSFET dataset must NEVER populate `leakage_current` or any unrelated physical field in the canonical schema.
-- **Reason**: Prevents physical pseudo-science and guards against repeating competitor errors (e.g. AEGIS C-MAPSS unit swap).
+- **Reason**: Prevents physical pseudo-science and guards against repeating external project errors (e.g. an external C-MAPSS unit-mapping error).
 - **Source / Provenance**: EPISTEMIC_GUARDRAIL (`docs/SIH26170_Proposed_Solution_Draft.md`, `tests/test_hardening.py`).
 - **Status**: HARDENED / VERIFIED.
 - **Affected Area**: `docs/SIH26170_Proposed_Solution_Draft.md`, `docs/SIH26170_PRD.md`, `tests/test_hardening.py`.

@@ -103,6 +103,24 @@ class WorkstationRequestHandler(SimpleHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(json.dumps({"error": f"Resource '{self.path}' not found."}).encode("utf-8"))
 
+    def do_POST(self) -> None:
+        if urlparse(self.path).path.rstrip("/") != "/uploads/telemetry":
+            self.send_error(404, "Unknown API endpoint")
+            return
+        try:
+            length = int(self.headers.get("Content-Length", "0"))
+            payload = json.loads(self.rfile.read(length).decode("utf-8"))
+            result = self.router.register_uploaded_telemetry(payload.get("records", []))
+            status_code, body = 200, result
+        except (ValueError, json.JSONDecodeError) as exc:
+            status_code, body = 400, {"error": str(exc)}
+        self.send_response(status_code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Cache-Control", "no-store, no-cache, must-revalidate")
+        self.end_headers()
+        self.wfile.write(json.dumps(body, indent=2).encode("utf-8"))
+
     def _serve_static_file(self, file_path: Path, mime_type: str) -> None:
         content = file_path.read_bytes()
         self.send_response(200)

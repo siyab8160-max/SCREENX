@@ -13,6 +13,7 @@ dependencies = [
     "numpy>=1.24.0",
     "pandas>=2.0.0",
     "pyyaml>=6.0",
+    "scikit-learn>=1.3.0",
 ]
 
 [tool.pytest.ini_options]
@@ -26,4 +27,3 @@ extraPaths = [".", "src"]
 
 [tool.pyrefly]
 search-path = ["src", "."]
-

@@ -1,7 +1,7 @@
 """Backward-compatible entrypoint for Empirical Technical Evaluation.
 
 Preserves full API compatibility for scripts and modules importing from
-benchmarks.competitor_improvements_study.
+benchmarks.empirical_improvements_study.
 """
 
 from __future__ import annotations
@@ -34,13 +34,13 @@ from sih26170.screening.joint import evaluate_multivariate_joint_backstop
 from sih26170.screening.risk import evaluate_cost_sensitive_risk
 
 # Backward compatibility aliases
-run_full_competitor_study = run_full_empirical_study
+run_full_empirical_study = run_full_empirical_study
 audit_explainability_and_counterfactuals = audit_counterfactual_inversions
 
 __all__ = [
     "load_benchmark_datasets",
     "run_full_empirical_study",
-    "run_full_competitor_study",
+    "run_full_empirical_study",
     "audit_counterfactual_inversions",
     "audit_explainability_and_counterfactuals",
     "get_known_limitations_disclosure",

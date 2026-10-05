@@ -52,6 +52,20 @@ async function apiGet(endpoint) {
   }
 }
 
+async function apiPost(endpoint, payload) {
+  const res = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  });
+  if (!res.ok) {
+    const errData = await res.json().catch(() => ({}));
+    throw new Error(errData.error || `HTTP ${res.status}: ${res.statusText}`);
+  }
+  updateConnectionStatus(true);
+  return res.json();
+}
+
 function updateConnectionStatus(isOnline, errMsg = '') {
   const dot = document.getElementById('status-dot');
   const label = document.getElementById('status-connection');
@@ -383,17 +397,9 @@ async function buildTrayMatrix() {
   if (lotBadge) lotBadge.textContent = state.selectedLotId;
   if (countBadge) countBadge.textContent = `${comps.length} sockets`;
 
-  // Fetch screening state for all components in the lot concurrently (max 20)
+  // One batch request avoids the browser's per-origin connection queue delaying
+  // individual socket colours.
   state.trayStatuses = {};
-  const fetchPromises = comps.slice(0, 40).map(async (cid) => {
-    try {
-      const data = await apiGet(`/components/${cid}/pipeline?as_of=${state.selectedAsOf}`);
-      const fs = data.screening?.final_state || 'UNKNOWN';
-      state.trayStatuses[cid] = fs;
-    } catch {
-      state.trayStatuses[cid] = 'UNKNOWN';
-    }
-  });
 
   // Show loading state
   grid.innerHTML = comps.map((cid) => {
@@ -404,7 +410,13 @@ async function buildTrayMatrix() {
     </div>`;
   }).join('');
 
-  await Promise.all(fetchPromises);
+  try {
+    const batch = await apiGet(`/lots/${state.selectedLotId}/statuses?as_of=${state.selectedAsOf}`);
+    state.trayStatuses = batch.statuses || {};
+  } catch (err) {
+    console.error('Failed to load tray statuses:', err);
+    comps.forEach((cid) => { state.trayStatuses[cid] = 'UNKNOWN'; });
+  }
 
   // Render with actual statuses
   renderTrayGrid(comps);
@@ -947,8 +959,6 @@ function renderScreeningExplainability(data) {
   // 2. Closed-Form Counterfactual Boundary Table (Item 3.2)
   renderCounterfactualTable(data);
 
-  // 3. Known Limitations Disclosure (Item 3.4)
-  renderKnownLimitations(data);
 }
 
 function renderCounterfactualTable(data) {
@@ -2166,6 +2176,16 @@ function parseAndValidateCsv(csvText, filename) {
 
 async function activateUploadedDataset() {
   if (!state.uploadedSummary) return;
+
+  // Register the validated data with the inference service before selecting it.
+  // The service retains it only for this workstation session and runs no training.
+  try {
+    await apiPost('/uploads/telemetry', { records: state.uploadedSummary.rows });
+  } catch (err) {
+    console.error('Uploaded dataset registration failed:', err);
+    alert(`Dataset analysis could not start: ${err.message}`);
+    return;
+  }
 
   // 1. Clear old selections and stale analysis results
   clearStaleAnalysisResults();
