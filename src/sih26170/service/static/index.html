@@ -173,6 +173,7 @@
           <div class="card-header">
             <h2 id="heading-screening-summary" class="card-title">SECTION A &bull; SCREENING SUMMARY</h2>
             <div class="card-actions">
+              <button type="button" class="btn-highlight-action" id="btn-launch-eq-demo">&#9889; 60s Demo: CH_05 Drift vs Naive Scrap</button>
               <span class="badge badge-qualifier" id="card-asof-tag">AS-OF: 24 h</span>
             </div>
           </div>
@@ -460,7 +461,83 @@
           </div>
         </section>
 
-                <!-- Prognostic Visualizations & Interpretation Panel -->
+        <!-- Section: Conformal Prediction 90% Uncertainty Inspector -->
+        <section class="eng-card" id="section-conformal-inspector" aria-labelledby="heading-conformal-title">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-conformal-title" class="card-title">CONFORMAL PREDICTION &bull; FINITE-SAMPLE 90% UNCERTAINTY INSPECTOR</h2>
+              <span class="card-subtitle">Non-Parametric &bull; Distribution-Free Marginal Guarantee P(Y &isin; C_90) &ge; 0.90 &bull; Calibration Residuals</span>
+            </div>
+            <div class="card-actions">
+              <span class="badge badge-qualifier" id="conformal-coverage-badge">90% COVERAGE &bull; NO GAUSSIAN ASSUMPTION</span>
+            </div>
+          </div>
+
+          <div class="ci-explainer-box">
+            <strong>What is Conformal Prediction in SCREENX?</strong>
+            Unlike classical neural networks or ad-hoc error bars that output uncalibrated "confidence scores", SCREENX uses rigorous inductive conformal prediction calibrated on 1,000 components across Phase 4B/5 frozen partitions. It guarantees that the true 168h measurement will fall inside the interval [y_low, y_upp] with at least 90% probability under exchangeability, without assuming normal errors.
+          </div>
+
+          <!-- Dynamic Comparison Cards: Confident (Narrow CI) vs Uncertain (Wide CI) -->
+          <div class="ci-comparison-grid" id="ci-comparison-grid">
+            <div class="ci-card highlight" id="ci-card-current">
+              <div class="ci-head">
+                <span class="ci-title" id="ci-current-title">CURRENT COMPONENT EVALUATION</span>
+                <span class="badge badge-pass" id="ci-current-badge">CALIBRATED</span>
+              </div>
+              <div class="ci-gauge-wrap">
+                <div class="ci-gauge-track" id="ci-current-track">
+                  <div class="ci-gauge-band" id="ci-current-band" style="left: 20%; width: 40%;"></div>
+                  <div class="ci-gauge-point" id="ci-current-point" style="left: 40%;"></div>
+                </div>
+              </div>
+              <div class="ci-metrics-list text-mono">
+                <div class="ci-metric-row"><span>Point Prediction:</span> <strong id="ci-val-pred">--</strong></div>
+                <div class="ci-metric-row"><span>90% Conformal Band:</span> <strong id="ci-val-band">--</strong></div>
+                <div class="ci-metric-row"><span>Interval Width:</span> <strong id="ci-val-width">--</strong></div>
+                <div class="ci-metric-row"><span>Screening Margin Headroom:</span> <strong id="ci-val-headroom">--</strong></div>
+              </div>
+            </div>
+
+            <div class="ci-card" id="ci-card-reference">
+              <div class="ci-head">
+                <span class="ci-title">UNCERTAINTY CONTRAST: WIDE CI vs NARROW CI</span>
+                <span class="badge badge-alert">OPERATIONAL IMPACT</span>
+              </div>
+              <p style="font-size: 11px; color: var(--text-secondary); margin: 6px 0 10px 0; line-height: 1.45;">
+                Compare a <strong>Confident Component (Narrow CI &le; 1.5 m&Omega;)</strong> where residuals are small vs an <strong>Uncertain Component (Wide CI &ge; 5.0 m&Omega;)</strong> where the interval upper bound intersects the Class C flight screening margin (60.0 m&Omega;).
+              </p>
+              <div class="ci-metrics-list text-mono">
+                <div class="ci-metric-row"><span>Narrow CI (&sigma;_eff=0.015):</span> <span class="badge badge-pass">FLIGHT CONFIDENT</span></div>
+                <div class="ci-metric-row"><span>Wide CI (&sigma;_eff=0.450):</span> <span class="badge badge-hold">HOLD FOR RE-TEST</span></div>
+                <div class="ci-metric-row"><span>Space Hardware Rule:</span> <span>No Scrap on Uncertainty</span></div>
+              </div>
+              <div style="display: flex; gap: 8px; margin-top: 12px;">
+                <button type="button" class="btn-action text-mono" id="btn-simulate-narrow-ci" style="font-size: 10.5px; padding: 4px 8px;">Simulate Narrow CI (Confident)</button>
+                <button type="button" class="btn-action text-mono" id="btn-simulate-wide-ci" style="font-size: 10.5px; padding: 4px 8px;">Simulate Wide CI (Uncertain)</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section: Exact Linear Ridge SHAP Feature Importance -->
+        <section class="eng-card" id="section-shap-importance" aria-labelledby="heading-shap-title">
+          <div class="card-header">
+            <div>
+              <h2 id="heading-shap-title" class="card-title">EXPLAINABILITY &bull; EXACT RIDGE SHAP FEATURE ATTRIBUTION</h2>
+              <span class="card-subtitle">Exact Closed-Form Shapley Values &bull; Explaining 168h Prognostic Kinetic Drivers</span>
+            </div>
+            <div id="shap-primary-badge">
+              <span class="badge badge-qualifier" id="badge-primary-driver">DRIVER: slope_0_24</span>
+            </div>
+          </div>
+
+          <div class="shap-bars-container" id="shap-bars-container">
+            <!-- Dynamically populated by renderShapFeatureImportance() -->
+          </div>
+        </section>
+
+        <!-- Prognostic Visualizations & Interpretation Panel -->
         <div class="prognostic-dual-grid">
           <!-- Left: Engineering Interpretation -->
           <section class="eng-card" aria-labelledby="heading-prog-interp">
@@ -838,6 +915,51 @@
       </div>
 
     </main>
+  </div>
+
+  <!-- MODAL: 60-SECOND EQUIPMENT EXCURSION DEMONSTRATION -->
+  <div class="modal-overlay hidden" id="modal-equipment-excursion" role="dialog" aria-modal="true" aria-labelledby="modal-eq-title">
+    <div class="modal-window">
+      <div class="modal-head">
+        <div class="modal-title" id="modal-eq-title">&#9889; ATE FIXTURE DRIFT SCENARIO &bull; CH_05 INSTRUMENT DRIFT DEMO</div>
+        <button type="button" class="modal-close-btn" id="btn-close-eq-modal" aria-label="Close modal">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="demo-pitch-box" id="demo-pitch-box">
+          Loading scenario data...
+        </div>
+
+        <div class="demo-split-grid">
+          <!-- Left: Competitor / Naive Screener Outcome -->
+          <div class="demo-outcome-card fail">
+            <span class="badge badge-fail">NAIVE SCREENER (NO FIXTURE TRACKING)</span>
+            <div class="demo-stat-badge" style="color: #DC2626;" id="demo-naive-stat">4 REJECTS</div>
+            <p style="font-size: 11.5px; line-height: 1.45; color: #7F1D1D;">
+              All 4 components on socket channel CH_05 are flagged as extreme peer outliers (|Z| &gt; 4.0&sigma;) and irreversibly condemned to the scrap bin.
+            </p>
+            <div style="font-size: 11px; margin-top: 8px; font-weight: 700; color: #991B1B;">
+              FLIGHT LOSS: $4,000 USD (4 x $1,000 Space MOSFETs)
+            </div>
+          </div>
+
+          <!-- Right: SCREENX Outcome -->
+          <div class="demo-outcome-card pass">
+            <span class="badge badge-equipment">SCREENX MULTI-DETECTOR FUSION</span>
+            <div class="demo-stat-badge" style="color: #16A34A;" id="demo-screenx-stat">4 PRESERVED</div>
+            <p style="font-size: 11.5px; line-height: 1.45; color: #14532D;">
+              Detector E isolates systematic +6.5 m&Omega; contact resistance on socket CH_05 (Z_channel = +7.8&sigma; &gt; 3.42). System outputs EQUIPMENT_SUSPECTED.
+            </p>
+            <div style="font-size: 11px; margin-top: 8px; font-weight: 700; color: #15803D;">
+              HARDWARE SAVED: 100% of Good Silicon Preserved
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: 16px; text-align: right;">
+          <button type="button" class="btn-action text-mono" id="btn-dismiss-eq-modal">Dismiss Demonstration</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="/app.js" type="module"></script>

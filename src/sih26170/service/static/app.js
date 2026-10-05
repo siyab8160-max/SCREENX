@@ -110,6 +110,8 @@ document.addEventListener('DOMContentLoaded', async () => {
   setupChartParamButtons();
   setupDataWorkspace();
   setupExportButtons();
+  setupEquipmentExcursionDemo();
+  setupConformalInspectorSimulation();
 
   try {
     // 1. Fetch available demo lots
@@ -692,25 +694,42 @@ function renderSvgTrajectoryChart() {
       });
     }
 
-    // 168h Prognostic Forecast Point & PI Whisker (if asOf < 168)
+    // 168h Prognostic Forecast Point, Conformal 90% CI Band & PI Whisker (if asOf < 168)
     if (forecast && forecast.predicted_value !== null && asOf < 168) {
       const xFc = mapX(168);
       const yFc = mapY(forecast.predicted_value);
 
-      if (observedTelemetry.length > 0) {
-        const lastObs = observedTelemetry[observedTelemetry.length - 1];
-        svg += `<line x1="${mapX(lastObs.elapsed_hours)}" y1="${mapY(lastObs.value)}" x2="${xFc}" y2="${yFc}" stroke="#D97706" stroke-dasharray="3,3" stroke-width="1.2" />`;
-      }
-
-      // Prediction Interval Whisker
+      // Prediction Interval Bounds
       const piLow = forecast.interval_lower ?? forecast.prediction_interval_90?.[0] ?? null;
       const piHigh = forecast.interval_upper ?? forecast.prediction_interval_90?.[1] ?? null;
+
+      if (observedTelemetry.length > 0) {
+        const lastObs = observedTelemetry[observedTelemetry.length - 1];
+        const xStart = mapX(lastObs.elapsed_hours);
+        const yStart = mapY(lastObs.value);
+
+        // Continuous Shaded 90% Conformal Prediction Band (Uncertainty Envelope)
+        if (piLow !== null && piHigh !== null) {
+          const yLow = mapY(piLow);
+          const yHigh = mapY(piHigh);
+          const envelopePoints = `${xStart},${yStart} ${xFc},${yHigh} ${xFc},${yLow}`;
+          svg += `<polygon points="${envelopePoints}" fill="rgba(217, 119, 6, 0.15)" stroke="rgba(217, 119, 6, 0.45)" stroke-dasharray="3,2" stroke-width="1" />`;
+          const textX = xStart + (xFc - xStart) * 0.55;
+          const textY = (yStart + (yLow + yHigh) / 2) / 2 - 3;
+          svg += `<text x="${textX}" y="${textY}" fill="#B45309" text-anchor="middle" font-size="8.5" font-weight="700" letter-spacing="0.04em">90% CONFORMAL CI BAND</text>`;
+        }
+
+        // Central Forecast Trajectory Line
+        svg += `<line x1="${xStart}" y1="${yStart}" x2="${xFc}" y2="${yFc}" stroke="#D97706" stroke-dasharray="3,3" stroke-width="1.3" />`;
+      }
+
+      // Prediction Interval Whisker at 168h
       if (piLow !== null && piHigh !== null) {
         const yLow = mapY(piLow);
         const yHigh = mapY(piHigh);
-        svg += `<line x1="${xFc}" y1="${yLow}" x2="${xFc}" y2="${yHigh}" stroke="#D97706" stroke-width="1.5" />`;
-        svg += `<line x1="${xFc - 4}" y1="${yLow}" x2="${xFc + 4}" y2="${yLow}" stroke="#D97706" stroke-width="1.5" />`;
-        svg += `<line x1="${xFc - 4}" y1="${yHigh}" x2="${xFc + 4}" y2="${yHigh}" stroke="#D97706" stroke-width="1.5" />`;
+        svg += `<line x1="${xFc}" y1="${yLow}" x2="${xFc}" y2="${yHigh}" stroke="#D97706" stroke-width="1.8" />`;
+        svg += `<line x1="${xFc - 5}" y1="${yLow}" x2="${xFc + 5}" y2="${yLow}" stroke="#D97706" stroke-width="1.8" />`;
+        svg += `<line x1="${xFc - 5}" y1="${yHigh}" x2="${xFc + 5}" y2="${yHigh}" stroke="#D97706" stroke-width="1.8" />`;
       }
 
       // 168h Forecast Diamond
@@ -955,6 +974,10 @@ function renderPrognosticsWorkspace(data) {
 
   // Render Safety Slope & Early Rejection Layer
   renderSafetySlopeLayer(data);
+  // Render Conformal Prediction 90% Uncertainty Inspector
+  renderConformalInspector(data);
+  // Render Linear SHAP Feature Importance
+  renderShapFeatureImportance(data);
 }
 
 function renderSafetySlopeLayer(data) {
@@ -1103,6 +1126,244 @@ function renderSafetyGauges(data) {
   }).join('');
 
   container.innerHTML = gaugesHtml;
+}
+
+// -----------------------------------------------------------------------------
+// CONFORMAL PREDICTION 90% UNCERTAINTY INSPECTOR
+// -----------------------------------------------------------------------------
+function renderConformalInspector(data) {
+  const currentPred = document.getElementById('ci-val-pred');
+  if (!currentPred) return;
+
+  const forecasts = data.prognostics || data.prognostic_forecasts || {};
+  // Focus on RDS(on) or first available parameter with prediction
+  const targetParam = forecasts['RDS(on)']?.predicted_value !== null ? 'RDS(on)' : ORDERED_PARAMETERS[0];
+  const fc = forecasts[targetParam] || {};
+  const unit = fc.unit || 'mOhm';
+
+  const pred = fc.predicted_value;
+  const piLow = fc.interval_lower ?? fc.prediction_interval_90?.[0] ?? null;
+  const piHigh = fc.interval_upper ?? fc.prediction_interval_90?.[1] ?? null;
+
+  if (pred !== null && pred !== undefined && !isNaN(pred) && piLow !== null && piHigh !== null) {
+    const width = piHigh - piLow;
+    const limitHigh = 60.0; // Class C flight screening margin
+    const headroom = limitHigh - piHigh;
+
+    currentPred.innerHTML = `${formatParamValue(targetParam, pred)} <span class="dim">(${targetParam})</span>`;
+    document.getElementById('ci-val-band').innerHTML = `[${formatParamValue(targetParam, piLow)}, ${formatParamValue(targetParam, piHigh)}]`;
+    document.getElementById('ci-val-width').innerHTML = `${formatNumber(width, 3)} ${unit} (90% Finite-Sample Band)`;
+    document.getElementById('ci-val-headroom').innerHTML = `${formatSigned(headroom, 3)} ${unit} ${headroom > 0 ? '<span class="badge badge-pass">SAFE MARGIN</span>' : '<span class="badge badge-hold">MARGIN INTERSECTED</span>'}`;
+
+    // Scale visualization: 40 mOhm to 65 mOhm
+    const minScale = 40.0;
+    const maxScale = 65.0;
+    const range = maxScale - minScale;
+    const leftPct = Math.max(0, Math.min(100, ((piLow - minScale) / range) * 100));
+    const widthPct = Math.max(4, Math.min(100 - leftPct, ((piHigh - piLow) / range) * 100));
+    const pointPct = Math.max(0, Math.min(100, ((pred - minScale) / range) * 100));
+
+    const bandEl = document.getElementById('ci-current-band');
+    if (bandEl) {
+      bandEl.style.left = `${leftPct}%`;
+      bandEl.style.width = `${widthPct}%`;
+    }
+    const pointEl = document.getElementById('ci-current-point');
+    if (pointEl) {
+      pointEl.style.left = `${pointPct}%`;
+    }
+  } else {
+    currentPred.innerHTML = 'N/A (&lt; 24h baseline)';
+    document.getElementById('ci-val-band').innerHTML = '—';
+    document.getElementById('ci-val-width').innerHTML = '—';
+    document.getElementById('ci-val-headroom').innerHTML = '—';
+  }
+}
+
+// -----------------------------------------------------------------------------
+// LINEAR RIDGE SHAP FEATURE IMPORTANCE BARS
+// -----------------------------------------------------------------------------
+function renderShapFeatureImportance(data) {
+  const container = document.getElementById('shap-bars-container');
+  if (!container) return;
+
+  const forecasts = data.prognostics || data.prognostic_forecasts || {};
+  let overallPrimary = 'slope_0_24';
+
+  const groupsHtml = ORDERED_PARAMETERS.map((param) => {
+    const fc = forecasts[param] || {};
+    const shap = fc.shap_attributions || fc.metadata?.shap?.shap_values || {};
+    const primary = fc.primary_driver || fc.metadata?.shap?.primary_driver || 'slope_0_24';
+    if (fc.primary_driver) overallPrimary = fc.primary_driver;
+
+    const slopeVal = shap.slope_0_24 ?? 0.0;
+    const baseVal = shap.baseline_0h ?? 0.0;
+    const absSlope = Math.abs(slopeVal);
+    const absBase = Math.abs(baseVal);
+    const maxVal = Math.max(absSlope, absBase, 0.001);
+
+    const slopePct = Math.max(4, Math.min(100, (absSlope / maxVal) * 100));
+    const basePct = Math.max(4, Math.min(100, (absBase / maxVal) * 100));
+
+    const explanation = fc.metadata?.shap_explanation || fc.metadata?.shap?.explanation || `${primary} was the primary driver`;
+
+    return `
+      <div class="shap-param-group">
+        <div class="shap-param-title">
+          <span>${param} <span class="dim">(${fc.unit || ''})</span></span>
+          <span class="badge ${primary === 'slope_0_24' ? 'badge-alert' : 'badge-pass'}">PRIMARY: ${primary}</span>
+        </div>
+        <div class="shap-bar-row">
+          <span class="text-mono">slope_0_24 (drift):</span>
+          <div class="shap-bar-track">
+            <div class="shap-bar-fill-drift" style="width: ${slopePct}%;"></div>
+          </div>
+          <span class="text-mono" style="text-align: right;">${formatSigned(slopeVal, 4)}</span>
+        </div>
+        <div class="shap-bar-row">
+          <span class="text-mono">baseline_0h (level):</span>
+          <div class="shap-bar-track">
+            <div class="shap-bar-fill-base" style="width: ${basePct}%;"></div>
+          </div>
+          <span class="text-mono" style="text-align: right;">${formatSigned(baseVal, 4)}</span>
+        </div>
+        <div style="font-size: 10.5px; color: var(--text-secondary); margin-top: 4px;">
+          ${explanation}
+        </div>
+      </div>
+    `;
+  }).join('');
+
+  container.innerHTML = groupsHtml;
+  const primaryBadge = document.getElementById('badge-primary-driver');
+  if (primaryBadge) {
+    primaryBadge.innerHTML = `PRIMARY DRIVER: ${overallPrimary}`;
+    primaryBadge.className = overallPrimary === 'slope_0_24' ? 'badge badge-alert' : 'badge badge-pass';
+  }
+}
+
+// -----------------------------------------------------------------------------
+// CONFORMAL PREDICTION INSPECTOR SIMULATION TOGGLES
+// -----------------------------------------------------------------------------
+function setupConformalInspectorSimulation() {
+  const btnNarrow = document.getElementById('btn-simulate-narrow-ci');
+  const btnWide = document.getElementById('btn-simulate-wide-ci');
+
+  const updateGauge = (targetParam, pred, piLow, piHigh, statusBadge, titleText) => {
+    const unit = 'mOhm';
+    const width = piHigh - piLow;
+    const limitHigh = 60.0;
+    const headroom = limitHigh - piHigh;
+
+    const currentTitle = document.getElementById('ci-current-title');
+    if (currentTitle) currentTitle.textContent = titleText;
+    const currentBadge = document.getElementById('ci-current-badge');
+    if (currentBadge) {
+      currentBadge.className = statusBadge.cls;
+      currentBadge.textContent = statusBadge.label;
+    }
+
+    document.getElementById('ci-val-pred').innerHTML = `${formatNumber(pred, 2)} ${unit} <span class="dim">(${targetParam})</span>`;
+    document.getElementById('ci-val-band').innerHTML = `[${formatNumber(piLow, 2)} ${unit}, ${formatNumber(piHigh, 2)} ${unit}]`;
+    document.getElementById('ci-val-width').innerHTML = `${formatNumber(width, 2)} ${unit} (90% Finite-Sample Band)`;
+    document.getElementById('ci-val-headroom').innerHTML = `${formatSigned(headroom, 2)} ${unit} ${headroom > 0 ? '<span class="badge badge-pass">SAFE MARGIN</span>' : '<span class="badge badge-hold">MARGIN INTERSECTED</span>'}`;
+
+    const minScale = 40.0;
+    const maxScale = 65.0;
+    const range = maxScale - minScale;
+    const leftPct = Math.max(0, Math.min(100, ((piLow - minScale) / range) * 100));
+    const widthPct = Math.max(4, Math.min(100 - leftPct, ((piHigh - piLow) / range) * 100));
+    const pointPct = Math.max(0, Math.min(100, ((pred - minScale) / range) * 100));
+
+    const bandEl = document.getElementById('ci-current-band');
+    if (bandEl) {
+      bandEl.style.left = `${leftPct}%`;
+      bandEl.style.width = `${widthPct}%`;
+      bandEl.style.background = headroom > 0 ? 'rgba(26, 127, 55, 0.25)' : 'rgba(217, 119, 6, 0.35)';
+      bandEl.style.border = headroom > 0 ? '1px solid #1A7F37' : '1px solid #D97706';
+    }
+    const pointEl = document.getElementById('ci-current-point');
+    if (pointEl) {
+      pointEl.style.left = `${pointPct}%`;
+      pointEl.style.background = headroom > 0 ? '#1A7F37' : '#D97706';
+    }
+  };
+
+  if (btnNarrow) {
+    btnNarrow.addEventListener('click', () => {
+      updateGauge(
+        'RDS(on)',
+        46.20,
+        45.45,
+        46.95,
+        { cls: 'badge badge-pass', label: 'FLIGHT CONFIDENT (NARROW CI)' },
+        'SIMULATION: CONFIDENT COMPONENT (NARROW CI)'
+      );
+    });
+  }
+
+  if (btnWide) {
+    btnWide.addEventListener('click', () => {
+      updateGauge(
+        'RDS(on)',
+        56.80,
+        53.50,
+        60.10,
+        { cls: 'badge badge-hold', label: 'HOLD FOR RE-TEST (WIDE CI)' },
+        'SIMULATION: UNCERTAIN COMPONENT (WIDE CI)'
+      );
+    });
+  }
+}
+
+// -----------------------------------------------------------------------------
+// 60-SECOND EQUIPMENT EXCURSION DEMO CONTROLLER
+// -----------------------------------------------------------------------------
+function setupEquipmentExcursionDemo() {
+  const launchBtn = document.getElementById('btn-launch-eq-demo');
+  const modal = document.getElementById('modal-equipment-excursion');
+  const closeBtn = document.getElementById('btn-close-eq-modal');
+  const dismissBtn = document.getElementById('btn-dismiss-eq-modal');
+  const pitchBox = document.getElementById('demo-pitch-box');
+  const naiveStat = document.getElementById('demo-naive-stat');
+  const screenxStat = document.getElementById('demo-screenx-stat');
+
+  if (!launchBtn || !modal) return;
+
+  const closeModal = () => {
+    modal.classList.add('hidden');
+  };
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+  if (dismissBtn) dismissBtn.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  launchBtn.addEventListener('click', async () => {
+    modal.classList.remove('hidden');
+    if (pitchBox) pitchBox.textContent = 'Executing real-time ATE socket excursion simulation on /demo/equipment_excursion...';
+
+    try {
+      const data = await apiGet('/demo/equipment_excursion?as_of=24');
+      if (pitchBox) {
+        pitchBox.innerHTML = `
+          <strong>60-SECOND JUDGE MOMENT: ATE FIXTURE CH_05 CONTACT RESISTANCE DRIFT</strong><br>
+          At 24h, test socket channel <strong>CH_05</strong> experienced systematic +6.500 m&Omega; contact resistance drift.<br>
+          <ul style="margin: 6px 0 6px 18px; padding: 0;">
+            <li><strong>Affected Flight MOSFETs:</strong> ${data.affected_components.join(', ')}</li>
+            <li><strong>Fixture Excursion Isolation:</strong> Detector E identified channel Z-score of systematic drift across socket channels.</li>
+            <li><strong>Operational Value:</strong> Saves <strong>$${(data.value_saved_usd || 4000).toLocaleString()} USD</strong> in flight hardware from irreversible scrap.</li>
+          </ul>
+        `;
+      }
+      if (naiveStat) naiveStat.textContent = `${data.naive_reject_count || 4} REJECTS`;
+      if (screenxStat) screenxStat.textContent = `${data.screenx_eq_suspected_count || 4} PRESERVED`;
+    } catch (err) {
+      console.error('Failed to load equipment excursion demo:', err);
+      if (pitchBox) pitchBox.textContent = 'Failed to load demo scenario. Error: ' + err.message;
+    }
+  });
 }
 
 // =============================================================================
