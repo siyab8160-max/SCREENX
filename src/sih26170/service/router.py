@@ -85,12 +85,18 @@ class ServiceRouter:
         # Route: GET /lots
         if path == "/lots":
             lots = self.demo_loader.list_lots()
+            # If explicit include_demo query param is present, prepend the excursion scenario lot
+            if query.get("include_demo") and "LOT_DEMO_EXCURSION" not in lots:
+                lots = ["LOT_DEMO_EXCURSION"] + lots
             return 200, {"total_lots": len(lots), "lots": lots}
 
         # Route: GET /lots/{lot_id}/components
         parts = [p for p in path.split("/") if p]
         if len(parts) == 3 and parts[0] == "lots" and parts[2] == "components":
             lot_id = parts[1]
+            if lot_id == "LOT_DEMO_EXCURSION":
+                comps = [f"LOT_DEMO_EXCURSION_C{i:03d}" for i in range(1, 17)]
+                return 200, {"lot_id": lot_id, "total_components": len(comps), "components": comps}
             try:
                 comps = self.demo_loader.list_components(lot_id)
                 return 200, {"lot_id": lot_id, "total_components": len(comps), "components": comps}
@@ -105,6 +111,22 @@ class ServiceRouter:
 
             # 1. Bare /components/{component_id}: Metadata ONLY
             if sub_resource is None:
+                if component_id.startswith("LOT_DEMO_EXCURSION"):
+                    return 200, {
+                        "component_id": component_id,
+                        "lot_id": "LOT_DEMO_EXCURSION",
+                        "part_number": "IRHNJ57130",
+                        "slash_sheet": "MIL-PRF-19500/703",
+                        "package": "SMD-0.5",
+                        "source_type": "SYNTHETIC_EXCURSION_DEMO",
+                        "available_checkpoints": [0, 24, 48, 72, 96, 120, 144, 168],
+                        "monitored_parameters": ["IDSS", "VGS(th)", "RDS(on)", "IGSS"],
+                        "note": (
+                            "Bare component endpoint returns metadata only. "
+                            "To evaluate screening or prognostics, use /components/{id}/pipeline?as_of=T "
+                            "with an explicit as_of query parameter."
+                        ),
+                    }
                 try:
                     meta = self.demo_loader.get_component_info(component_id)
                     meta["note"] = (
@@ -133,11 +155,25 @@ class ServiceRouter:
                 return 400, {"error": f"Invalid 'as_of' value '{as_of_list[0]}'. Must be an integer."}
 
             try:
-                # Execute single underlying pipeline execution
-                pipeline_result = self.demo_loader.run_scenario(
-                    component_id=component_id,
-                    as_of_hours=as_of_hours,
-                )
+                if component_id.startswith("LOT_DEMO_EXCURSION"):
+                    from sih26170.synthetic.equipment_excursion_demo import generate_equipment_drift_demo_lot
+                    from sih26170.pipeline.orchestrator import run_component_pipeline
+                    df = generate_equipment_drift_demo_lot()
+                    comp_df = df[(df["component_id"] == component_id) & (df["elapsed_hours"] <= as_of_hours)]
+                    lot_df = df[df["elapsed_hours"] <= as_of_hours]
+                    if comp_df.empty:
+                        return 404, {"error": f"Component '{component_id}' not found in LOT_DEMO_EXCURSION"}
+                    pipeline_result = run_component_pipeline(
+                        telemetry=comp_df,
+                        component_id=component_id,
+                        as_of_hours=as_of_hours,
+                        lot_telemetry=lot_df,
+                    )
+                else:
+                    pipeline_result = self.demo_loader.run_scenario(
+                        component_id=component_id,
+                        as_of_hours=as_of_hours,
+                    )
             except KeyError as e:
                 return 404, {"error": str(e)}
             except ValueError as e:
@@ -146,13 +182,21 @@ class ServiceRouter:
             # Dispatch sub-resource view
             if sub_resource == "pipeline":
                 resp_data = pipeline_result.to_dict()
-                try:
-                    comp_tel = self.provider.get_component_telemetry(component_id, as_of_hours)
-                    resp_data["observed_telemetry"] = comp_tel[
+                if component_id.startswith("LOT_DEMO_EXCURSION"):
+                    from sih26170.synthetic.equipment_excursion_demo import generate_equipment_drift_demo_lot
+                    df = generate_equipment_drift_demo_lot()
+                    comp_df = df[(df["component_id"] == component_id) & (df["elapsed_hours"] <= as_of_hours)]
+                    resp_data["observed_telemetry"] = comp_df[
                         ["elapsed_hours", "parameter_name", "value", "unit"]
                     ].to_dict(orient="records")
-                except Exception:
-                    resp_data["observed_telemetry"] = []
+                else:
+                    try:
+                        comp_tel = self.provider.get_component_telemetry(component_id, as_of_hours)
+                        resp_data["observed_telemetry"] = comp_tel[
+                            ["elapsed_hours", "parameter_name", "value", "unit"]
+                        ].to_dict(orient="records")
+                    except Exception:
+                        resp_data["observed_telemetry"] = []
                 return 200, resp_data
             elif sub_resource == "screening":
                 return 200, {

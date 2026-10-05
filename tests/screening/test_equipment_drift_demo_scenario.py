@@ -53,3 +53,33 @@ def test_router_serves_equipment_drift_demo():
     assert body["screenx_eq_suspected_count"] == 4
     assert body["hardware_saved_count"] == 4
     assert "pitch_60s" in body
+
+
+def test_router_serves_equipment_drift_lot_and_pipeline():
+    """Verify that LOT_DEMO_EXCURSION components and pipeline are directly inspectable via router."""
+    router = ServiceRouter()
+
+    # 1. Verify components endpoint for LOT_DEMO_EXCURSION
+    status, comps_body = router.dispatch("GET", "/lots/LOT_DEMO_EXCURSION/components")
+    assert status == 200
+    assert comps_body["lot_id"] == "LOT_DEMO_EXCURSION"
+    assert comps_body["total_components"] == 16
+    assert "LOT_DEMO_EXCURSION_C013" in comps_body["components"]
+
+    # 2. Verify component metadata endpoint
+    status, meta_body = router.dispatch("GET", "/components/LOT_DEMO_EXCURSION_C013")
+    assert status == 200
+    assert meta_body["component_id"] == "LOT_DEMO_EXCURSION_C013"
+    assert meta_body["lot_id"] == "LOT_DEMO_EXCURSION"
+
+    # 3. Verify pipeline evaluation endpoint for affected CH_05 component
+    status, pipe_body = router.dispatch("GET", "/components/LOT_DEMO_EXCURSION_C013/pipeline?as_of=24")
+    assert status == 200
+    assert pipe_body["screening"]["final_state"] == "EQUIPMENT_SUSPECTED"
+    assert pipe_body["screening"]["disposition_qualifier"] == "EQUIPMENT_ONLY"
+    assert len(pipe_body["observed_telemetry"]) > 0
+
+    # 4. Verify nominal component in same lot
+    status, nom_body = router.dispatch("GET", "/components/LOT_DEMO_EXCURSION_C001/pipeline?as_of=24")
+    assert status == 200
+    assert nom_body["screening"]["final_state"] == "PASS"

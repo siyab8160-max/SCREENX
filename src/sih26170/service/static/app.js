@@ -217,7 +217,7 @@ function setupHierarchyControls() {
   if (lotSelect) {
     lotSelect.addEventListener('change', async (e) => {
       state.selectedLotId = e.target.value;
-      if (state.activeDataset === 'demo') {
+      if (state.activeDataset === 'demo' || state.activeDataset === 'excursion') {
         await loadLotComponents(state.selectedLotId);
       } else if (state.uploadedSummary) {
         const compsForLot = Array.from(new Set(state.uploadedSummary.rows.filter(r => r.lot_id === state.selectedLotId).map(r => r.component_id)));
@@ -299,7 +299,12 @@ function setupChartParamButtons() {
 
 function populateLotSelect(lots) {
   const sel = document.getElementById('select-lot');
-  sel.innerHTML = lots.map((l) => `<option value="${l}">${l}</option>`).join('');
+  if (!sel) return;
+  const allLots = lots.includes('LOT_DEMO_EXCURSION') ? lots : ['LOT_DEMO_EXCURSION', ...lots];
+  sel.innerHTML = allLots.map((l) => {
+    const label = l === 'LOT_DEMO_EXCURSION' ? '\u26A1 LOT_DEMO_EXCURSION (CH_05 Socket Drift)' : l;
+    return `<option value="${l}">${label}</option>`;
+  }).join('');
 }
 
 function populateComponentSelect(components) {
@@ -1364,6 +1369,14 @@ function setupEquipmentExcursionDemo() {
       if (pitchBox) pitchBox.textContent = 'Failed to load demo scenario. Error: ' + err.message;
     }
   });
+
+  const inspectBtn = document.getElementById('btn-inspect-eq-workstation');
+  if (inspectBtn) {
+    inspectBtn.addEventListener('click', async () => {
+      closeModal();
+      await activateExcursionScenario();
+    });
+  }
 }
 
 // =============================================================================
@@ -1396,6 +1409,59 @@ function setupDataWorkspace() {
 
   setupUploadInteractions();
   setupReportGeneration();
+}
+
+async function activateExcursionScenario() {
+  clearStaleAnalysisResults();
+  state.activeDataset = 'excursion';
+
+  const railName = document.getElementById('rail-dataset-name');
+  const railBadge = document.getElementById('rail-dataset-badge');
+  if (railName) railName.textContent = 'CH_05 Socket Drift';
+  if (railBadge) {
+    railBadge.textContent = 'FIXTURE EXCURSION';
+    railBadge.className = 'badge badge-equipment';
+  }
+
+  const ctxDataset = document.getElementById('ctx-dataset');
+  const valSource = document.getElementById('val-source');
+  if (ctxDataset) ctxDataset.textContent = 'ATE CH_05 Excursion';
+  if (valSource) valSource.textContent = 'FIXTURE DRIFT DEMO';
+
+  const trActiveDataset = document.getElementById('tr-active-dataset');
+  const trSource = document.getElementById('tr-source');
+  const trFileMeta = document.getElementById('tr-file-meta');
+  if (trActiveDataset) trActiveDataset.textContent = 'ATE Socket Fixture Drift Scenario (CH_05)';
+  if (trSource) trSource.textContent = 'SIMULATED ATE CHAMBER CARD (LOT_DEMO_EXCURSION)';
+  if (trFileMeta) trFileMeta.textContent = '16 components across 4 socket channels (CH_01, CH_02, CH_03, CH_05)';
+
+  try {
+    state.selectedLotId = 'LOT_DEMO_EXCURSION';
+    state.selectedComponentId = 'LOT_DEMO_EXCURSION_C013'; // First CH_05 affected component!
+
+    const lotSelect = document.getElementById('select-lot');
+    if (lotSelect) {
+      if (!Array.from(lotSelect.options).some((o) => o.value === 'LOT_DEMO_EXCURSION')) {
+        const opt = document.createElement('option');
+        opt.value = 'LOT_DEMO_EXCURSION';
+        opt.textContent = '\u26A1 LOT_DEMO_EXCURSION (CH_05 Socket Drift)';
+        lotSelect.prepend(opt);
+      }
+      lotSelect.value = 'LOT_DEMO_EXCURSION';
+    }
+
+    await loadLotComponents('LOT_DEMO_EXCURSION');
+    const compSelect = document.getElementById('select-component');
+    if (compSelect) compSelect.value = 'LOT_DEMO_EXCURSION_C013';
+
+    setCheckpoint(24);
+    await loadComponentInvestigation('LOT_DEMO_EXCURSION_C013', 24);
+    await buildTrayMatrix();
+  } catch (err) {
+    console.error('Failed to activate excursion scenario:', err);
+  }
+
+  switchWorkspace('screening');
 }
 
 async function activateDemoDataset() {

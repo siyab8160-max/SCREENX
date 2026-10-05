@@ -33,16 +33,45 @@ from sih26170.screening.schema import (
     EquipmentStatus,
     ScreeningState,
 )
+LIMIT_MAPPING: Dict[str, Tuple[Optional[float], Optional[float]]] = {
+    "IDSS": (float("nan"), 50.0),
+    "VGS(th)": (2.0, 4.0),
+    "RDS(on)": (float("nan"), 180.0),
+    "IGSS": (-100.0, 100.0),
+}
+
+
 def _make_nominal_demo_lot(lot_id: str = "LOT_DEMO_EXCURSION", n_components: int = 16) -> pd.DataFrame:
-    """Generate a clean, nominal baseline lot across 0h, 24h, 96h, 168h."""
+    """Generate a clean, nominal baseline lot across all standard checkpoints [0, 24, 48, 72, 96, 120, 144, 168]h."""
     rows = []
+    unit_map = {"IDSS": "uA", "VGS(th)": "V", "RDS(on)": "mOhm", "IGSS": "nA"}
     for i in range(1, n_components + 1):
         cid = f"{lot_id}_C{i:03d}"
-        for t in [0, 24, 96, 168]:
-            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "IDSS", "elapsed_hours": t, "value": 0.50 + 0.01 * (i % 3), "unit": "uA", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
-            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "VGS(th)", "elapsed_hours": t, "value": 2.85 + 0.01 * (i % 3), "unit": "V", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
-            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "RDS(on)", "elapsed_hours": t, "value": 45.0 + 0.1 * (i % 3), "unit": "mOhm", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
-            rows.append({"component_id": cid, "lot_id": lot_id, "parameter_name": "IGSS", "elapsed_hours": t, "value": 5.0 + 0.1 * (i % 3), "unit": "nA", "measurement_quality": "VALID", "instrument_id": "ATE_01", "channel_id": "CH_01"})
+        for t in [0, 24, 48, 72, 96, 120, 144, 168]:
+            param_vals = [
+                ("IDSS", 0.50 + 0.01 * (i % 3)),
+                ("VGS(th)", 2.85 + 0.01 * (i % 3)),
+                ("RDS(on)", 45.0 + 0.1 * (i % 3)),
+                ("IGSS", 5.0 + 0.1 * (i % 3)),
+            ]
+            for p, v in param_vals:
+                lim_low, lim_high = LIMIT_MAPPING[p]
+                rows.append({
+                    "component_id": cid,
+                    "lot_id": lot_id,
+                    "parameter_name": p,
+                    "elapsed_hours": t,
+                    "value": v,
+                    "unit": unit_map[p],
+                    "temperature_C": 150.0,
+                    "test_condition": "HTRB_150C",
+                    "instrument_id": "ATE_01",
+                    "channel_id": "CH_01",
+                    "measurement_quality": "VALID",
+                    "rework_count": 0,
+                    "absolute_limit_low": lim_low,
+                    "absolute_limit_high": lim_high,
+                })
     return pd.DataFrame(rows)
 
 

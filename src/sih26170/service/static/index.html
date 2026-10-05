@@ -173,7 +173,7 @@
           <div class="card-header">
             <h2 id="heading-screening-summary" class="card-title">SECTION A &bull; SCREENING SUMMARY</h2>
             <div class="card-actions">
-              <button type="button" class="btn-highlight-action" id="btn-launch-eq-demo">&#9889; 60s Demo: CH_05 Drift vs Naive Scrap</button>
+              <button type="button" class="btn-highlight-action" id="btn-launch-eq-demo">&#9889; ATE Fixture Drift Scenario [CH_05 Excursion]</button>
               <span class="badge badge-qualifier" id="card-asof-tag">AS-OF: 24 h</span>
             </div>
           </div>
@@ -236,6 +236,7 @@
               <div class="tray-legend-item"><span class="tray-legend-dot dot-pass"></span> PASS</div>
               <div class="tray-legend-item"><span class="tray-legend-dot dot-alert"></span> ALERT / DRIFT</div>
               <div class="tray-legend-item"><span class="tray-legend-dot dot-fail"></span> FAIL / REJECT</div>
+              <div class="tray-legend-item"><span class="tray-legend-dot dot-equipment"></span> EQUIPMENT / FIXTURE DRIFT</div>
               <div class="tray-legend-item"><span class="tray-legend-dot dot-selected"></span> SELECTED</div>
             </div>
           </div>
@@ -955,7 +956,8 @@
           </div>
         </div>
 
-        <div style="margin-top: 16px; text-align: right;">
+        <div style="margin-top: 16px; display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="button" class="btn-primary text-mono" id="btn-inspect-eq-workstation" style="padding: 6px 16px;">Inspect Scenario in Workstation &rarr;</button>
           <button type="button" class="btn-action text-mono" id="btn-dismiss-eq-modal">Dismiss Demonstration</button>
         </div>
       </div>

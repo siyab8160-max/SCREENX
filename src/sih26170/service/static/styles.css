@@ -960,6 +960,7 @@ body {
 .tray-legend-dot.dot-pass { background: var(--state-pass-bg); border-color: var(--state-pass-border); }
 .tray-legend-dot.dot-alert { background: var(--state-alert-bg); border-color: var(--state-alert-border); }
 .tray-legend-dot.dot-fail { background: var(--state-fail-bg); border-color: var(--state-fail-border); }
+.tray-legend-dot.dot-equipment { background: rgba(168, 85, 247, 0.25); border-color: #A855F7; }
 .tray-legend-dot.dot-selected { background: var(--accent-cyan-dim); border-color: var(--accent-cyan); }
 
 /* ==============================================================================
