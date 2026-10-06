@@ -16,13 +16,18 @@ import pytest
 from sih26170.screening.joint import (
     DEFAULT_JOINT_MAHALANOBIS_THRESHOLD,
     evaluate_joint_mahalanobis,
+    evaluate_multivariate_joint_backstop,
 )
 from sih26170.screening.pipeline import screen_component
 from sih26170.screening.schema import (
+    AbruptStepStatus,
     DispositionQualifier,
     JointStatus,
+    PeerDeviationStatus,
     ScreeningState,
+    TemporalDriftStatus,
 )
+from sih26170.screening.transforms import transform_parameter
 
 
 def make_joint_test_lot(n_components: int = 15) -> pd.DataFrame:
@@ -84,23 +89,39 @@ def test_joint_nominal_lot():
 def test_joint_correlated_sub_threshold_drift():
     """Verify that coordinated sub-threshold shifts across multiple parameters trigger D_joint.
 
-    Simulates a component where IDSS, VGS(th), RDS(on), and IGSS all exhibit correlated
-    shifts that are individual sub-threshold (e.g. 1.8-2.2 sigma, below univariate cutoff of 2.5),
-    but jointly create an extreme Mahalanobis excursion.
+    Proves the differentiation claim: 'D_joint catches what no single detector can.'
+    Specifically:
+    1. Every parameter individually sits strictly below univariate outlier cutoffs:
+       - Detector B (D_peer): |z_peer| < 3.0 sigma (MILD outlier threshold is 3.0; status is PEER_NORMAL)
+       - Detector C (D_drift): |g_drift| < 2.5 sigma (SUBTLE drift threshold is 2.5; status is STATIONARY)
+       - Detector A (Specification): passes limits
+       - Detector D (Step Change): status is STEP_NORMAL
+       - Detector E (Equipment): suspected is False
+       Consequently, every parameter individually evaluates to parameter_state == ScreeningState.PASS.
+    2. None of the individual detectors flag the component.
+    3. However, the joint Mahalanobis distance D_joint across all 4 parameters exceeds
+       DEFAULT_JOINT_MAHALANOBIS_THRESHOLD (4.25 ~ chi^2_4 upper 0.1% quantile).
+    4. The fusion engine escalates the component to HOLD (with JOINT_MAHALANOBIS_EXCESS reason).
     """
     df = make_joint_test_lot(n_components=20)
     target_cid = "LOT_TEST_JOINT_C001"
 
-    # Inject correlated +2.0 sigma shift on all 4 parameters for C001 at 24h
-    # IDSS lot std ~ 0.01 -> shift by +0.02
-    # VGS(th) lot std ~ 0.01 -> shift by +0.02
-    # RDS(on) lot std ~ 0.2 -> shift by +0.45
-    # IGSS lot std ~ 0.1 -> shift by +0.22
+    # Read target component baseline values at t=0h in transformed space
+    u0_idss = transform_parameter("IDSS", df.loc[(df["component_id"] == target_cid) & (df["parameter_name"] == "IDSS") & (df["elapsed_hours"] == 0), "value"].iloc[0])
+    u0_vgs = transform_parameter("VGS(th)", df.loc[(df["component_id"] == target_cid) & (df["parameter_name"] == "VGS(th)") & (df["elapsed_hours"] == 0), "value"].iloc[0])
+    u0_rds = transform_parameter("RDS(on)", df.loc[(df["component_id"] == target_cid) & (df["parameter_name"] == "RDS(on)") & (df["elapsed_hours"] == 0), "value"].iloc[0])
+    u0_igss = transform_parameter("IGSS", df.loc[(df["component_id"] == target_cid) & (df["parameter_name"] == "IGSS") & (df["elapsed_hours"] == 0), "value"].iloc[0])
+
+    # Inject calibrated 1.9 sigma shifts in Delta u space:
+    # - IDSS (log scale): +0.05 * 1.9 -> produces |z| = 2.03 < 3.0, |g| = 1.90 < 2.5
+    # - VGS(th) (linear): +0.010 * 1.9 -> produces |z| = 0.34 < 3.0, |g| = 1.84 < 2.5
+    # - RDS(on) (log scale): +0.010 * 1.9 -> produces |z| = 2.58 < 3.0, |g| = 1.90 < 2.5
+    # - IGSS (asinh scale): +0.10 * 1.9 -> produces |z| = 1.82 < 3.0, |g| = 1.90 < 2.5
     shifts = {
-        "IDSS": 0.50 + 0.035,
-        "VGS(th)": 3.00 + 0.035,
-        "RDS(on)": 45.0 + 0.8,
-        "IGSS": 2.0 + 0.4,
+        "IDSS": float(np.exp(u0_idss + 0.05 * 1.9)),
+        "VGS(th)": float(u0_vgs + 0.010 * 1.9),
+        "RDS(on)": float(np.exp(u0_rds + 0.010 * 1.9)),
+        "IGSS": float(np.sinh(u0_igss + 0.10 * 1.9)),
     }
     for p, val in shifts.items():
         df.loc[
@@ -110,23 +131,84 @@ def test_joint_correlated_sub_threshold_drift():
             "value",
         ] = val
 
+    # 1. Direct evaluation of Detector J / D_joint with canonical threshold (4.25)
     ev = evaluate_joint_mahalanobis(
         component_id=target_cid,
         lot_id="LOT_TEST_JOINT",
         checkpoint=24,
         lot_observations_as_of=df,
-        threshold=4.0,
+        threshold=DEFAULT_JOINT_MAHALANOBIS_THRESHOLD,
     )
     assert ev.mahalanobis_distance is not None
-    assert ev.mahalanobis_distance > 4.0
+    assert ev.mahalanobis_distance > DEFAULT_JOINT_MAHALANOBIS_THRESHOLD
     assert ev.suspected is True
     assert ev.status == JointStatus.JOINT_ANOMALY_ALERT
     assert "JOINT_MAHALANOBIS_EXCESS" in ev.reason_code
 
-    # Verify end-to-end integration via screen_component
+    # 2. End-to-end pipeline evaluation via screen_component
     res = screen_component(df, target_cid, as_of_hours=24)
+
+    # Rigorous differentiation assertions:
+    # Verify that Detector B (Peer) does NOT independently flag ANY parameter (|z| < 3.0)
+    for p_name, p_res in res.parameter_results.items():
+        # Detector B check
+        assert p_res.peer_evidence.status == PeerDeviationStatus.PEER_NORMAL, (
+            f"Expected {p_name} Detector B to be PEER_NORMAL, got {p_res.peer_evidence.status}"
+        )
+        assert abs(p_res.peer_evidence.z_score) < 3.0, (
+            f"{p_name} z_score {p_res.peer_evidence.z_score} exceeded mild threshold 3.0"
+        )
+
+        # Detector C check
+        assert p_res.temporal_evidence.status == TemporalDriftStatus.STATIONARY, (
+            f"Expected {p_name} Detector C to be STATIONARY, got {p_res.temporal_evidence.status}"
+        )
+        assert abs(p_res.temporal_evidence.normalized_drift) < 2.5, (
+            f"{p_name} normalized drift {p_res.temporal_evidence.normalized_drift} exceeded subtle threshold 2.5"
+        )
+
+        # Single parameter state must remain PASS
+        assert p_res.parameter_state == ScreeningState.PASS, (
+            f"Expected univariate parameter {p_name} to PASS, got {p_res.parameter_state}"
+        )
+
+    # 3. Confirm D_joint fired and successfully escalated the component to HOLD
     assert res.joint_evidence is not None
     assert res.joint_evidence.suspected is True
-    # The component should be escalated to HOLD / ALERT rather than escaping as PASS
-    assert res.final_state in (ScreeningState.HOLD, ScreeningState.ALERT, ScreeningState.FAIL)
-    assert res.compound_evidence is True
+    assert res.joint_evidence.status == JointStatus.JOINT_ANOMALY_ALERT
+    assert res.joint_evidence.mahalanobis_distance > DEFAULT_JOINT_MAHALANOBIS_THRESHOLD
+    assert res.final_state in (ScreeningState.HOLD, ScreeningState.ALERT)
+    assert "JOINT_MAHALANOBIS_EXCESS" in res.primary_reason_code
+
+
+def test_joint_benchmark_frozen_dataset_precision():
+    """Verify precision benchmark on the frozen 398-component synthetic benchmark.
+
+    Demonstrates that evaluating D_joint at t=24h with calibrated threshold D_crit=4.25
+    achieves exactly 66.7% precision (2 True Positives, 1 False Positive out of 3 flagged parts)
+    on data/synthetic_phase2f_frozen.
+    """
+    from pathlib import Path
+    repo_root = Path(__file__).resolve().parent.parent.parent
+    data_dir = repo_root / "data/synthetic_phase2f_frozen"
+    if not (data_dir / "observations.csv").exists():
+        pytest.skip("Frozen benchmark dataset not present.")
+
+    obs_df = pd.read_csv(data_dir / "observations.csv")
+    gt_df = pd.read_csv(data_dir / "ground_truth.csv")
+    lots = sorted(obs_df["lot_id"].unique())
+
+    res = evaluate_multivariate_joint_backstop(
+        obs_df=obs_df,
+        gt_df=gt_df,
+        lot_ids=lots,
+        checkpoint=24,
+        threshold=DEFAULT_JOINT_MAHALANOBIS_THRESHOLD,
+    )
+
+    c = res["contingency"]
+    assert c["tp"] == 2
+    assert c["fp"] == 1
+    assert c["flagged"] == 3
+    assert c["precision"] == 0.667
+

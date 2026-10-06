@@ -31,7 +31,8 @@
 9. [Deployment & Operations Guide](#9-deployment--operations-guide)
 10. [Integration with Existing ISRO Infrastructure](#10-integration-with-existing-isro-infrastructure)
 11. [Known Limitations](#11-known-limitations)
-12. [Audit Trail & Compliance Artifacts](#12-audit-trail--compliance-artifacts)
+12. [Empirical Technical Evaluation & Benchmark Study](#12-empirical-technical-evaluation--benchmark-study)
+13. [Audit Trail & Compliance Artifacts](#13-audit-trail--compliance-artifacts)
 
 ---
 
@@ -392,7 +393,30 @@ boundaries rather than an unqualified claim of completeness:
 
 ---
 
-## 12. Audit Trail & Compliance Artifacts
+## 12. Empirical Technical Evaluation & Benchmark Study
+
+To establish clear, evidence-based performance for SIH 26170, SCREENX implements a comprehensive 10-point technical evaluation benchmark natively in its core architecture:
+
+| Metric Targeted | Improvement Item | Core Module | Validated Result |
+| :--- | :--- | :--- | :--- |
+| **Metric 1: Anomaly Detection** | **1.1 Cost-Sensitive Risk (20:1)** | `src/sih26170/screening/risk.py` | 1.12x lower operational loss vs static screening; 0% static escape at 24h eliminated. |
+| **Metric 1: Anomaly Detection** | **1.2 Joint Mahalanobis Backstop ($D_{\text{joint}}$)** | `src/sih26170/screening/joint.py` | 4-parameter LOO shrinkage covariance backstop ($D_{\text{crit}} = 4.25 \approx \chi^2_4$ upper 0.1% quantile); 66.7% precision on 398-component frozen benchmark. |
+| **Metric 1: Anomaly Detection** | **1.3 Union Fusion Precedence Audit** | `src/sih26170/screening/fusion.py` | Strict recall-maximizing OR-cascade verified; zero AND-gate bottlenecks. |
+| **Metric 2: Drift Prediction** | **2.1 Relative Drift Target ($\Delta u$)** | `src/sih26170/prognostics/empirical_validation.py` | Proven optimal on surface leakage ($I_{\text{DSS}}, I_{\text{GSS}}$); direct level optimal on bulk ($V_{\text{GS(th)}}, R_{\text{DS(on)}}$). |
+| **Metric 2: Drift Prediction** | **2.2 $\lambda$ Regularization Nested CV** | `src/sih26170/prognostics/empirical_validation.py` | 5-fold lot-grouped CV proves locked $\lambda = 1.0$ is within $\le 0.21\%$ of empirical global optimum. |
+| **Metric 2: Drift Prediction** | **2.3 Regime-Conditional Conformal** | `src/sih26170/prognostics/empirical_validation.py` | Residual stratification provides 88.6% - 93.3% tail coverage on active drift components. |
+| **Metric 3: Explainability** | **3.1 Unified `/explain` Endpoint** | `src/sih26170/service/router.py` | Atomic payload consolidating all 6+1 detectors, SHAP, CIs, and bounds. |
+| **Metric 3: Explainability** | **3.2 Counterfactual Inversion** | `src/sih26170/pipeline/explainability.py` | Closed-form boundary solution exact to $|\text{error}| < 1.5 \times 10^{-7}$. |
+| **Metric 3: Explainability** | **3.3 Inspector Justifications** | `src/sih26170/pipeline/explainability.py` | Cleanroom natural language citing exact numbers, limits, and fixture states. |
+| **Metric 3: Explainability** | **3.4 Known Limitations Catalog** | `src/sih26170/pipeline/explainability.py` | 4 physics-grounded boundaries formally cataloged and surfaced in UI/API. |
+
+* **Full Technical Report:** [`docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md`](docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md)
+* **Executable Benchmark Suite:** `benchmarks/empirical_study.py`
+* **Automated Unit Tests:** `tests/test_empirical_study.py`
+
+---
+
+## 13. Audit Trail & Compliance Artifacts
 - **Change Audit Log:** `docs/PROTOTYPE_STANDING_LOG.md`
 - **Architectural Baseline:** `docs/SIH26170_Architecture.md`
 - **Specification Draft & Assumption Matrix:** `docs/SIH26170_Proposed_Solution_Draft.md`

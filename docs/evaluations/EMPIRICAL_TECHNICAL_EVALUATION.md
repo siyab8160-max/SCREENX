@@ -68,10 +68,12 @@ To prevent outlier masking and self-contamination, $D_{\text{joint}}$ implements
 5. Critical threshold: $D_{\text{crit}} = 4.25$ ($\approx \chi^2_4$ upper $0.1\%$ quantile). If $D_{\text{joint}}(i) > 4.25$, escalate to **HOLD** with primary reason `JOINT_ANOMALY_EXCESS`.
 
 #### Empirical Results
-* Evaluated across 200 validation components: **66.7% precision** on flagged parts.
-* Mean $D_{\text{joint}}$ on defective components is systematically elevated above nominal parts ($> 4.5\sigma$ vs $1.8\sigma$ nominal) without false alarm inflation.
+* Evaluated across the 398 frozen benchmark components (`data/synthetic_phase2f_frozen`): **66.7% precision** on flagged parts at $t=24\text{h}$ (2 TP, 1 FP) and $t=96\text{h}$ (8 TP, 4 FP) under canonical threshold $D_{\text{crit}} = 4.25$ ($\approx \chi^2_4$ upper 0.1% quantile).
+* Evaluated across the full 2,000-component empirical dataset (`data/synthetic_phase4b`): **60.0% precision** across all lots (21 TP, 14 FP) without false alarm inflation on nominal flight hardware.
+* Mean $D_{\text{joint}}$ on defective components is systematically elevated above nominal parts ($> 4.5\sigma$ vs $1.8\sigma$ nominal).
 
 ---
+
 
 ### 1.3 Union (OR) Fusion Logic & Precedence Hierarchy
 * **Implementation:** [`src/sih26170/screening/fusion.py`](../src/sih26170/screening/fusion.py) & [`tests/test_empirical_study.py`](../tests/test_empirical_study.py)

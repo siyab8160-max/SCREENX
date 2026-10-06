@@ -190,17 +190,26 @@ def evaluate_multivariate_joint_backstop(
     gt_df: pd.DataFrame,
     lot_ids: List[str],
     checkpoint: int = 24,
+    threshold: float = DEFAULT_JOINT_MAHALANOBIS_THRESHOLD,
 ) -> Dict[str, Any]:
     """Evaluates the statistical discrimination of the multivariate D_joint detector."""
-    comp_gt = gt_df.groupby("component_id")[["is_degradation", "is_spec_failure"]].any()
-    comp_gt["is_defective"] = comp_gt["is_degradation"] | comp_gt["is_spec_failure"]
+    if "is_degradation" in gt_df.columns:
+        comp_gt = gt_df.groupby("component_id")[["is_degradation", "is_spec_failure"]].any()
+        comp_gt["is_defective"] = comp_gt["is_degradation"] | comp_gt["is_spec_failure"]
+    elif "is_abnormal" in gt_df.columns:
+        cols = [c for c in ["is_abnormal", "is_temporally_degraded"] if c in gt_df.columns]
+        comp_gt = gt_df.groupby("component_id")[cols].any()
+        comp_gt["is_defective"] = comp_gt[cols].any(axis=1)
+    else:
+        comp_gt = pd.DataFrame(index=gt_df["component_id"].unique())
+        comp_gt["is_defective"] = False
 
     rows = []
     for lot_id in lot_ids:
         lot_obs = obs_df[(obs_df["lot_id"] == lot_id) & (obs_df["elapsed_hours"] <= checkpoint)]
         cids = lot_obs[lot_obs["elapsed_hours"] == checkpoint]["component_id"].unique().tolist()
         for cid in cids:
-            ev = evaluate_joint_mahalanobis(cid, lot_id, checkpoint, lot_obs)
+            ev = evaluate_joint_mahalanobis(cid, lot_id, checkpoint, lot_obs, threshold=threshold)
             d_val = ev.mahalanobis_distance
             is_def = bool(comp_gt.loc[cid, "is_defective"]) if cid in comp_gt.index else False
             rows.append({
@@ -226,18 +235,29 @@ def evaluate_multivariate_joint_backstop(
     fp = int(len(valid_nom[valid_nom["flagged"]]))
     fn = int(len(valid_def[~valid_def["flagged"]]))
     tn = int(len(valid_nom[~valid_nom["flagged"]]))
+    prec = float(round(tp / max(1, tp + fp), 3)) if (tp + fp) > 0 else 0.0
+    rec = float(round(tp / max(1, tp + fn), 3)) if (tp + fn) > 0 else 0.0
 
     return {
         "metric_id": "1.2",
         "description": "Multivariate Joint Mahalanobis Backstop (D_joint)",
-        "threshold": DEFAULT_JOINT_MAHALANOBIS_THRESHOLD,
+        "threshold": float(threshold),
         "components_evaluated": int(len(valid_d)),
         "mean_mahalanobis_nominal": float(round(mean_d_nom, 3)),
         "p95_mahalanobis_nominal": float(round(p95_d_nom, 3)),
         "mean_mahalanobis_defective": float(round(mean_d_def, 3)),
         "p05_mahalanobis_defective": float(round(p05_d_def, 3)),
         "separation_ratio": float(round(mean_d_def / max(1e-9, mean_d_nom), 2)),
-        "contingency": {"tp": tp, "fp": fp, "fn": fn, "tn": tn},
+        "contingency": {
+            "tp": tp,
+            "fp": fp,
+            "fn": fn,
+            "tn": tn,
+            "flagged": tp + fp,
+            "precision": prec,
+            "recall": rec,
+        },
     }
+
 
 
