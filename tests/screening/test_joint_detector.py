@@ -155,6 +155,7 @@ def test_joint_correlated_sub_threshold_drift():
         assert p_res.peer_evidence.status == PeerDeviationStatus.PEER_NORMAL, (
             f"Expected {p_name} Detector B to be PEER_NORMAL, got {p_res.peer_evidence.status}"
         )
+        assert p_res.peer_evidence.z_score is not None
         assert abs(p_res.peer_evidence.z_score) < 3.0, (
             f"{p_name} z_score {p_res.peer_evidence.z_score} exceeded mild threshold 3.0"
         )
@@ -163,6 +164,7 @@ def test_joint_correlated_sub_threshold_drift():
         assert p_res.temporal_evidence.status == TemporalDriftStatus.STATIONARY, (
             f"Expected {p_name} Detector C to be STATIONARY, got {p_res.temporal_evidence.status}"
         )
+        assert p_res.temporal_evidence.normalized_drift is not None
         assert abs(p_res.temporal_evidence.normalized_drift) < 2.5, (
             f"{p_name} normalized drift {p_res.temporal_evidence.normalized_drift} exceeded subtle threshold 2.5"
         )
@@ -176,6 +178,7 @@ def test_joint_correlated_sub_threshold_drift():
     assert res.joint_evidence is not None
     assert res.joint_evidence.suspected is True
     assert res.joint_evidence.status == JointStatus.JOINT_ANOMALY_ALERT
+    assert res.joint_evidence.mahalanobis_distance is not None
     assert res.joint_evidence.mahalanobis_distance > DEFAULT_JOINT_MAHALANOBIS_THRESHOLD
     assert res.final_state in (ScreeningState.HOLD, ScreeningState.ALERT)
     assert "JOINT_MAHALANOBIS_EXCESS" in res.primary_reason_code
