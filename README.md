@@ -1,30 +1,21 @@
-# SIH26170 // Spacecraft Component Screening & Prognostics Workstation
+# SIH26170 // Spacecraft Component Screening & Prognostics Workstation (SCREENX)
 ## AI-Driven Dynamic Outlier Detection & 168-Hour Degradation Forecasting
-### Operational QA Workstation Prototype for Cleanroom Mission Assurance
 
-**Problem Statement ID:** 26170  
-**Sector:** Spaceflight Semiconductor Quality Assurance & Mission Assurance  
-**Agency / Division:** ISRO / URSC — Component Qualification & Screening Division (CQSD)  
-**Governing Standards:** MIL-PRF-19500/703 Table I • MIL-STD-750 Method 1038/1042 (HTRB/HTGB)  
-**Target Hardware:** Space-Grade Rad-Hard N-Channel Power MOSFETs (IRHNJ57130, 100V, 22A, 180mΩ)  
-**System Classification:** Operational QA Workstation Prototype (Grounded Engineering Architecture)  
-**Verification Status:** **100% Pass (359 / 359 Verification Tests Passing in ~20s)**  
-**Live Public Demo:** [https://installations-requirements-host-communist.trycloudflare.com](https://installations-requirements-host-communist.trycloudflare.com)
+**Problem Statement ID:** 26170
+**Sector:** Spaceflight Semiconductor Quality Assurance & Mission Assurance
+**Agency / Division:** ISRO / URSC — Component Qualification & Screening Division (CQSD)
+**Governing Standards:** MIL-PRF-19500/703 Table I • MIL-STD-750 Method 1038/1042 (HTRB/HTGB)
+**Target Hardware:** Space-Grade Rad-Hard N-Channel Power MOSFETs (IRHNJ57130, 100V, 22A, 180mΩ)
+**System Classification:** Operational QA Workstation Prototype
 
----
+**Verification Status:** **439 / 439 Verification Tests Passing** (full suite, ~24s — see Section 9 for the reproduction command)
 
-## Key Architectural Differentiators & 60-Second Demonstration Moments
-
-Unlike standard hackathon prototypes relying on generic ML classifiers, SCREENX is an engineered **cleanroom QA workstation prototype** designed for space semiconductor screening workflows:
-
-| Differentiator | Architectural Implementation | 60-Second Judge Demonstration |
-| :--- | :--- | :--- |
-| **1. Equipment Excursion Discrimination** | **Detector E ($D_{\text{eq}}$):** Isolates socket card & ATE fixture drift via ANOVA & channel Z-scoring. | **`GET /demo/equipment_excursion`:** Simulates +6.5 mΩ contact resistance drift on socket channel `CH_05`. Conventional screeners falsely scrap all 4 parts ($4,000 loss). SCREENX flags `EQUIPMENT_SUSPECTED`, preserving 100% of flight silicon. |
-| **2. Exact Closed-Form Ridge SHAP** | **Exact Linear Shapley Attribution:** Decomposes forecast into `slope_0_24` (drift) and `baseline_0h` (level) with bit-exact additivity $\phi_0 + \sum \phi_i = \hat{u}$. | Answers Problem Statement explainability metric with zero sampling variance or Monte Carlo noise. Explains kinetic wearout drivers directly. |
-| **3. Visualized Conformal Prediction** | **90% Finite-Sample Prediction Interval:** Non-parametric residual calibration guaranteeing $P(Y \in C_{90}) \ge 0.90$ without Gaussian error assumptions. | Continuous shaded trajectory bands and interactive **Uncertainty Inspector** comparing Confident (Narrow CI $\le 1.5$ mΩ) vs Uncertain (Wide CI $\ge 5.0$ mΩ) components. |
-| **4. `HOLD` Quarantine Disposition** | **Evidence Fusion Level 4a:** Quarantines components breaching screening margins with subtle drift rather than irreversible scrap. | *"Space hardware is expensive — we don't binary-scrap unless we're certain."* Provides ISRO QA authority an operational quarantine window. |
-| **5. Real Semiconductor External Validation** | **UCI SECOM Benchmark:** Evaluated against 1,567 physical wafer runs and 590 sensors from real fab lines (CC BY 4.0). | **4.52x Failure Enrichment Lift** on top 20 flagged wafers (30.0% precision vs 6.64% baseline prevalence) with ZERO supervised training. Full report: [`docs/evaluations/SECOM_VALIDATION.md`](docs/evaluations/SECOM_VALIDATION.md). |
-| **6. Advanced Empirical Verification Audit** | **10-Point Technical Benchmark:** Comprehensive verification across anomaly detection, prognostics, and explainability. | Cost-sensitive 20:1 threshold sweep, multivariate joint Mahalanobis backstop ($D_{\text{joint}}$), closed-form counterfactual inversion, and 4 disclosed limitations. Full report: [`docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md`](docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md). |
+### Links
+| Resource | Link |
+|---|---|
+| **Live Deployed Demo** | https://screenx-stmu.onrender.com/ |
+| **Demo Video (YouTube)** | https://youtu.be/cEKgM_9rbWA |
+| **Evaluation / Benchmark Notebook (Colab)** | https://colab.research.google.com/drive/1hg_cDXeVBwwVIg1Ls-MKfIhFKuMUfBgC?usp=sharing |
 
 ---
 
@@ -38,9 +29,9 @@ Unlike standard hackathon prototypes relying on generic ML classifiers, SCREENX 
 7. [REST API Specification](#7-rest-api-specification)
 8. [Empirical Evaluation & Benchmark Verification](#8-empirical-evaluation--benchmark-verification)
 9. [Deployment & Operations Guide](#9-deployment--operations-guide)
-10. [Audit Trail & Compliance Artifacts](#10-audit-trail--compliance-artifacts)
-11. [Audited System Boundaries & Known Limitations Disclosure](#11-audited-system-boundaries--known-limitations-disclosure)
-12. [Empirical Technical Evaluation & Benchmark Study](#12-empirical-technical-evaluation--benchmark-study)
+10. [Integration with Existing ISRO Infrastructure](#10-integration-with-existing-isro-infrastructure)
+11. [Known Limitations](#11-known-limitations)
+12. [Audit Trail & Compliance Artifacts](#12-audit-trail--compliance-artifacts)
 
 ---
 
@@ -55,25 +46,25 @@ Traditional Automated Test Equipment (ATE) applies static pass/fail limit gates 
 
 ### The SIH26170 Unified Platform
 This software system unifies two complementary, mathematically rigorous mission-assurance subsystems:
-1. **Module A (Dynamic Multi-Detector Screening Engine):** Evaluates multi-checkpoint readouts ($0, 24, 48, 72, 96, 120, 144, 168\,\text{h}$) across 6 statistical and physical detectors, combining peer-lot outliers, drift kinetics, step jumps, and chamber excursion discrimination.
-2. **Module B (Time-Series Prognostics & Safety-Slope Layer):** Uses early readouts ($0\,\text{h}$ and $24\,\text{h}$) to forecast terminal 168-hour values using locked L2-Ridge Regression with 90% Conformal Prediction Intervals, exact closed-form SHAP feature attributions, and computes the exact Problem Statement Safety Slope to authorize early extraction at 24 hours.
+1. **Module A (Dynamic Multi-Detector Screening Engine):** Evaluates multi-checkpoint readouts ($0, 24, 48, 72, 96, 120, 144, 168\,\text{h}$) across statistical and physical detectors, combining peer-lot outliers, drift kinetics, step jumps, chamber excursion discrimination, and joint multi-parameter anomaly scoring.
+2. **Module B (Time-Series Prognostics & Safety-Slope Layer):** Uses early readouts ($0\,\text{h}$ and $24\,\text{h}$) to forecast terminal 168-hour values using locked L2-Ridge Regression with 90% Conformal Prediction Intervals and exact closed-form SHAP feature attributions, and computes the exact Problem Statement Safety Slope to authorize early extraction at 24 hours.
 
 ```
        RAW TELEMETRY                MODULE A: SCREENING                     MODULE B: PREDICTION                   WORKSTATION UI
  +-----------------------+       +------------------------+              +------------------------+          +-------------------------+
- | Multi-checkpoint CSV  |  ==>  | 6 Statistical & Phys.  |  ==========> | Locked Ridge (λ=1.0)   |  =====>  | 1. Choose/Upload Data   |
+ | Multi-checkpoint CSV  |  ==>  | 7 Statistical & Phys.  |  ==========> | Locked Ridge (λ=1.0)   |  =====>  | 1. Choose/Upload Data   |
  | [0h, 24h, 96h, 168h]  |       | Detectors (Spec, Peer, | (Fused State)| 168h Forecast &        |          | 2. Dynamic Screening    |
- | IDSS, VGS(th), RDS,   |       | Drift, Step, Eq, Suff) |              | 90% Conformal Interval |          | 3. Prediction Bay       |
- | IGSS Long Format Data |       +------------------------+              | Exact Linear SHAP Bars |          | 4. Traceability & CoC   |
- +-----------------------+                   ||                          +------------------------+          +-------------------------+
-                                             \/                                      ||
+ | IDSS, VGS(th), RDS,   |       | Drift, Step, Eq, Suff, |              | 90% Conformal Interval |          | 3. Prediction Bay       |
+ | IGSS Long Format Data |       | Joint)                 |              | Exact Linear SHAP Bars |          | 4. Traceability & CoC   |
+ +-----------------------+       +------------------------+              +------------------------+          +-------------------------+
+                                             ||                                      ||
                                    +--------------------+                  +--------------------+
                                    | Evidence Fusion    |                  | Safety-Slope &     |
-                                   | Engine (6 States)  |                  | Early Rejection    |
-                                   | PASS, ALERT, HOLD, |                  +--------------------+
-                                   | FAIL, EQ, INSUFF   |                            ||
-                                   +--------------------+                            ||
-                                             ||                                      ||
+                                   | Engine (6 States:  |                  | Early Rejection    |
+                                   | PASS/ALERT/HOLD/   |                  +--------------------+
+                                   | FAIL/EQ/INSUFF)    |
+                                   +--------------------+
+                                             ||
                                              +==================+====================+
                                                                 \/
                                                   +----------------------------+
@@ -101,352 +92,308 @@ The platform monitors the four core electrical parameters defining power MOSFET 
 
 ## 3. System Architecture & Data Governance
 
+### System Architecture Flowchart
+
+```mermaid
+flowchart TD
+    A["ATE / SMU test racks<br/>(production: real-time stream)<br/>(prototype: CSV upload)"] --> B["Validation &amp; Canonicalization<br/>schema, units, ranges, duplicates"]
+    B --> C["Causal As-Of Filter<br/>only t &le; T visible, labels quarantined"]
+    C --> D["Module A: Dynamic Screening<br/>7 detectors"]
+    C --> E["Module B: Prognostics<br/>0h + 24h readings"]
+
+    D --> D1["Spec limit &middot; Peer LOO-MAD &middot; Theil-Sen drift<br/>Step jump &middot; Equipment excursion<br/>Data sufficiency &middot; Joint Mahalanobis"]
+    D1 --> F["Evidence Fusion<br/>precedence-ordered union"]
+    F --> F1["PASS &middot; ALERT &middot; HOLD &middot; FAIL<br/>EQUIPMENT_SUSPECTED &middot; INSUFFICIENT_DATA"]
+
+    E --> E1["Physics transforms<br/>ln / linear / asinh"]
+    E1 --> E2["Locked Ridge model<br/>frozen, hash-verified weights"]
+    E2 --> E3["168h forecast + 90% conformal interval<br/>+ exact linear SHAP"]
+    E3 --> E4["Safety-slope check<br/>EARLY_REJECT / CONTINUE"]
+
+    F1 --> G["QA Evidence Output<br/>explainability card, forecast evidence"]
+    E4 --> G
+    G --> H["SHA-256 Audit Trail<br/>+ Certificate of Conformance"]
+    H --> I["QA Sign-Off<br/>human review, final disposition"]
+
+    classDef proposed stroke-dasharray: 5 5
+    class A proposed
+```
+
+*Reading the diagram:* data flows one way, from instrument to human sign-off. The model
+is locked and never retrained by incoming data, so there is no feedback loop into
+Module A or Module B. Retraining is a separate, periodic, offline, QA-approved process
+(Section 5E). The dashed first box marks the one prototype-vs-production difference:
+the prototype ingests CSV batches, while the proposed deployment streams from the ATE
+racks (Section 3, "Current Implementation vs. Proposed Production Architecture").
+
 ### Canonical Long-Format Telemetry Schema
 All ingested burn-in telemetry must adhere to the standardized schema:
-- `component_id`: Serialized component identifier (e.g. `LOT_CAL_001_C001`).
-- `lot_id`: Manufacturing wafer lot / batch cohort (e.g. `LOT_CAL_001`).
-- `parameter_name`: Parameter key (`IDSS`, `VGS(th)`, `RDS(on)`, `IGSS`).
-- `elapsed_hours`: Stress checkpoint in hours ($0, 24, 48, 72, 96, 120, 144, 168$).
-- `value`: Raw analog sensor reading.
-- `unit`: Physical unit string (`uA`, `V`, `mOhm`, `nA`).
-- `temperature_C`: Chamber temperature readout (nominal $150.0^\circ\text{C}$).
-- `test_condition`: Test bias configuration (`HTRB_150C`).
-- `instrument_id`: ATE source measure unit ID (`ATE_BAY4_SMU1`).
-- `channel_id`: Burn-in socket card channel (`CH_01` to `CH_20`).
-- `measurement_quality`: Quality indicator (`VALID`, `DEGRADED`, `SUSPECT`, `MISSING`).
-- `rework_count`: Number of re-insertions or re-tests.
+- `component_id`, `lot_id`, `parameter_name`, `elapsed_hours`, `value`, `unit`,
+  `temperature_C`, `test_condition`, `instrument_id`, `channel_id`,
+  `measurement_quality`, `rework_count`.
 
 ### Strict Ground-Truth Quarantine
-Downstream machine learning models and feature extractors are structurally blocked from viewing evaluation labels:
-- Quarantined columns: `trajectory_class`, `first_abnormal_hour`, `abnormal_by_24h`, `abnormal_by_96h`, `abnormal_by_168h`.
-- Any attempt by a model feature extractor to read quarantined columns triggers an immediate runtime exception (`assert_ground_truth_quarantine`).
+Downstream machine learning models and feature extractors are structurally blocked from viewing evaluation labels (`trajectory_class`, `abnormal_by_24h`, etc.). Any attempt to read quarantined columns triggers an immediate runtime exception (`assert_ground_truth_quarantine`).
 
 ### Causal As-Of Temporal Boundary
-To prevent look-ahead bias, all evaluation endpoints enforce:
-$$V_T = \sigma_{\text{elapsed\_hours} \le T}(D)$$
-When an inspector assesses a component at $T = 24\,\text{h}$, the software physically unrenders and blocks any data with $t > 24\,\text{h}$.
+$$V_T = \sigma_{t \le T}(D), \quad t = \text{elapsed hours}$$
+When an inspector assesses a component at $T = 24\,\text{h}$, the software physically removes any data with $t > 24\,\text{h}$ before any module runs.
+
+### Current Implementation vs. Proposed Production Architecture
+
+**This is an important distinction, and it is stated explicitly here rather than
+implied:**
+
+The present system (this repository and the deployed demo) implements and validates
+the full detection and prediction pipeline — Module A, Module B, fusion logic, and
+audit trail — using **batch CSV ingestion** as the data-entry point. A dataset is
+uploaded or selected, and the full pipeline runs against it. This validates the core
+screening and prognostic logic end-to-end, independent of how the data physically
+arrives.
+
+**In the proposed production deployment, this ingestion layer is replaced by direct
+real-time streaming** from ATE/SMU test racks over SCPI, TCP/IP, or serial, as burn-in
+testing runs — components are screened continuously as each checkpoint reading becomes
+available, rather than in a single batch upload after the fact. The canonical schema,
+the causal as-of enforcement, and the downstream detectors and prediction model are
+**identical** in both cases; only the ingestion mechanism changes. This is a systems
+integration step, not a redesign of the detection or prediction logic, which is already
+built and benchmarked.
 
 ---
 
 ## 4. Module A: Dynamic Multi-Detector Screening Engine
 
-Module A evaluates component readouts across multiple stress checkpoints ($t \in \{0, 24, 48, 72, 96, 120, 144, 168\}\,\text{h}$) using **six independent detectors**:
-
-### Mathematical Formulations of the 6 Detectors
+Module A evaluates component readouts across multiple stress checkpoints using **seven independent detectors** (six core statistical/physical detectors, plus one multivariate backstop):
 
 #### 1. Detector A ($D_{\text{spec}}$) — Specification Hard Limit Gate
-- **Role:** Compares observed values against published MIL-PRF-19500 Table I maximum and minimum bounds.
-- **Rule:** If $y(t) > \text{Limit}_{\text{high}}$ or $y(t) < \text{Limit}_{\text{low}}$, triggers a Class A `SPEC_BREACH`.
-- **Precedence:** Acts as a hard veto that can never be overridden by downstream statistical models.
+Hard veto against MIL-PRF-19500 Table I bounds. Cannot be overridden by any statistical model.
 
 #### 2. Detector B ($D_{\text{peer}}$) — Robust Peer Lot-Relative Outlier
-- **Role:** Identifies latent anomalies that conform to datasheet limits but deviate significantly from their manufacturing wafer cohort.
-- **Formulation:** Evaluates using Leave-One-Out (LOO) cohort median ($\tilde{\mu}_{-i}$) and Median Absolute Deviation ($\text{MAD}_{-i}$):
-  $$b_i = \frac{y_i - \tilde{\mu}_{-i}}{1.4826 \cdot \text{MAD}_{-i} + \epsilon}$$
-- **Dispositions:**
-  - $|b_i| \ge 15.0 \to$ `MAJOR_OUTLIER` (immediate `REJECT`).
-  - $3.5 \le |b_i| < 15.0 \to$ `OUTLIER` / `SUSPECT`.
-  - $|b_i| < 3.5 \to$ `NORMAL`.
+$$b_i = \frac{y_i - \tilde{\mu}_{-i}}{1.4826 \cdot \text{MAD}_{-i} + \epsilon}$$
+Leave-One-Out cohort median/MAD. $|b_i| \ge 15.0 \to$ `MAJOR_OUTLIER` (immediate reject).
 
 #### 3. Detector C ($D_{\text{drift}}$) — Non-Parametric Temporal Drift
-- **Role:** Tracks rate of wearout across intermediate checkpoints without assuming linear drift.
-- **Formulation:** Computes the non-parametric Theil-Sen median slope estimator across checkpoints:
-  $$\text{Slope} = \text{median}\left(\frac{y_j - y_i}{t_j - t_i}\right) \quad \forall \, t_i < t_j$$
-- **Excess Drift ($g_{\text{excess}}$):** Normalizes total component movement relative to lot-wide baseline drift:
-  $$g_{\text{excess}} = \frac{y(T) - y(0)}{\sigma_0} - \text{median\_lot\_drift}$$
-- **Statuses:** `STABLE` ($|g| < 1.0$), `MODERATE_DRIFT` ($1.0 \le |g| < 2.5$), `EXCESSIVE_DRIFT` ($|g| \ge 2.5$), `ACCELERATING` ($|g| \ge 4.0$).
+Theil-Sen median slope estimator; excess drift $g_{\text{excess}}$ normalized against lot baseline. Statuses: `STABLE`, `MODERATE_DRIFT`, `EXCESSIVE_DRIFT`, `ACCELERATING`.
 
 #### 4. Detector D ($D_{\text{step}}$) — Abrupt Step-Jump Detector
-- **Role:** Catches sudden step transitions between adjacent checkpoints (dielectric micro-rupture or partial channel short).
-- **Formulation:** Normalized inter-checkpoint jump ratio:
-  $$J(T) = \frac{|y(T) - y(T_{\text{prev}})|}{\sigma_0}$$
-- **Rule:** If $J(T) \ge 4.0$, triggers an `ABRUPT_JUMP_ALERT`.
+$$J(T) = \frac{|y(T) - y(T_{\text{prev}})|}{\sigma_0} \ge 4.0$$
+A jump at or above this ratio raises `ABRUPT_JUMP_ALERT`.
 
 #### 5. Detector E ($D_{\text{eq}}$) — Chamber & Equipment Excursion Discriminator
-- **Role:** Prevents false condemnation of components when the environmental test chamber or ATE instrument drifts.
-- **Rule:** If $\ge 50\%$ of the components on a socket tray shift simultaneously in the same direction, or an ATE channel card exhibits correlated bias (ANOVA $F$-ratio $p < 0.01$), the system triggers `EQUIPMENT_HOLD`. Genuine wearout kinetics are preserved through excess-drift analysis ($g_{\text{excess}}$).
+Flags common-mode ATE/chamber drift (ANOVA $p<0.01$) to prevent false condemnation of healthy hardware sharing a faulty fixture channel.
 
 #### 6. Detector F ($D_{\text{suff}}$) — Data Sufficiency Policy
-- **Role:** Protects against small-sample statistical artifacts.
-- **Rule:** If lot cohort size $N < 8$, statistical peer scoring is mathematically under-powered. The detector safely suppresses peer scoring and marks `INSUFFICIENT_DATA` rather than generating false alarms.
+If lot size $N < 8$, peer scoring is suppressed rather than generating statistically under-powered false alarms.
+
+#### 7. Detector G ($D_{\text{joint}}$) — Multivariate Joint Anomaly Backstop
+A backstop for compound degradation that no single-parameter detector catches. For each
+component, it builds a 4-dimensional vector across all parameters in transform space and
+computes a leave-one-out, shrinkage-regularized Mahalanobis distance against the lot:
+
+$$\mathbf{R}_{\text{shrunk}} = (1-\alpha)\,\mathbf{R}_{\text{sample}} + \alpha\,\mathbf{I}, \quad \alpha = 0.20$$
+
+- **Threshold:** $D_{\text{crit}} = 4.25$. Since $D^2 \sim \chi^2_4$ for four parameters,
+  $D^2 = 18.0625$ corresponds to an upper-tail probability of about 0.12% (closed form:
+  $P(\chi^2_4 > x) = e^{-x/2}(1 + x/2)$).
+- **Action:** components above threshold escalate to `HOLD` with reason
+  `JOINT_MAHALANOBIS_EXCESS`, even when no individual parameter crosses its own
+  detector's threshold.
+- **Dependencies:** implemented with NumPy and pandas only. No scikit-learn, SciPy, or
+  other ML framework is used in the detection logic.
+- **Differentiation test:** `tests/screening/test_joint_detector.py` injects a
+  correlated 1.9σ shift on all four parameters. Every univariate detector stays quiet
+  (all peer $|z| < 3.0$, all drift $|g| < 2.5$, every parameter individually `PASS`),
+  yet $D_{\text{joint}} = 5.02 > 4.25$ and the component escalates to `HOLD`.
+- **Benchmark contingency** (398-component frozen benchmark, $D_{\text{crit}} = 4.25$):
+
+| Checkpoint | TP | FP | FN | TN | Precision | Recall |
+| :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| 24h | 2 | 1 | 56 | 331 | 66.7% | 3.4% |
+| 96h | 8 | 4 | 49 | 322 | 66.7% | 14.0% |
+
+> **How to read this:** $D_{\text{joint}}$ is a high-precision, low-recall backstop. It is
+> deliberately conservative and adds a narrow set of catches on top of the other six
+> detectors. It is not a primary detector, and its recall should not be read as the
+> system's overall recall (see the union recall table in Section 8).
 
 ### Evidence Fusion Precedence Hierarchy
 
-| Precedence | Condition | Resulting State | Disposition Qualifier | Action Required |
-| :---: | :--- | :---: | :--- | :--- |
-| **Level 1** | Absolute specification breach ($D_{\text{spec}}$) | **`FAIL`** | `SPECIFICATION_FAILURE` | Reject hardware unconditionally |
-| **Level 2** | Missing readouts / Lot size $N < 8$ ($D_{\text{suff}}$) | **`INSUFFICIENT_DATA`** | `INSUFFICIENT_EVIDENCE` | Complete burn-in readouts |
-| **Level 3** | Chamber excursion with excess drift ($|g_{\text{excess}}| \ge 2.5$) | **`FAIL` / `ALERT`** | `COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT` | Retest after chamber calibration |
-| **Level 3** | Chamber excursion without excess drift ($|g_{\text{excess}}| < 2.5$) | **`EQUIPMENT_SUSPECTED`**| `EQUIPMENT_ONLY` | Hold lot; inspect fixture |
-| **Level 4** | Autonomous accelerating drift or step jump | **`FAIL`** | `COMPONENT_DEGRADATION` | Reject; latent wearout confirmed |
-| **Level 4a**| Screening margin breach with subtle drift | **`HOLD`** | `HOLD_SCREENING_MARGIN` / `HOLD_FOR_RETEST` | Quarantine component for re-test; avoid false scrap |
-| **Level 5** | Major peer outlier without active drift | **`ALERT`** | `PEER_OUTLIER_STATIONARY` | Quarantine for review |
-| **Level 5** | Stationary, compliant, homogeneous | **`PASS`** | `NOMINAL_STABLE` | Clear for flight integration |
+| Precedence | Condition | Resulting State | Disposition Qualifier |
+| :---: | :--- | :---: | :--- |
+| **Level 1** | Absolute specification breach ($D_{\text{spec}}$) | **`FAIL`** | `SPECIFICATION_FAILURE` |
+| **Level 2** | Missing readouts / Lot size $N < 8$ | **`INSUFFICIENT_DATA`** | `INSUFFICIENT_EVIDENCE` |
+| **Level 3** | Chamber excursion with excess drift | **`FAIL` / `ALERT`** | `COMPONENT_DEGRADATION_CONFOUNDED_BY_EQUIPMENT` |
+| **Level 3** | Chamber excursion without excess drift | **`EQUIPMENT_SUSPECTED`** | `EQUIPMENT_ONLY` |
+| **Level 4** | Autonomous accelerating drift or step jump | **`FAIL`** | `COMPONENT_DEGRADATION` |
+| **Level 4a** | Screening margin breach with subtle drift | **`HOLD`** | `HOLD_SCREENING_MARGIN` / `HOLD_FOR_RETEST` |
+| **Level 4b** | Joint multivariate anomaly, no single-parameter trigger | **`HOLD`** | `JOINT_MAHALANOBIS_EXCESS` |
+| **Level 5** | Major peer outlier without active drift | **`ALERT`** | `PEER_OUTLIER_STATIONARY` |
+| **Level 5** | Stationary, compliant, homogeneous | **`PASS`** | `NOMINAL_STABLE` |
+
+All precedence levels are evaluated as a **union (OR)** — any single detector firing is
+sufficient to escalate past `PASS`; no two detectors are ever required to agree.
 
 ---
 
 ## 5. Module B: Prognostics, Uncertainty & Safety-Slope
 
 ### A. Machine Learning Model Formulation
-- **Algorithm:** L2-Regularized Ridge Regression ($\lambda = 1.0$).
-- **Inputs:** Causal 2-point vector $x = [v_0, v_{24}]^T$.
-- **Target:** Endpoint measurement at $t = 168\,\text{h}$.
-- **Immutable Weights:** Pre-calibrated on 1,000 components across 50 calibration lots (`LOT_CAL_001` through `LOT_CAL_050`). No runtime refitting, optimization, or retraining.
-- **Lineage Integrity:** Model weights are stored as exact IEEE-754 hexadecimal floating point values verified bit-for-bit against manifest SHA-256 digest `bde6989e24d195ab4b53f93c46c2156d1c336fe820baf149d76d32943e135667`.
+L2-Regularized Ridge Regression ($\lambda = 1.0$), inputs $x = [v_0, v_{24}]^T$, target $v_{168h}$. Pre-calibrated on 1,000 components across 50 calibration lots. No runtime refitting. Weights stored as exact IEEE-754 hex, verified bit-for-bit against manifest SHA-256 `bde6989e24d195ab4b53f93c46c2156d1c336fe820baf149d76d32943e135667`.
 
 ### B. Uncertainty Quantification (90% Split-Conformal Intervals)
-Non-parametric Split-Conformal 90% prediction intervals are computed using frozen residual standard error $\sigma_{\text{eff}}$ and standard normal quantiles ($Z_{90} = 1.6448536$):
-$$\hat{y}_{168\text{h}}^{\text{low}} = \mathcal{T}^{-1}\left(u_{\text{pred}} - 1.64485 \cdot \sigma_{\text{eff}}\right)$$
-$$\hat{y}_{168\text{h}}^{\text{high}} = \mathcal{T}^{-1}\left(u_{\text{pred}} + 1.64485 \cdot \sigma_{\text{eff}}\right)$$
+$$\hat{y}_{168\text{h}}^{\text{low/high}} = \mathcal{T}^{-1}(u_{\text{pred}} \mp 1.64485 \cdot \sigma_{\text{eff}})$$
 
 ### C. Safety-Slope & Early Rejection Decision Layer
-The Problem Statement specifies:
-> *"If the predicted 168h drift rate exceeds a calculated safety slope, the system flags the component for early rejection."*
+$$\text{predicted drift rate} = \frac{\hat{y}_{168h} - y_{24h}}{144}, \quad \text{safety slope} = \frac{S_{\text{thresh}} - y_{24h}}{144}$$
+$$\text{predicted drift rate} > \text{safety slope} \iff \hat{y}_{168h} > S_{\text{thresh}}$$
+Outputs: `EARLY_REJECT`, `CONTINUE`, or `INSUFFICIENT_DATA`.
 
-```
-   Physical Parameter Value
-       ^
-Limit  | - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - Spec Limit / Safety Threshold
-       |                                                         . • (y_hat_168)
-       |                                              . • ' 
-       |                                   . • '  (Predicted Drift Rate)
-       |                        . • ' 
-  v24  |-------------• • • • • • - - - - - - - - - - - - - - - - - (Calculated Safety Slope)
-       |           .' 
-   v0  | • - - - .' 
-       +---------+-----------------------------------------------+------> Elapsed Hours
-       0h        24h                                            168h
-```
+### D. Exact Linear Ridge SHAP Attribution
+$$\phi_{\text{base}} = (\beta_1+\beta_2)(u_0-\bar{u}_0), \quad \phi_{\text{slope}} = \beta_2(u_{24}-u_0), \quad \phi_0+\phi_{\text{base}}+\phi_{\text{slope}} = \hat{u}$$
+Here $\phi_{\text{base}}$ is the `baseline_0h` attribution and $\phi_{\text{slope}}$ is the `slope_0_24` attribution shown in the UI.
+Exact to machine precision — decomposes forecast into initial device offset vs. kinetic drift, with zero sampling variance (unlike Monte Carlo SHAP approximations).
 
-1. **Predicted Drift Rate:**
-   $$\text{predicted\_drift\_rate} = \frac{\hat{y}_{168\text{h}} - y_{24\text{h}}}{144}\,\left[\frac{\text{units}}{\text{hour}}\right]$$
-2. **Calculated Safety Slope:**
-   $$\text{safety\_slope} = \frac{S_{\text{thresh}} - y_{24\text{h}}}{144}\,\left[\frac{\text{units}}{\text{hour}}\right]$$
-3. **Decision Rule:**
-   $$\text{predicted\_drift\_rate} > \text{safety\_slope} \iff \hat{y}_{168\text{h}} > S_{\text{thresh}}$$
-   - **`EARLY_REJECT`:** Predicted drift rate exceeds safety slope. Component is recommended for early chamber extraction.
-   - **`CONTINUE`:** Predicted drift remains safely within thermal and electrical safety boundaries.
-   - **`INSUFFICIENT_DATA`:** Telemetry at $24\,\text{h}$ is absent or invalid.
-
-### D. Exact Linear Ridge SHAP Attribution & Feature Ranking
-To satisfy the Problem Statement's explainability requirement with zero sampling noise, SCREENX implements exact closed-form Shapley feature attributions for locked Ridge models:
-- **Linear Decomposition:** With model $\hat{u} = \beta_0 + \beta_1 u_0 + \beta_2 u_{24}$, the exact Shapley values with reference to calibration baseline mean $\bar{u}_0$ are:
-  $$\phi_{\text{baseline\_0h}} = (\beta_1 + \beta_2)(u_0 - \bar{u}_0)$$
-  $$\phi_{\text{slope\_0\_24}} = \beta_2(u_{24} - u_0)$$
-  $$\phi_0 = \beta_0 + (\beta_1 + \beta_2)\bar{u}_0$$
-- **Exact Efficiency & Additivity:** $\phi_0 + \phi_{\text{baseline\_0h}} + \phi_{\text{slope\_0\_24}} = \hat{u}$ to machine precision ($< 10^{-12}$).
-- **Operational Utility:** Provides cleanroom QA inspectors an immediate, deterministic answer to whether terminal 168h degradation was driven by initial device offset (`baseline_0h`) or dynamic kinetic wearout (`slope_0_24`).
+### E. Model Governance & Retraining Policy
+The production model is frozen: locked weights, used identically across every
+prediction until formally superseded. There is no online learning. Updates occur only
+through a periodic, offline, human-validated retraining cycle, approved by a QA
+engineer before deployment of any new locked model version — deliberately, because the
+true 168h outcome is unknown until 168h have elapsed (label delay), a false negative is
+categorically more costly than conservative retraining (asymmetric failure cost), and
+every deployed model version must remain hash-locked and independently auditable
+(traceability).
 
 ---
 
 ## 6. Workstation Operations & User Manual
 
-### The 4-Step Operational Mission Workflow
-
 ```
 [ 1. Ingest Dataset ] ──> [ 2. Dynamic Screening ] ──> [ 3. Prediction ] ──> [ 4. Traceability & CoC ]
 ```
 
-1. **Step 1: Choose / Upload Dataset (Default Landing Page)**
-   - Pre-loaded Phase 4B benchmark dataset (100 lots, 2,000 components, 8 checkpoints).
-   - Drag-and-drop custom CSV dropzone with downloadable template and **11-point schema validation report**.
-   - Interactive Proceed Button transitions directly to Step 2.
-2. **Step 2: Dynamic Screening**
-   - **Fused State Badge:** Displays `PASS`, `ALERT`, `FAIL`, or `EQUIPMENT_SUSPECTED`.
-   - **Burn-In Tray Matrix:** Interactive 20-socket grid representing the physical test card in the chamber. Click any socket to inspect.
-   - **Measured Parameters Table:** Multi-checkpoint readings with Table I limits, trend, and export CSV button.
-   - **Parameter Trend SVG Plots:** 4 stacked plots showing observed checkpoints, causal As-Of boundary, 168h forecast markers, and 90% error whiskers.
-   - **Module A Evidence Table:** Breakdown of the 6 individual detectors with expandable calculations.
-   - **QA Explainability Card:** Plain-language cards (WHAT HAPPENED, WHY FLAGGED, WHICH PARAMETERS) and JSON viewer.
-3. **Step 3: Prediction Bay**
-   - **Locked Ridge Table:** Predicted 168h value, 90% confidence interval, and delta from baseline.
-   - **Conformal Prediction 90% Uncertainty Inspector:** Finite-sample non-parametric uncertainty band visualizer with interactive comparison between Confident components (Narrow CI $\le 1.5$ m$\Omega$) vs Uncertain components (Wide CI $\ge 5.0$ m$\Omega$).
-   - **Linear Ridge SHAP Importance Bars:** Visual bar charts detailing whether kinetic degradation was driven by `slope_0_24` (drift) or `baseline_0h` (initial part level).
-   - **Safety-Slope Vector Gauges:** Horizontal comparison gauges contrasting Predicted Drift Rate vs Calculated Safety Slope.
-   - **Safety-Slope Arithmetic Table:** Step-by-step mathematical breakdown of the early-rejection decision.
-4. **Step 4: Traceability & Certificate of Conformance (CoC)**
-   - **Cryptographic Lineage:** IEEE-754 bit-exact manifest digest and input telemetry SHA-256 hash.
-   - **Certificate of Conformance (CoC):** Space-grade printable conformance certificate with QA Inspector, R&QA Concurrence, and Disposition Authority sign-off blocks.
-   - **Forensic ASCII Card & JSON Export:** Instant clipboard copy for cleanroom logbooks.
+1. **Ingest:** Pre-loaded Phase 4B dataset (100 lots, 2,000 components) or drag-and-drop CSV with 11-point schema validation.
+2. **Screening:** Disposition badge, 20-socket interactive tray matrix, measured parameters table, 4-stack SVG trend plots, detector evidence table, QA explainability card.
+3. **Prediction:** Locked Ridge forecast table, conformal uncertainty inspector, SHAP attribution bars, safety-slope gauges and arithmetic breakdown.
+4. **Traceability & CoC:** Cryptographic lineage hashes, printable Certificate of Conformance with QA Inspector / R&QA Concurrence / Disposition Authority sign-off blocks, forensic ASCII/JSON export.
 
 ---
 
 ## 7. REST API Specification
 
-All evaluation endpoints strictly enforce temporal causality by requiring an explicit `as_of` query parameter (e.g. `?as_of=24`):
-
 | Endpoint | Method | Description |
 | :--- | :---: | :--- |
-| `/health` | `GET` | System health status and active model lock verification |
-| `/model_lineage` | `GET` | Immutable model weights and IEEE-754 manifest hash |
-| `/demo/equipment_excursion` | `GET` | 60-second ATE socket drift scenario (CH_05 drift vs naive scrap) |
-| `/lots` | `GET` | List available manufacturing lots |
-| `/lots/{lot_id}/components` | `GET` | List components in a lot cohort |
-| `/components/{id}` | `GET` | Component identity and metadata |
-| `/components/{id}/pipeline?as_of=T` | `GET` | Complete unified result (Screening + Prediction + Safety Slope + Explainability + Hash) |
-| `/components/{id}/screening?as_of=T` | `GET` | Module A dynamic screening results |
-| `/components/{id}/forecast?as_of=T` | `GET` | Module B 168h Ridge forecasts and prediction intervals |
-| `/components/{id}/safety?as_of=T` | `GET` | Module B Safety-Slope & Early-Rejection decision results |
-| `/components/{id}/explainability?as_of=T` | `GET` | Plain-language QA engineering explainability card with SHAP bars |
-| `/components/{id}/audit?as_of=T` | `GET` | SHA-256 cryptographic audit record and lineage |
+| `/health` | `GET` | System health and model lock verification |
+| `/model_lineage` | `GET` | Immutable model weights and manifest hash |
+| `/lots`, `/lots/{lot_id}/components` | `GET` | Lot and component listing |
+| `/components/{id}/pipeline?as_of=T` | `GET` | Complete unified result |
+| `/components/{id}/screening?as_of=T` | `GET` | Module A results |
+| `/components/{id}/forecast?as_of=T` | `GET` | Module B forecast + interval |
+| `/components/{id}/safety?as_of=T` | `GET` | Safety-slope & early-rejection decision |
+| `/components/{id}/explainability?as_of=T` | `GET` | Explainability card (detector evidence, SHAP, plain-language justification) |
+| `/components/{id}/audit?as_of=T` | `GET` | SHA-256 audit record and lineage |
 
 ---
 
 ## 8. Empirical Evaluation & Benchmark Verification
 
-### Primary Verification Metrics
+| Evaluation Dimension | Population | Result |
+| :--- | :---: | :---: |
+| Automated Verification Suite | 439 Tests | **100% Pass (439/439)** |
+| Module A Cumulative Union Recall | 25 Defective Parts (of 398 benchmark) | **88.00% (22 / 25)** |
+| Module A Equipment Precision | 398 Components | **100.00% (30 / 30)** |
+| Module A Healthy-Part Acceptance | 398 Components | **95.18% (158/166 nominal stable)** |
+| Module B 168h Forecast MAE | 500 Unseen Parts / 25 Lots | IDSS 0.057 µA · VGS(th) 0.024 V · RDS(on) 0.70 mΩ · IGSS 0.71 nA |
+| Module B vs. Linear Baseline | 500 Unseen Parts / 25 Lots | **>80% error reduction, all parameters** |
+| Module B 90% Interval Coverage | 500 Unseen Parts / 25 Lots | 84.2% – 90.0% |
+| Real-Data External Validation | UCI SECOM, 1,567 wafers (CC BY 4.0) | **4.52× enrichment lift** (30.0% precision, top-20, vs. 6.64% base rate) |
 
-| Evaluation Dimension | Benchmark Dataset | Evaluated Population | Primary Metric | Result |
-| :--- | :--- | :---: | :--- | :---: |
-| **Automated Verification Suite** | Complete Test Suite | 338 Tests | Pass Rate | **100% (338 / 338 Tests Passing in ~15s)** |
-| **Real Semiconductor External Validation** | UCI SECOM Fab Dataset (CC BY 4.0) | 1,567 Physical Wafers / 590 Sensors | Failure Enrichment Lift (Top 20) | **4.52x Lift (30.0% Precision vs 6.64% Base Rate)** |
-| **Module A Spec Limit Sensitivity** | Phase 2F Frozen Benchmark | 398 Components | Sensitivity / Recall | **78.57% (11 / 14)** |
-| **Module A Limit Specificity** | Phase 2F Frozen Benchmark | 398 Components | Specificity | **99.48% (382 / 384)** |
-| **Module A Drift Evidence Recall** | Phase 2F Frozen Benchmark | 398 Components | Target B Recall (Def A) | **62.50% (10 / 16)** |
-| **Module A Equipment Precision** | Phase 2F Frozen Benchmark | 398 Components | Precision on Excursions | **100.00% (30 / 30)** |
-| **Module A Cumulative Union Recall**| Phase 2F Frozen Benchmark | 25 Defective Parts | Cumulative Union Recall | **88.00% (22 / 25)** |
-| **Module B 168h Forecast Accuracy** | Phase 5 Evaluation Partition | 500 Unseen Parts / 25 Lots | Mean Absolute Error (MAE) | **$0.0242\,\text{V} - 0.7134\,\text{nA}$** |
-| **Module B vs Linear Baseline** | Phase 5 Evaluation Partition | 500 Unseen Parts / 25 Lots | Relative Error Reduction | **$>80\%$ Improvement across all params** |
-| **Module B 90% Interval Coverage** | Phase 5 Evaluation Partition | 500 Unseen Parts / 25 Lots | Empirical Test Coverage | **84.2% - 90.0%** |
-| **Finite Prediction Rate** | Phase 5 Evaluation Partition | 2,000 Forecasts | Divergence Fallbacks | **100% (0 / 2,000 fallbacks)** |
+*Benchmarked on synthetic data (398/500-component sets) unless noted; SECOM validation
+uses real public semiconductor fab data.*
 
-### External Semiconductor Benchmark: UCI SECOM Validation
-To verify Module A on real-world industrial silicon data rather than 100% synthetic distributions, the screening engine was evaluated against the **UCI SECOM** dataset (McCann, Johnston, & Ray, 2008, CC BY 4.0, 1,567 physical production wafers across 590 fab sensors, 104 verified process failures):
+### Module A Union Recall by Defect Mechanism
 
-| Screening Cohort (Top-K) | Flagged Wafers | Confirmed True Failures | Precision (%) | Baseline Prevalence (%) | Enrichment Lift Factor |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| **Top 10 Wafers** | 10 | 3 | 30.0% | 6.64% | **4.52x** |
-| **Top 20 Wafers** | 20 | 6 | 30.0% | 6.64% | **4.52x** |
-| **Top 25 Wafers** | 25 | 7 | 28.0% | 6.64% | **4.22x** |
-| **Top 50 Wafers** | 50 | 10 | 20.0% | 6.64% | **3.01x** |
-
-*Key Conclusion:* With zero training labels, Module A's non-parametric Median/MAD screening achieves a **4.52x enrichment factor**, proving real silicon cross-domain transfer. Full honest technical report: [`docs/evaluations/SECOM_VALIDATION.md`](docs/evaluations/SECOM_VALIDATION.md).
-
-### Module A Union Recall Across Defect Classes
-Across the frozen benchmark, there are **25 unique true defective components** forming the union of Target A (limit breaches) and Target B (temporal wearout):
-
-| Defect / Degradation Scenario | Total in Benchmark | Detected Across Checkpoints | Mechanism Union Recall | Primary Triggering Detector |
-| :--- | :---: | :---: | :---: | :--- |
-| **Accelerating Exponential Drift** | 3 | **3 / 3** | **$100.00\%$** | Detector C ($D_{\text{drift}}$) + Detector A ($D_{\text{spec}}$) |
-| **Static Specification Breach** | 6 | **6 / 6** | **$100.00\%$** | Detector A ($D_{\text{spec}}$ Hard Limit Gate) |
-| **Mixed Compound Degradation** | 2 | **2 / 2** | **$100.00\%$** | Detector C ($D_{\text{drift}}$) + Detector B ($D_{\text{peer}}$) |
-| **Lot Cohort Outlier** | 1 | **1 / 1** | **$100.00\%$** | Detector B ($D_{\text{peer}}$ LOO MAD $z > 15.0$) |
-| **Linear Temporal Drift** | 10 | **8 / 10** | **$80.00\%$** | Detector C ($D_{\text{drift}}$ excess slope $g_{\text{excess}} \ge 2.5$) |
-| **Subtle Low-Amplitude Step Jump** | 1 | **0 / 1** | **$0.00\%$** | Sub-threshold ($J_{\text{ratio}} = 1.14 < 4.0$) |
-| **OVERALL UNION** | **25** | **22 / 25** | **$\mathbf{88.00\%}$** | **Cumulative across burn-in cycle** |
-
-### Module B 168h Forecast Accuracy vs Baselines (500 Unseen Parts)
-
-| Parameter | Unit | Ridge MAE | Ridge RMSE | Carry-Forward MAE | 2-Point Linear MAE | Improvement vs. Linear | 90% Coverage |
-| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **$I_{\text{DSS}}$** | $\mu\text{A}$ | **$0.0574$** | $0.0758$ | $0.0622$ | $0.2944$ | **$+80.50\%$** | $84.2\%$ |
-| **$V_{\text{GS(th)}}$** | $\text{V}$ | **$0.0242$** | $0.0304$ | $0.0254$ | $0.1444$ | **$+83.24\%$** | $90.0\%$ |
-| **$R_{\text{DS(on)}}$** | $\text{m}\Omega$ | **$0.6999$** | $0.8828$ | $0.7859$ | $4.3907$ | **$+84.06\%$** | $89.6\%$ |
-| **$I_{\text{GSS}}$** | $\text{nA}$ | **$0.7134$** | $0.9383$ | $0.8036$ | $4.3872$ | **$+83.74\%$** | $85.2\%$ |
+| Defect Mechanism | Total | Detected | Recall |
+| :--- | :---: | :---: | :---: |
+| Accelerating Exponential Drift | 3 | 3/3 | 100% |
+| Static Specification Breach | 6 | 6/6 | 100% |
+| Mixed Compound Degradation | 2 | 2/2 | 100% |
+| Lot Cohort Outlier | 1 | 1/1 | 100% |
+| Linear Temporal Drift | 10 | 8/10 | 80% |
+| Subtle Low-Amplitude Step Jump | 1 | 0/1 | 0% |
+| **Overall Union** | **25** | **22/25** | **88.00%** |
 
 ### Cryptographic Manifest Hashes
-- **Phase 5 Frozen Model Manifest SHA-256:** `bde6989e24d195ab4b53f93c46c2156d1c336fe820baf149d76d32943e135667`
-- **Phase 5 Primary Results SHA-256:** `9a608bb46f87913641182f49139a6d67e5d8b2c39b7422c3cc30c61f3a85a4b4`
-- **Phase 5 Observations Telemetry SHA-256:** `b5de6a03022a9350b6f304b9af593768e7f83a8fc61fde6ca98e690cfa1f275f`
-- **Phase 2F Benchmark Telemetry SHA-256:** `6e680a6b7d14fe83f98219c670a41fdf74a0bb2367d30ca5df8b0ba995b0586e`
+- Model Manifest SHA-256: `bde6989e24d195ab4b53f93c46c2156d1c336fe820baf149d76d32943e135667`
+- Results SHA-256: `9a608bb46f87913641182f49139a6d67e5d8b2c39b7422c3cc30c61f3a85a4b4`
+- Observations Telemetry SHA-256: `b5de6a03022a9350b6f304b9af593768e7f83a8fc61fde6ca98e690cfa1f275f`
+- Benchmark Telemetry SHA-256: `6e680a6b7d14fe83f98219c670a41fdf74a0bb2367d30ca5df8b0ba995b0586e`
 
 ---
 
 ## 9. Deployment & Operations Guide
 
-### A. Zero-Configuration Automated Verification ("Can I run your tests right now?")
-The answer is **YES**. The entire test suite requires zero external services or environment configuration and executes in **~15 seconds**:
+### A. Reproducibility — "Can I run your tests right now?"
 ```bash
-# Run all 353 unit, integration, and contract verification tests:
-pytest
-
-# Run the empirical technical evaluation benchmark:
-PYTHONPATH=src python3 benchmarks/empirical_study.py
-
-# Run the real-world semiconductor benchmark on UCI SECOM:
-python benchmarks/secom_validation.py
-
-# Run the 60-Second Equipment Excursion scenario verification directly:
-pytest tests/screening/test_equipment_drift_demo_scenario.py -v
+pytest                                    # full automated suite
+python benchmarks/secom_validation.py     # real-data external benchmark
 ```
 
-### B. Local Workstation Execution
+### B. Local Execution
 ```bash
 PYTHONPATH=src python3 src/sih26170/service/server.py --host 0.0.0.0 --port 8000
 ```
-Open your browser to: `http://127.0.0.1:8000`
 
-### C. Docker Container Deployment
+### C. Docker
 ```bash
-# Build production Docker image
 docker build -t sih26170_workstation .
-
-# Run container with healthchecks
 docker run -d -p 8000:8000 --name sih26170_workstation sih26170_workstation
-```
-Or with Docker Compose:
-```bash
-docker compose up -d
+# or: docker compose up -d
 ```
 
-### C. Live Public Demo URL (Cloudflare Tunnel)
-```bash
-cloudflared tunnel --url http://127.0.0.1:8000
-```
-Active Public Deployment: `https://installations-requirements-host-communist.trycloudflare.com`
+### D. Cloud Deployment (Render) — primary live demo
+Live at **https://screenx-stmu.onrender.com/**. The application binds to `0.0.0.0` and
+reads `PORT` from the environment to comply with Render's dynamic port assignment.
+Free-tier instances sleep after inactivity; allow ~60–90s for cold start if the demo
+hasn't been visited recently.
 
 ---
 
-## 10. Audit Trail & Compliance Artifacts
-For formal verification against the test suite contracts:
-- **Real Semiconductor Benchmark Report:** [`docs/evaluations/SECOM_VALIDATION.md`](docs/evaluations/SECOM_VALIDATION.md) (UCI SECOM 1,567-wafer analysis)
-- **Change Audit & Patent Citations:** [`docs/PROTOTYPE_STANDING_LOG.md`](docs/PROTOTYPE_STANDING_LOG.md) (LOG-001..LOG-022 & patent US12007428B2)
-- **8-Layer Architectural Baseline:** [`docs/SIH26170_Architecture.md`](docs/SIH26170_Architecture.md)
-- **Specification Draft & Assumption Matrix:** [`docs/SIH26170_Proposed_Solution_Draft.md`](docs/SIH26170_Proposed_Solution_Draft.md)
+## 10. Integration with Existing ISRO Infrastructure
+
+This system is designed to integrate alongside existing test and quality
+infrastructure, not replace it:
+
+- **Data source:** ingests from ATE/SMU racks via standard instrument interfaces
+  (SCPI/TCP-IP/serial) in the proposed production architecture — no change to lab
+  hardware required. (See Section 3 for the prototype-vs-production ingestion
+  distinction.)
+- **Quality records:** the generated Certificate of Conformance and SHA-256 audit
+  trail are structured for export (JSON/PDF) into existing LIMS/QA record systems.
+- **Approval chain:** sign-off structure (QA Inspector → R&QA Concurrence →
+  Disposition Authority) mirrors ISRO's existing MIL-PRF-19500/703 disposition
+  process; no new approval workflow is introduced.
+- **Deployment environment:** runs as a single containerized service with no external
+  web framework dependency, suitable for isolated or air-gapped test-bay networks.
 
 ---
 
-## 11. Audited System Boundaries & Known Limitations Disclosure
+## 11. Known Limitations
 
-In alignment with mission assurance rigor and aerospace engineering standards, SCREENX explicitly discloses the four physical, statistical, and sampling boundaries of its 24h screening and 168h prognostic architecture:
+In the interest of giving QA inspectors and judges an honest account of system
+boundaries rather than an unqualified claim of completeness:
 
-| Limitation ID | Category | Physics / Statistical Boundary | Operational Mitigation |
-| :--- | :--- | :--- | :--- |
-| **KL-01** | **Signal-to-Noise Tradeoff** | **Sub-Noise-Floor Linear Drift ($SNR \le 2.089\,\text{dB}$):** 2 benchmark components with ultra-slow linear drift remained within thermal instrumentation noise at 24h ($g_{\text{excess}} < 2.5$). Suppressing alerts below this floor is a deliberate policy to avoid catastrophic false-alarm cascades across flight lots. | Flagged automatically at 48h/96h burn-in checkpoints as cumulative drift departs from thermal noise floor. |
-| **KL-02** | **Temporal Causality Boundary** | **Late-Onset Wearout / Thermal Runaway ($T > 96\,\text{h}$):** Components that remain perfectly stationary from 0h to 24h ($\Delta u \approx 0$) but suffer sudden non-linear dielectric breakdown after 96h cannot be predicted from 24h telemetry alone. Strict temporal causality prohibits retrospective lookahead. | Requires intermediate screening checkpoint at 96h or physics-of-failure accelerated life testing. |
-| **KL-03** | **Statistical Stability Policy** | **Small-Sample Socket Bias Suppression ($N_{\text{channel}} < 4$):** Detector $D_{\text{eq}}$ requires at least $N \ge 4$ components tested on an ATE fixture channel to evaluate socket contact resistance shift. For smaller channel sample counts, socket bias inference is suppressed to prevent spurious false alarms or masking genuine silicon degradation. | Cleanroom SOP-SCREENX-ATE-04 mandates batch testing with minimum 4 components per fixture channel. |
-| **KL-04** | **Robust Sensitivity Tuning** | **Abrupt Step Jump Detection Boundary ($J(T) < 4.0$):** Detector $D_{\text{step}}$ enforces a jump ratio threshold $J(T) \ge 4.0$ to catch discontinuous micro-plasma or dielectric fissures. Jumps below 4.0 (e.g. $J = 1.14$ on $I_{\text{GSS}}$) are treated as gradual kinetic drift rather than step discontinuities. | Continuous union/OR fusion ensures gradual drift detector ($D_{\text{drift}}$) captures sub-4.0 step transitions. |
-
-### Consolidated Explainability & API Interoperability
-- **Unified Explain Endpoint:** `GET /components/{id}/explain?as_of={t}` (and `/api/v1/components/{id}/explain`) returns in a single consolidated payload:
-  1. **Detector-Level Evidence:** Exact additive statistics across all 6+1 detectors ($D_{\text{spec}}, D_{\text{peer}}, D_{\text{drift}}, D_{\text{step}}, D_{\text{eq}}, D_{\text{suff}}, D_{\text{joint}}$)
-  2. **Inspector-Grade Natural Language:** Single human-readable justification citing exact triggering values, $z$-scores, and fixture status.
-  3. **Exact Closed-Form SHAP:** Feature decomposition into baseline offset ($\phi_{\text{baseline}}$) vs drift velocity ($\phi_{\text{drift}}$).
-  4. **Conformal 90% Prediction Intervals:** Non-parametric residual bands guaranteeing coverage.
-  5. **Safety-Slope Derivation:** Exact arithmetic comparing predicted drift rate against the safety slope.
-  6. **Closed-Form Counterfactual Boundary:** Invertible solution $u_{24,\text{boundary}} = (u_{\text{limit}} - \beta_0 - \beta_1 u_0) / \beta_2$ defining the exact 24h reading required to alter the screening outcome.
-  7. **Formal System Boundaries:** Direct serialization of the 4 audited limitations.
+| ID | Boundary | Mitigation |
+| :--- | :--- | :--- |
+| **KL-01** | Two benchmark components with sub-noise-floor linear drift (SNR ≈ 2.089 dB) were not flagged at 24h — the physical movement was smaller than instrument measurement noise. | Addressed via continued screening at later checkpoints (48h/96h) as cumulative drift departs the noise floor. |
+| **KL-02** | A component with a sudden onset of degradation after 96h cannot be predicted from 0h/24h data alone — this is a structural limit of early-checkpoint-only prediction, not a model defect. | Intermediate checkpoint screening (96h) catches this population. |
+| **KL-03** | Equipment-excursion detection requires a minimum socket-channel sample size to avoid false attribution. | Suppressed below the minimum sample threshold; defaults to conservative individual-component handling. |
+| **KL-04** | One IGSS step jump (J=1.14) fell below the abrupt-jump detection threshold (J≥4.0) and was not flagged by that detector specifically. | Gradual-drift detection (Detector C) is the intended backstop for sub-threshold step changes; threshold is set conservatively to avoid mistaking thermal settling transients for genuine damage. |
 
 ---
 
-## 12. Empirical Technical Evaluation & Benchmark Study
-
-To establish clear, evidence-based performance for SIH 26170, SCREENX implements a comprehensive 10-point technical evaluation benchmark natively in its core architecture:
-
-| Metric Targeted | Improvement Item | Core Module | Validated Result |
-| :--- | :--- | :--- | :--- |
-| **Metric 1: Anomaly Detection** | **1.1 Cost-Sensitive Risk (20:1)** | `src/sih26170/screening/risk.py` | 1.12x lower operational loss vs static screening; 0% static escape at 24h eliminated. |
-| **Metric 1: Anomaly Detection** | **1.2 Joint Mahalanobis Backstop ($D_{\text{joint}}$)** | `src/sih26170/screening/joint.py` | 4-parameter LOO shrinkage covariance backstop ($D_{\text{crit}} = 4.25$); 66.7% precision. |
-| **Metric 1: Anomaly Detection** | **1.3 Union Fusion Precedence Audit** | `src/sih26170/screening/fusion.py` | Strict recall-maximizing OR-cascade verified; zero AND-gate bottlenecks. |
-| **Metric 2: Drift Prediction** | **2.1 Relative Drift Target ($\Delta u$)** | `src/sih26170/prognostics/empirical_validation.py` | Proven optimal on surface leakage ($I_{\text{DSS}}, I_{\text{GSS}}$); direct level optimal on bulk ($V_{\text{GS(th)}}, R_{\text{DS(on)}}$). |
-| **Metric 2: Drift Prediction** | **2.2 $\lambda$ Regularization Nested CV** | `src/sih26170/prognostics/empirical_validation.py` | 5-fold lot-grouped CV proves locked $\lambda = 1.0$ is within $\le 0.21\%$ of empirical global optimum. |
-| **Metric 2: Drift Prediction** | **2.3 Regime-Conditional Conformal** | `src/sih26170/prognostics/empirical_validation.py` | Residual stratification provides 88.6% - 93.3% tail coverage on active drift components. |
-| **Metric 3: Explainability** | **3.1 Unified `/explain` Endpoint** | `src/sih26170/service/router.py` | Atomic payload consolidating all 6+1 detectors, SHAP, CIs, and bounds. |
-| **Metric 3: Explainability** | **3.2 Counterfactual Inversion** | `src/sih26170/pipeline/explainability.py` | Closed-form boundary solution exact to $|\text{error}| < 1.5 \times 10^{-7}$. |
-| **Metric 3: Explainability** | **3.3 Inspector Justifications** | `src/sih26170/pipeline/explainability.py` | Cleanroom natural language citing exact numbers, limits, and fixture states. |
-| **Metric 3: Explainability** | **3.4 Known Limitations Catalog** | `src/sih26170/pipeline/explainability.py` | 4 physics-grounded boundaries formally cataloged and surfaced in UI/API. |
-
-* **Full Technical Report:** [`docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md`](docs/evaluations/EMPIRICAL_TECHNICAL_EVALUATION.md)
-* **Executable Benchmark Suite:** `benchmarks/empirical_study.py`
-* **Automated Unit Tests:** `tests/test_empirical_study.py`
-
+## 12. Audit Trail & Compliance Artifacts
+- **Change Audit Log:** `docs/PROTOTYPE_STANDING_LOG.md`
+- **Architectural Baseline:** `docs/SIH26170_Architecture.md`
+- **Specification Draft & Assumption Matrix:** `docs/SIH26170_Proposed_Solution_Draft.md`
+- **Real Semiconductor Benchmark Report:** `docs/SECOM_VALIDATION.md`
