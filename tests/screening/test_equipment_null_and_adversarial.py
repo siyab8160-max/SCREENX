@@ -60,7 +60,7 @@ def test_adv_02_no_bias_nk4_false_positive_control():
     n_other = 12  # Total lot = 16
 
     false_triggers = 0
-    z_scores = []
+    z_scores: list[float] = []
 
     for _ in range(num_sims):
         vals = rng.normal(3.0, 0.1, size=16)  # Nominal VGS(th) ~ 3.0V, sigma=0.1V
@@ -71,6 +71,7 @@ def test_adv_02_no_bias_nk4_false_positive_control():
         })
         ev = evaluate_fixture_channel_bias("VGS(th)", df, channel_id="CH_01")
         assert not ev.suppressed
+        assert ev.z_score is not None
         z_scores.append(ev.z_score)
         if ev.suspected:
             false_triggers += 1
@@ -127,12 +128,14 @@ def test_adv_04_single_genuinely_biased_channel():
     curr_df = df[df["elapsed_hours"] == 0]
     ev_ch01 = evaluate_fixture_channel_bias("VGS(th)", curr_df, channel_id="CH_01")
     assert ev_ch01.suspected is True
+    assert ev_ch01.z_score is not None
     assert ev_ch01.z_score >= 3.42
     assert ev_ch01.reason_code == "ATE_CHANNEL_FIXTURE_BIAS"
 
     # Unbiased channel CH_02 must NOT be suspected
     ev_ch02 = evaluate_fixture_channel_bias("VGS(th)", curr_df, channel_id="CH_02")
     assert ev_ch02.suspected is False
+    assert ev_ch02.z_score is not None
     assert abs(ev_ch02.z_score) < 3.42
 
 
@@ -157,8 +160,10 @@ def test_adv_05_multiple_genuinely_biased_channels():
     ev_ch03 = evaluate_fixture_channel_bias("VGS(th)", curr_df, channel_id="CH_03")
 
     assert ev_ch01.suspected is True
+    assert ev_ch01.z_score is not None
     assert ev_ch01.z_score > 3.42
     assert ev_ch02.suspected is True
+    assert ev_ch02.z_score is not None
     assert ev_ch02.z_score < -3.42
     assert ev_ch03.suspected is False
 
@@ -177,6 +182,7 @@ def test_adv_06_chamber_shift_without_component_degradation():
     assert res.disposition_qualifier == DispositionQualifier.EQUIPMENT_ONLY
     p_res = res.parameter_results["RDS(on)"]
     assert p_res.equipment_evidence.suspected is True
+    assert p_res.temporal_evidence.g_excess is not None
     assert abs(p_res.temporal_evidence.g_excess) < 2.5
 
 
@@ -196,6 +202,7 @@ def test_adv_07_component_degradation_without_equipment_shift():
     assert res.disposition_qualifier == DispositionQualifier.COMPONENT_DEGRADATION
     p_res = res.parameter_results["RDS(on)"]
     assert p_res.equipment_evidence.suspected is False
+    assert p_res.temporal_evidence.normalized_drift is not None
     assert abs(p_res.temporal_evidence.normalized_drift) >= 2.5
 
 
@@ -297,10 +304,12 @@ def test_adv_11_transient_excursion_recovery_preserved():
     p_res = res.parameter_results["RDS(on)"]
 
     # Endpoint g_excess is small because value returned to normal
+    assert p_res.temporal_evidence.g_excess is not None
     assert abs(p_res.temporal_evidence.g_excess) < 1.0
 
     # BUT abrupt step / transient excursion evidence is preserved
     assert p_res.step_evidence.status.value == "ABRUPT_JUMP_ALERT"
+    assert p_res.step_evidence.step_ratio is not None
     assert p_res.step_evidence.step_ratio >= 4.0
     assert p_res.step_evidence.previous_checkpoint == 0
     assert p_res.step_evidence.current_checkpoint == 24

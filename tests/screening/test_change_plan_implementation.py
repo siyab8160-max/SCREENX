@@ -114,7 +114,9 @@ def test_change1_common_mode_chamber_shift_does_not_trigger_device_cusum():
     p_rdson = res.parameter_results["RDS(on)"]
 
     # Excess drift relative to peer median shift is near zero
+    assert p_rdson.temporal_evidence.g_excess is not None
     assert abs(p_rdson.temporal_evidence.g_excess) < 1.0
+    assert p_rdson.temporal_evidence.cusum_statistic is not None
     assert p_rdson.temporal_evidence.cusum_statistic < 1.0
     assert not p_rdson.temporal_evidence.persistent_drift
     assert res.final_state == ScreeningState.EQUIPMENT_SUSPECTED
@@ -165,23 +167,35 @@ def test_change3_empirical_score_calibration():
     """Verify all detectors produce normalized [0, 1] calibrated scores."""
     # Peer score calibration
     assert calibrate_peer_score(0.0) == 0.0
-    assert 0.99 <= calibrate_peer_score(3.0) <= 1.0
+    peer_score = calibrate_peer_score(3.0)
+    assert peer_score is not None
+    assert 0.99 <= peer_score <= 1.0
     assert calibrate_peer_score(None) is None
 
     # Temporal drift score calibration
     assert calibrate_temporal_drift_score(0.0, 0.0) == 0.0
-    assert calibrate_temporal_drift_score(3.0, 4.0) > 0.50
+    drift_score = calibrate_temporal_drift_score(3.0, 4.0)
+    assert drift_score is not None
+    assert drift_score > 0.50
     assert calibrate_temporal_drift_score(None, None) is None
 
     # Step score calibration
-    assert calibrate_step_score(0.0) < 0.01
+    step_score_0 = calibrate_step_score(0.0)
+    assert step_score_0 is not None
+    assert step_score_0 < 0.01
     assert calibrate_step_score(4.0) == 0.50
-    assert calibrate_step_score(6.0) > 0.90
+    step_score_6 = calibrate_step_score(6.0)
+    assert step_score_6 is not None
+    assert step_score_6 > 0.90
 
     # Joint score calibration (exact chi^2 k=4 CDF)
     assert calibrate_joint_score(0.0) == 0.0
-    assert 0.58 <= calibrate_joint_score(2.0) <= 0.61
-    assert calibrate_joint_score(4.25) > 0.99
+    joint_score_2 = calibrate_joint_score(2.0)
+    assert joint_score_2 is not None
+    assert 0.58 <= joint_score_2 <= 0.61
+    joint_score_high = calibrate_joint_score(4.25)
+    assert joint_score_high is not None
+    assert joint_score_high > 0.99
 
     # Verify runtime pipeline populates calibrated_score on evidence records
     df = make_nominal_lot(n_components=10)
@@ -191,6 +205,7 @@ def test_change3_empirical_score_calibration():
     assert p_idss.temporal_evidence.calibrated_score is not None
     assert p_idss.step_evidence.calibrated_score is not None
     assert p_idss.equipment_evidence.calibrated_score is not None
+    assert res.joint_evidence is not None
     assert res.joint_evidence.calibrated_score is not None
 
 

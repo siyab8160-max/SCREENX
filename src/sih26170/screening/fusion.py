@@ -22,7 +22,7 @@ Compliant with docs/PHASE_3A_MODULE_A_SPEC.md Sections 9, 10, & 11 & Phase 3C Pr
 
 from __future__ import annotations
 
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from sih26170.screening.schema import (
     AbruptStepStatus,
