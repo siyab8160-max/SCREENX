@@ -35,6 +35,7 @@ class ServiceRouter:
         self.provider = provider
         self.demo_loader = DemoScenarioLoader(provider=self.provider)
         self.uploaded_telemetry: Optional[pd.DataFrame] = None
+        self._statuses_cache: Dict[Tuple[str, int], Dict[str, str]] = {}
 
     def register_uploaded_telemetry(self, records: list[Dict[str, Any]]) -> Dict[str, Any]:
         """Validate and retain a user-supplied telemetry dataset for inference only."""
@@ -50,6 +51,7 @@ class ServiceRouter:
         from sih26170.pipeline.telemetry import assert_ground_truth_quarantine
         assert_ground_truth_quarantine(df)
         self.uploaded_telemetry = df.copy()
+        self._statuses_cache.clear()
         return {
             "lots": sorted(df["lot_id"].astype(str).unique().tolist()),
             "components": sorted(df["component_id"].astype(str).unique().tolist()),
@@ -152,7 +154,7 @@ class ServiceRouter:
             except KeyError as e:
                 return 404, {"error": str(e)}
 
-        # Route: GET /lots/{lot_id}/equipment_diagnostics
+        # Route: GET /lots/{lot_id}/statuses
         if len(parts) == 3 and parts[0] == "lots" and parts[2] == "statuses":
             as_of_list = query.get("as_of", ["24"])
             try:
@@ -160,30 +162,58 @@ class ServiceRouter:
             except ValueError:
                 return 400, {"error": "as_of must be an integer."}
             lot_id = parts[1]
+
+            cache_key = (lot_id, as_of_hours)
+            if self.uploaded_telemetry is None and cache_key in self._statuses_cache:
+                return 200, {"lot_id": lot_id, "as_of_hours": as_of_hours, "statuses": self._statuses_cache[cache_key]}
+
+            from sih26170.screening.pipeline import screen_component
+
             if self.uploaded_telemetry is not None:
                 df = self.uploaded_telemetry
                 lot_df = df[(df["lot_id"].astype(str) == lot_id) & (df["elapsed_hours"] <= as_of_hours)]
                 component_ids = sorted(lot_df["component_id"].astype(str).unique().tolist())
-
-                def uploaded_status(component_id: str) -> tuple[str, str]:
-                    from sih26170.pipeline.orchestrator import run_component_pipeline
-                    component_df = lot_df[lot_df["component_id"].astype(str) == component_id]
-                    result = run_component_pipeline(component_df, component_id, as_of_hours, lot_df)
-                    return component_id, result.screening_result.final_state.value
-                evaluator = uploaded_status
+                statuses: Dict[str, str] = {}
+                for cid in component_ids:
+                    try:
+                        res = screen_component(lot_df, cid, as_of_hours)
+                        statuses[cid] = res.final_state.value
+                    except Exception:
+                        statuses[cid] = "UNKNOWN"
+            elif lot_id == "LOT_DEMO_EXCURSION":
+                from sih26170.synthetic.equipment_excursion_demo import generate_equipment_drift_demo_lot
+                df = generate_equipment_drift_demo_lot()
+                lot_df = df[df["elapsed_hours"] <= as_of_hours]
+                component_ids = [f"LOT_DEMO_EXCURSION_C{i:03d}" for i in range(1, 17)]
+                statuses = {}
+                for cid in component_ids:
+                    try:
+                        res = screen_component(lot_df, cid, as_of_hours)
+                        statuses[cid] = res.final_state.value
+                    except Exception:
+                        statuses[cid] = "UNKNOWN"
+                self._statuses_cache[cache_key] = statuses
             else:
                 try:
                     component_ids = self.demo_loader.list_components(lot_id)
                 except KeyError as exc:
                     return 404, {"error": str(exc)}
 
-                def demo_status(component_id: str) -> tuple[str, str]:
-                    result = self.demo_loader.run_scenario(component_id, as_of_hours)
-                    return component_id, result.screening_result.final_state.value
-                evaluator = demo_status
+                try:
+                    lot_df = self.provider.get_lot_telemetry(lot_id, as_of_hours)
+                except Exception as exc:
+                    return 404, {"error": str(exc)}
 
-            with ThreadPoolExecutor(max_workers=min(8, max(1, len(component_ids)))) as executor:
-                statuses = dict(executor.map(evaluator, component_ids))
+                statuses = {}
+                for cid in component_ids:
+                    try:
+                        res = screen_component(lot_df, cid, as_of_hours)
+                        statuses[cid] = res.final_state.value
+                    except Exception:
+                        statuses[cid] = "UNKNOWN"
+
+                self._statuses_cache[cache_key] = statuses
+
             return 200, {"lot_id": lot_id, "as_of_hours": as_of_hours, "statuses": statuses}
 
         if len(parts) == 3 and parts[0] == "lots" and parts[2] == "equipment_diagnostics":

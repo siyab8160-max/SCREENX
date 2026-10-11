@@ -35,9 +35,14 @@ const state = {
 const ORDERED_PARAMETERS = ['IDSS', 'VGS(th)', 'RDS(on)', 'IGSS'];
 
 // -----------------------------------------------------------------------------
-// API CLIENT
+// API CLIENT WITH IN-MEMORY SESSION CACHE
 // -----------------------------------------------------------------------------
-async function apiGet(endpoint) {
+const apiCache = new Map();
+
+async function apiGet(endpoint, useCache = true) {
+  if (useCache && apiCache.has(endpoint)) {
+    return apiCache.get(endpoint);
+  }
   try {
     const res = await fetch(endpoint, { cache: 'no-store' });
     if (!res.ok) {
@@ -45,7 +50,11 @@ async function apiGet(endpoint) {
       throw new Error(errData.error || `HTTP ${res.status}: ${res.statusText}`);
     }
     updateConnectionStatus(true);
-    return await res.json();
+    const data = await res.json();
+    if (useCache) {
+      apiCache.set(endpoint, data);
+    }
+    return data;
   } catch (err) {
     updateConnectionStatus(false, err.message);
     throw err;
@@ -241,9 +250,13 @@ function setupHierarchyControls() {
       if (state.componentsInLot.length > 0) {
         state.selectedComponentId = state.componentsInLot[0];
         if (compSelect) compSelect.value = state.selectedComponentId;
-        await loadComponentInvestigation(state.selectedComponentId, state.selectedAsOf);
+        await Promise.all([
+          loadComponentInvestigation(state.selectedComponentId, state.selectedAsOf),
+          buildTrayMatrix(),
+        ]);
+      } else {
+        await buildTrayMatrix();
       }
-      await buildTrayMatrix();
     });
   }
 
@@ -280,8 +293,17 @@ function setupAsOfButtons() {
       btn.classList.add('active');
       state.selectedAsOf = asOf;
 
-      await loadComponentInvestigation(state.selectedComponentId, state.selectedAsOf);
-      await buildTrayMatrix();
+      const mainContent = document.getElementById('main-content');
+      if (mainContent) mainContent.style.opacity = '0.65';
+
+      try {
+        await Promise.all([
+          loadComponentInvestigation(state.selectedComponentId, state.selectedAsOf),
+          buildTrayMatrix(),
+        ]);
+      } finally {
+        if (mainContent) mainContent.style.opacity = '1.0';
+      }
     });
   });
 }
@@ -1868,8 +1890,10 @@ async function activateDemoDataset() {
       if (lotSelect) lotSelect.value = state.selectedLotId;
       await loadLotComponents(state.selectedLotId);
       setCheckpoint(24);
-      await loadComponentInvestigation(state.selectedComponentId, state.selectedAsOf);
-      await buildTrayMatrix();
+      await Promise.all([
+        loadComponentInvestigation(state.selectedComponentId, state.selectedAsOf),
+        buildTrayMatrix(),
+      ]);
     }
   } catch (err) {
     console.error('Failed to activate demo dataset:', err);
@@ -1880,6 +1904,7 @@ async function activateDemoDataset() {
 }
 
 function clearStaleAnalysisResults() {
+  apiCache.clear();
   state.pipelineData = null;
 
   // Clear screening summary
